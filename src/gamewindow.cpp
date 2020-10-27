@@ -1,13 +1,13 @@
-#include <QGraphicsView>
-#include <QTimer>
-#include <qaction.h>
-#include <qmenubar.h>
 /**
   \file
   \brief    Déclaration de la classe GameWindow.
   \author   Thomas Amstutz
   \date     Octobre 2020
 */
+#include <QGraphicsView>
+#include <QTimer>
+#include <qaction.h>
+#include <qmenubar.h>
 #include <qapplication.h>
 #include <qmessagebox.h>
 

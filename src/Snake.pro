@@ -28,5 +28,4 @@ HEADERS  += \
     snake.h
 
 FORMS += \
-    gamewindow.ui \
     menuwindow.ui

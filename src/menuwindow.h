@@ -23,11 +23,11 @@ public:
     ~MenuWindow();
 
 private slots:
-    void on_bt_solo_clicked();
+    void on_btSolo_clicked();
 
 private:
     Ui::MenuWindow *ui;
-    GameWindow* gameWindow;
+    GameWindow *gameWindow = new GameWindow();
 
 };
 

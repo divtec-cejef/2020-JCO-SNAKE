@@ -4,6 +4,8 @@
   \author   Thomas Amstutz
   \date     Octobre 2020
 */
+#include <iostream>
+
 #include "menuwindow.h"
 #include "ui_menuwindow.h"
 #include "gamewindow.h"
@@ -20,10 +22,8 @@ MenuWindow::~MenuWindow()
     delete ui;
 }
 
-void MenuWindow::on_bt_solo_clicked()
+void MenuWindow::on_btSolo_clicked()
 {
+    gameWindow->show();
     this->close();
-
-    GameWindow gameWindow;
-    gameWindow.show();
 }
