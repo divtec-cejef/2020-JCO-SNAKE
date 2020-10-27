@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     gamecontroller.cpp \
     gamewindow.cpp \
     menuwindow.cpp \
-    snake.cpp
+    snake.cpp \
+    wall.cpp
 
 HEADERS  += \
     food.h \
@@ -25,7 +26,8 @@ HEADERS  += \
     constants.h \
     gamewindow.h \
     menuwindow.h \
-    snake.h
+    snake.h \
+    wall.h
 
 FORMS += \
     menuwindow.ui

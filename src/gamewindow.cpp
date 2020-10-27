@@ -27,7 +27,6 @@ GameWindow::GameWindow(QWidget *parent)
     initScene();
     initSceneBackground();
 
-//    QTimer::singleShot(0, this, SLOT(adjustViewSize()));
 }
 
 GameWindow::~GameWindow()
