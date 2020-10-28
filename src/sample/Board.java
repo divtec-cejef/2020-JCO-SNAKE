@@ -52,7 +52,6 @@ public class Board extends JPanel implements ActionListener{
     MenuControls menuSelection = new MenuControls();
     GameOverSelection gameOverSelection = new GameOverSelection();
 
-
     /**
      * Crée un plateau de jeu
      */
@@ -62,7 +61,7 @@ public class Board extends JPanel implements ActionListener{
     }
 
     /**
-     *
+     * Initialise le jeu
      */
     private void initBoard() {
 
