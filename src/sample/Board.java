@@ -18,10 +18,12 @@ public class Board extends JPanel implements ActionListener{
     private final int TILE_SIZE = 10;
     // Nombre maximal de cases
     private final int ALL_DOTS = (BOARD_WIDTH*BOARD_HEIGHT)/(TILE_SIZE*TILE_SIZE);
-    // Utilisé pour calculer l'emplacement d'une pomme
+    // Utilisé pour calculer l'emplacement aléatoire d'une pomme
     private final int RAND_POS = 50;
-    private final int DELAY = 140;
 
+
+    // Vitesse du serpent
+    private int snakeSpeed = 140;
     // Emplacement des composants du serpent
     private final int[] x = new int[ALL_DOTS];
     private final int[] y = new int[ALL_DOTS];
@@ -39,9 +41,12 @@ public class Board extends JPanel implements ActionListener{
     private boolean inMenu = true;
 
     private Timer timer;
-    private Image ball;
+
+    // Images du jeu
+    private Image body;
     private Image apple;
     private Image head;
+    private Image tail;
 
     MenuSelection menuSelection = new MenuSelection();
 
@@ -72,14 +77,17 @@ public class Board extends JPanel implements ActionListener{
      */
     private void loadImages() {
 
-        ImageIcon imageIconDot = new ImageIcon("res/images/snake_body_horizontal_x10.png");
-        ball = imageIconDot.getImage();
+        ImageIcon imageIconBody = new ImageIcon("res/images/snake_body_horizontal_x10.png");
+        body = imageIconBody.getImage();
 
         ImageIcon imageIconApple = new ImageIcon("res/images/snake_food_x10.png");
         apple = imageIconApple.getImage();
 
         ImageIcon imageIconHead = new ImageIcon("res/images/snake_head_right_x10.png");
         head = imageIconHead.getImage();
+
+        ImageIcon imageIconTail = new ImageIcon("res/images/snake_tail_right_x10.png");
+        tail = imageIconTail.getImage();
     }
 
     /**
@@ -99,7 +107,7 @@ public class Board extends JPanel implements ActionListener{
 
         locateApple();
 
-        timer = new Timer(DELAY, this);
+        timer = new Timer(snakeSpeed, this);
         timer.start();
     }
 
@@ -124,8 +132,10 @@ public class Board extends JPanel implements ActionListener{
             for (int z = 0; z < snakeDots; z++) {
                 if (z == 0) {
                     g.drawImage(head, x[z], y[z], this);
+                } else if (z == snakeDots - 1) {
+                    g.drawImage(tail, x[z], y[z], this);
                 } else {
-                    g.drawImage(ball, x[z], y[z], this);
+                    g.drawImage(body, x[z], y[z], this);
                 }
             }
 
@@ -174,6 +184,10 @@ public class Board extends JPanel implements ActionListener{
         if ((x[0] == apple_x) && (y[0] == apple_y)) {
 
             snakeDots++;
+            if (snakeSpeed > 10)
+                snakeSpeed -= 10;
+            timer.setDelay(snakeSpeed);
+            System.out.println(snakeSpeed);
             locateApple();
         }
     }
@@ -186,12 +200,14 @@ public class Board extends JPanel implements ActionListener{
         }
 
         ImageIcon imageIconHead = new ImageIcon("res/images/snake_head_right_x10.png");
-        ImageIcon imageIconDot = new ImageIcon("res/images/snake_body_horizontal_x10.png");
+        ImageIcon imageIconBody = new ImageIcon("res/images/snake_body_horizontal_x10.png");
+        ImageIcon imageIconTail = new ImageIcon("res/images/snake_tail_right_x10.png");
 
         // Déplace la tête du serpent vers la gauche
         if (leftDirection) {
             x[0] -= TILE_SIZE;
             imageIconHead = new ImageIcon("res/images/snake_head_left_x10.png");
+            imageIconTail = new ImageIcon("res/images/snake_tail_left_x10.png");
         }
 
         // Déplace la tête du serpent vers la droite
@@ -203,18 +219,21 @@ public class Board extends JPanel implements ActionListener{
         if (upDirection) {
             y[0] -= TILE_SIZE;
             imageIconHead = new ImageIcon("res/images/snake_head_up_x10.png");
-            imageIconDot = new ImageIcon("res/images/snake_body_vertical_x10.png");
+            imageIconBody = new ImageIcon("res/images/snake_body_vertical_x10.png");
+            imageIconTail = new ImageIcon("res/images/snake_tail_up_x10.png");
         }
 
         // Déplace la tête du serpent vers le bas
         if (downDirection) {
             y[0] += TILE_SIZE;
             imageIconHead = new ImageIcon("res/images/snake_head_down_x10.png");
-            imageIconDot = new ImageIcon("res/images/snake_body_vertical_x10.png");
+            imageIconBody = new ImageIcon("res/images/snake_body_vertical_x10.png");
+            imageIconTail = new ImageIcon("res/images/snake_tail_down_x10.png");
         }
 
         head = imageIconHead.getImage();
-        ball = imageIconDot.getImage();
+        body = imageIconBody.getImage();
+        tail = imageIconTail.getImage();
     }
 
     private void checkCollision() {
@@ -303,6 +322,8 @@ public class Board extends JPanel implements ActionListener{
                 rightDirection = false;
                 leftDirection = false;
             }
+// Event Enter : 10
+//            System.out.println(key);
         }
     }
 
