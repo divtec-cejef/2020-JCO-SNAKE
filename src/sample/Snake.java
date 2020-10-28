@@ -16,6 +16,7 @@ public class Snake extends JFrame {
         add(new Board());
 
         setResizable(false);
+        setSize(1500, 1500);
         pack();
 
         setTitle("Snake");

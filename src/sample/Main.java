@@ -1,25 +1,31 @@
 package sample;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import java.awt.EventQueue;
+import javax.swing.JFrame;
 
-public class Main extends Application {
+public class Main extends JFrame {
+    public Main() {
+        initUI();
+    }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Snake");
-        primaryStage.setScene(new Scene(root, 600, 600));
-        primaryStage.show();
-        primaryStage.setResizable(false);
+    private void initUI() {
+
+        add(new Board());
+
+        setResizable(false);
+        pack();
+
+        setTitle("Snake");
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public static void main(String[] args) {
-        launch(args);
 
+        EventQueue.invokeLater(() -> {
+            JFrame ex = new Snake();
+            ex.setVisible(true);
+        });
     }
 
 }
