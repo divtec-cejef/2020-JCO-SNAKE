@@ -18,8 +18,6 @@ public class Board extends JPanel implements ActionListener{
     private final int TILE_SIZE = 10;
     // Nombre maximal de cases
     private final int ALL_DOTS = (BOARD_WIDTH*BOARD_HEIGHT)/(TILE_SIZE*TILE_SIZE);
-    // Utilisé pour calculer l'emplacement aléatoire d'une pomme
-    private final int RAND_POS = 50;
 
 
     // Vitesse du serpent
@@ -39,6 +37,7 @@ public class Board extends JPanel implements ActionListener{
     private boolean inSoloGame = false;
     private boolean inMultiGame = false;
     private boolean inMenu = true;
+    private boolean restartGame = false;
 
     private Timer timer;
 
@@ -48,7 +47,9 @@ public class Board extends JPanel implements ActionListener{
     private Image head;
     private Image tail;
 
-    MenuSelection menuSelection = new MenuSelection();
+    MenuControls menuSelection = new MenuControls();
+    GameOverSelection gameOverSelection = new GameOverSelection();
+
 
     /**
      * Crée un plateau de jeu
@@ -98,7 +99,7 @@ public class Board extends JPanel implements ActionListener{
      */
     private void initGame() {
 
-        snakeDots = 3;
+        snakeDots = 30;
 
         for (int z = 0; z < snakeDots; z++) {
             x[z] = 50 - z * 10;
@@ -126,7 +127,7 @@ public class Board extends JPanel implements ActionListener{
         if (inSoloGame) {
 
             removeKeyListener(menuSelection);
-            addKeyListener(new TAdapter());
+            addKeyListener(new SoloGameControls());
             g.drawImage(apple, apple_x, apple_y, this);
 
             for (int z = 0; z < snakeDots; z++) {
@@ -163,17 +164,27 @@ public class Board extends JPanel implements ActionListener{
 
         g.drawString(multi, (int) ((BOARD_WIDTH - metrics.stringWidth(multi)) / 1.5f), (int) (BOARD_HEIGHT / 1.65f));
 
+        removeKeyListener(gameOverSelection);
+
     }
 
     private void gameOver(Graphics g) {
 
+        addKeyListener(gameOverSelection);
+
         String msg = "Perdu !";
+        String restart = "Appuyez sur ENTER pour rejouer";
         Font font = new Font("Consolas", Font.BOLD, 20);
         FontMetrics metrics = getFontMetrics(font);
 
         g.setColor(Color.white);
         g.setFont(font);
-        g.drawString(msg, (BOARD_WIDTH - metrics.stringWidth(msg)) / 2, BOARD_HEIGHT / 2);
+        g.drawString(msg, (BOARD_WIDTH - metrics.stringWidth(msg)) / 2, (int) (BOARD_HEIGHT / 2.3f));
+        g.drawString(restart, (BOARD_WIDTH - metrics.stringWidth(restart)) / 2, (int) (BOARD_HEIGHT / 1.65f));
+
+        while (restartGame) {
+            doDrawing(g);
+        }
     }
 
     /**
@@ -182,7 +193,6 @@ public class Board extends JPanel implements ActionListener{
     private void checkApple() {
 
         if ((x[0] == apple_x) && (y[0] == apple_y)) {
-
             snakeDots++;
             if (snakeSpeed > 10)
                 snakeSpeed -= 10;
@@ -234,6 +244,7 @@ public class Board extends JPanel implements ActionListener{
         head = imageIconHead.getImage();
         body = imageIconBody.getImage();
         tail = imageIconTail.getImage();
+
     }
 
     private void checkCollision() {
@@ -247,32 +258,23 @@ public class Board extends JPanel implements ActionListener{
         }
 
         // On regarde si le serpent a touché un mur
-        if (y[0] >= BOARD_HEIGHT) {
+        if (y[0] >= BOARD_HEIGHT || y[0] < 0 || x[0] >= BOARD_WIDTH || x[0] < 0) {
             inSoloGame = false;
         }
 
-        if (y[0] < 0) {
-            inSoloGame = false;
-        }
-
-        if (x[0] >= BOARD_WIDTH) {
-            inSoloGame = false;
-        }
-
-        if (x[0] < 0) {
-            inSoloGame = false;
-        }
-
+        // Si le serpent a touché un mur ou lui-même, la partie s'arrête
         if (!inSoloGame) {
             timer.stop();
         }
     }
 
     /**
-     * On crée une nouvelle pomme
+     * On crée une nouvelle pomme, placée aléatoirement
      */
     private void locateApple() {
 
+        // Utilisé pour calculer l'emplacement aléatoire d'une pomme
+        int RAND_POS = 50;
         int r = (int) (Math.random() * RAND_POS);
         apple_x = ((r * TILE_SIZE));
 
@@ -292,58 +294,80 @@ public class Board extends JPanel implements ActionListener{
         repaint();
     }
 
-    private class TAdapter extends KeyAdapter {
+    /**
+     * Contrôles du serpent
+     */
+    private class SoloGameControls extends KeyAdapter {
 
         @Override
         public void keyPressed(KeyEvent e) {
 
             int key = e.getKeyCode();
 
-            if ((key == KeyEvent.VK_LEFT) && (!rightDirection)) {
+            if ((key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) && (!rightDirection)) {
                 leftDirection = true;
                 upDirection = false;
                 downDirection = false;
             }
 
-            if ((key == KeyEvent.VK_RIGHT) && (!leftDirection)) {
+            if ((key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) && (!leftDirection)) {
                 rightDirection = true;
                 upDirection = false;
                 downDirection = false;
             }
 
-            if ((key == KeyEvent.VK_UP) && (!downDirection)) {
+            if ((key == KeyEvent.VK_UP || key == KeyEvent.VK_W) && (!downDirection)) {
                 upDirection = true;
                 rightDirection = false;
                 leftDirection = false;
             }
 
-            if ((key == KeyEvent.VK_DOWN) && (!upDirection)) {
+            if ((key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) && (!upDirection)) {
                 downDirection = true;
                 rightDirection = false;
                 leftDirection = false;
             }
-// Event Enter : 10
-//            System.out.println(key);
         }
     }
 
-    private class MenuSelection extends KeyAdapter {
+    /**
+     * Contrôle dans le menu
+     */
+    private class MenuControls extends KeyAdapter {
 
         @Override
         public void keyPressed(KeyEvent e) {
 
             int key = e.getKeyCode();
 
-            if (key == KeyEvent.VK_LEFT) {
+            if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
                 System.out.println("Solo");
                 inMenu = false;
                 inSoloGame = true;
             }
 
-            if (key == KeyEvent.VK_RIGHT) {
+            if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
                 System.out.println("Multi");
                 inMenu = false;
                 inMultiGame = true;
+            }
+
+        }
+    }
+
+    /**
+     * Contrôles dans l'écran Game Over
+     */
+    private class GameOverSelection extends KeyAdapter {
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+
+            int key = e.getKeyCode();
+
+            if (key == KeyEvent.VK_ENTER) {
+                inSoloGame = false;
+                inMenu = true;
             }
 
         }
