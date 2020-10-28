@@ -9,6 +9,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+/**
+ * Représente un plateau de jeu
+ */
 public class Board extends JPanel implements ActionListener{
     /*              Constantes           */
     // Taille du plateau
@@ -18,7 +21,6 @@ public class Board extends JPanel implements ActionListener{
     private final int TILE_SIZE = 10;
     // Nombre maximal de cases
     private final int ALL_DOTS = (BOARD_WIDTH*BOARD_HEIGHT)/(TILE_SIZE*TILE_SIZE);
-
 
     // Vitesse du serpent
     private int snakeSpeed = 140;
