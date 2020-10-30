@@ -23,7 +23,7 @@ public class Main extends JFrame {
     public static void main(String[] args) {
 
         EventQueue.invokeLater(() -> {
-            JFrame ex = new Snake();
+            JFrame ex = new Main();
             ex.setVisible(true);
         });
     }
