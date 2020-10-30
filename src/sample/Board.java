@@ -13,6 +13,12 @@ import javax.swing.Timer;
  * Représente un plateau de jeu
  */
 public class Board extends JPanel implements ActionListener{
+    private enum GameMode {
+        SOLO,
+        MULTI
+    }
+
+
     /*              Constantes           */
     // Taille du plateau
     private final int BOARD_WIDTH = 500;
@@ -23,34 +29,37 @@ public class Board extends JPanel implements ActionListener{
     private final int ALL_DOTS = (BOARD_WIDTH*BOARD_HEIGHT)/(TILE_SIZE*TILE_SIZE);
 
     // Vitesse du serpent
-    private int snakeSpeed = 140;
+//    private int snakeSpeed = 140;
     // Emplacement des composants du serpent
     private final int[] x = new int[ALL_DOTS];
     private final int[] y = new int[ALL_DOTS];
 
-    private int snakeDots;
+//    private int snakeLenght;
     private int apple_x;
     private int apple_y;
 
-    private boolean leftDirection = false;
-    private boolean rightDirection = true;
-    private boolean upDirection = false;
-    private boolean downDirection = false;
-    private boolean inSoloGame = false;
-    private boolean inMultiGame = false;
+//    private boolean leftDirection = false;
+//    private boolean rightDirection = true;
+//    private boolean upDirection = false;
+//    private boolean downDirection = false;
+    private boolean gameHasStarted = false;
     private boolean inMenu = true;
     private boolean restartGame = false;
+
+    private GameMode selectedGameMode;
 
     private Timer timer;
 
     // Images du jeu
-    private Image body;
+//    private Image body;
     private Image apple;
-    private Image head;
-    private Image tail;
+//    private Image head;
+//    private Image tail;
 
     MenuControls menuSelection = new MenuControls();
     GameOverSelection gameOverSelection = new GameOverSelection();
+
+    Snake serpent;
 
     /**
      * Crée un plateau de jeu
@@ -79,17 +88,18 @@ public class Board extends JPanel implements ActionListener{
      */
     private void loadImages() {
 
-        ImageIcon imageIconBody = new ImageIcon("res/images/snake_body_horizontal_x10.png");
-        body = imageIconBody.getImage();
+//        ImageIcon imageIconBody = new ImageIcon("res/images/snake_body_horizontal_x10.png");
+//        body = imageIconBody.getImage();
+//
+//        ImageIcon imageIconHead = new ImageIcon("res/images/snake_head_right_x10.png");
+//        head = imageIconHead.getImage();
+//
+//        ImageIcon imageIconTail = new ImageIcon("res/images/snake_tail_right_x10.png");
+//        tail = imageIconTail.getImage();
 
-        ImageIcon imageIconApple = new ImageIcon("res/images/snake_food_x10.png");
+        ImageIcon imageIconApple = new ImageIcon("res/images/apple.png");
+//        ImageIcon imageIconApple = new ImageIcon("res/images/snake_food_x10.png");
         apple = imageIconApple.getImage();
-
-        ImageIcon imageIconHead = new ImageIcon("res/images/snake_head_right_x10.png");
-        head = imageIconHead.getImage();
-
-        ImageIcon imageIconTail = new ImageIcon("res/images/snake_tail_right_x10.png");
-        tail = imageIconTail.getImage();
     }
 
     /**
@@ -100,16 +110,23 @@ public class Board extends JPanel implements ActionListener{
      */
     private void initGame() {
 
-        snakeDots = 30;
+        serpent = new Snake(3, Snake.Color.GREEN);
 
-        for (int z = 0; z < snakeDots; z++) {
+        for (int z = 0; z < serpent.getSnakeLenght(); z++) {
             x[z] = 50 - z * 10;
             y[z] = 50;
         }
 
+//        snakeLenght = 3;
+//        for (int z = 0; z < snakeLenght; z++) {
+//            x[z] = 50 - z * 10;
+//            y[z] = 50;
+//        }
+
         locateApple();
 
-        timer = new Timer(snakeSpeed, this);
+        timer = new Timer(serpent.getSnakeSpeed(), this);
+//        timer = new Timer(snakeSpeed, this);
         timer.start();
     }
 
@@ -125,21 +142,22 @@ public class Board extends JPanel implements ActionListener{
             startGame(g);
         }
 
-        if (inSoloGame) {
+        if (serpent.isAlive && gameHasStarted) {
 
             removeKeyListener(menuSelection);
             addKeyListener(new SoloGameControls());
             g.drawImage(apple, apple_x, apple_y, this);
 
-            for (int z = 0; z < snakeDots; z++) {
-                if (z == 0) {
-                    g.drawImage(head, x[z], y[z], this);
-                } else if (z == snakeDots - 1) {
-                    g.drawImage(tail, x[z], y[z], this);
-                } else {
-                    g.drawImage(body, x[z], y[z], this);
-                }
-            }
+//            for (int z = 0; z < snakeLenght; z++) {
+//                if (z == 0) {
+//                    g.drawImage(head, x[z], y[z], this);
+//                } else if (z == snakeLenght - 1) {
+//                    g.drawImage(tail, x[z], y[z], this);
+//                } else {
+//                    g.drawImage(body, x[z], y[z], this);
+//                }
+//            }
+            serpent.draw(g, x, y, this);
 
             Toolkit.getDefaultToolkit().sync();
 
@@ -183,9 +201,6 @@ public class Board extends JPanel implements ActionListener{
         g.drawString(msg, (BOARD_WIDTH - metrics.stringWidth(msg)) / 2, (int) (BOARD_HEIGHT / 2.3f));
         g.drawString(restart, (BOARD_WIDTH - metrics.stringWidth(restart)) / 2, (int) (BOARD_HEIGHT / 1.65f));
 
-        while (restartGame) {
-            doDrawing(g);
-        }
     }
 
     /**
@@ -194,77 +209,86 @@ public class Board extends JPanel implements ActionListener{
     private void checkApple() {
 
         if ((x[0] == apple_x) && (y[0] == apple_y)) {
-            snakeDots++;
-            if (snakeSpeed > 10)
-                snakeSpeed -= 10;
-            timer.setDelay(snakeSpeed);
-            System.out.println(snakeSpeed);
+//            snakeLenght++;
+            serpent.ateApple();
+            timer.setDelay(serpent.getSnakeSpeed());
+//            if (snakeSpeed > 10)
+//                snakeSpeed -= 10;
+//            timer.setDelay(snakeSpeed);
+//            timer.setDelay(snakeSpeed);
             locateApple();
         }
     }
 
-    private void move() {
-
-        for (int z = snakeDots; z > 0; z--) {
-            x[z] = x[(z - 1)];
-            y[z] = y[(z - 1)];
-        }
-
-        ImageIcon imageIconHead = new ImageIcon("res/images/snake_head_right_x10.png");
-        ImageIcon imageIconBody = new ImageIcon("res/images/snake_body_horizontal_x10.png");
-        ImageIcon imageIconTail = new ImageIcon("res/images/snake_tail_right_x10.png");
-
-        // Déplace la tête du serpent vers la gauche
-        if (leftDirection) {
-            x[0] -= TILE_SIZE;
-            imageIconHead = new ImageIcon("res/images/snake_head_left_x10.png");
-            imageIconTail = new ImageIcon("res/images/snake_tail_left_x10.png");
-        }
-
-        // Déplace la tête du serpent vers la droite
-        if (rightDirection) {
-            x[0] += TILE_SIZE;
-        }
-
-        // Déplace la tête du serpent vers le haut
-        if (upDirection) {
-            y[0] -= TILE_SIZE;
-            imageIconHead = new ImageIcon("res/images/snake_head_up_x10.png");
-            imageIconBody = new ImageIcon("res/images/snake_body_vertical_x10.png");
-            imageIconTail = new ImageIcon("res/images/snake_tail_up_x10.png");
-        }
-
-        // Déplace la tête du serpent vers le bas
-        if (downDirection) {
-            y[0] += TILE_SIZE;
-            imageIconHead = new ImageIcon("res/images/snake_head_down_x10.png");
-            imageIconBody = new ImageIcon("res/images/snake_body_vertical_x10.png");
-            imageIconTail = new ImageIcon("res/images/snake_tail_down_x10.png");
-        }
-
-        head = imageIconHead.getImage();
-        body = imageIconBody.getImage();
-        tail = imageIconTail.getImage();
-
-    }
+//    private void move() {
+//
+//        for (int z = snakeLenght; z > 0; z--) {
+//            x[z] = x[(z - 1)];
+//            y[z] = y[(z - 1)];
+//        }
+//
+//        ImageIcon imageIconHead = new ImageIcon("res/images/snake_head_right_x10.png");
+//        ImageIcon imageIconBody = new ImageIcon("res/images/snake_body_horizontal_x10.png");
+//        ImageIcon imageIconTail = new ImageIcon("res/images/snake_tail_right_x10.png");
+//
+//        // Déplace la tête du serpent vers la gauche
+//        if (leftDirection) {
+//            x[0] -= TILE_SIZE;
+//            imageIconHead = new ImageIcon("res/images/snake_head_left_x10.png");
+//            imageIconTail = new ImageIcon("res/images/snake_tail_left_x10.png");
+//        }
+//
+//        // Déplace la tête du serpent vers la droite
+//        if (rightDirection) {
+//            x[0] += TILE_SIZE;
+//        }
+//
+//        // Déplace la tête du serpent vers le haut
+//        if (upDirection) {
+//            y[0] -= TILE_SIZE;
+//            imageIconHead = new ImageIcon("res/images/snake_head_up_x10.png");
+//            imageIconBody = new ImageIcon("res/images/snake_body_vertical_x10.png");
+//            imageIconTail = new ImageIcon("res/images/snake_tail_up_x10.png");
+//        }
+//
+//        // Déplace la tête du serpent vers le bas
+//        if (downDirection) {
+//            y[0] += TILE_SIZE;
+//            imageIconHead = new ImageIcon("res/images/snake_head_down_x10.png");
+//            imageIconBody = new ImageIcon("res/images/snake_body_vertical_x10.png");
+//            imageIconTail = new ImageIcon("res/images/snake_tail_down_x10.png");
+//        }
+//
+//        head = imageIconHead.getImage();
+//        body = imageIconBody.getImage();
+//        tail = imageIconTail.getImage();
+//
+//    }
 
     private void checkCollision() {
 
         // On regarde si le serpent s'est touché lui-même
-        for (int z = snakeDots; z > 0; z--) {
+        for (int z = serpent.getSnakeLenght(); z > 0; z--) {
             if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
-                inSoloGame = false;
+                serpent.isAlive = false;
                 break;
             }
         }
 
+//        for (int z = snakeLenght; z > 0; z--) {
+//            if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
+//                inSoloGame = false;
+//                break;
+//            }
+//        }
+
         // On regarde si le serpent a touché un mur
         if (y[0] >= BOARD_HEIGHT || y[0] < 0 || x[0] >= BOARD_WIDTH || x[0] < 0) {
-            inSoloGame = false;
+            serpent.isAlive = false;
         }
 
         // Si le serpent a touché un mur ou lui-même, la partie s'arrête
-        if (!inSoloGame) {
+        if (!serpent.isAlive) {
             timer.stop();
         }
     }
@@ -286,10 +310,11 @@ public class Board extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (inSoloGame) {
+        if (gameHasStarted) {
             checkApple();
             checkCollision();
-            move();
+            serpent.move(TILE_SIZE, x, y);
+//            move();
         }
 
         repaint();
@@ -305,34 +330,52 @@ public class Board extends JPanel implements ActionListener{
 
             int key = e.getKeyCode();
 
-            if ((key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) && (!rightDirection)) {
-                leftDirection = true;
-                upDirection = false;
-                downDirection = false;
+            Snake.Direction snakeDirection = serpent.getSnakeDirection();
+
+            if ((key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) && (snakeDirection != Snake.Direction.RIGHT)) {
+                serpent.setSnakeDirection(Snake.Direction.LEFT);
             }
 
-            if ((key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) && (!leftDirection)) {
-                rightDirection = true;
-                upDirection = false;
-                downDirection = false;
+            if ((key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) && (snakeDirection != Snake.Direction.LEFT)) {
+                serpent.setSnakeDirection(Snake.Direction.RIGHT);
             }
 
-            if ((key == KeyEvent.VK_UP || key == KeyEvent.VK_W) && (!downDirection)) {
-                upDirection = true;
-                rightDirection = false;
-                leftDirection = false;
+            if ((key == KeyEvent.VK_UP || key == KeyEvent.VK_W) && (snakeDirection != Snake.Direction.DOWN)) {
+                serpent.setSnakeDirection(Snake.Direction.UP);
             }
 
-            if ((key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) && (!upDirection)) {
-                downDirection = true;
-                rightDirection = false;
-                leftDirection = false;
+            if ((key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) && (snakeDirection != Snake.Direction.UP)) {
+                serpent.setSnakeDirection(Snake.Direction.DOWN);
             }
+
+//            if ((key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) && (!rightDirection)) {
+//                leftDirection = true;
+//                upDirection = false;
+//                downDirection = false;
+//            }
+//
+//            if ((key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) && (!leftDirection)) {
+//                rightDirection = true;
+//                upDirection = false;
+//                downDirection = false;
+//            }
+//
+//            if ((key == KeyEvent.VK_UP || key == KeyEvent.VK_W) && (!downDirection)) {
+//                upDirection = true;
+//                rightDirection = false;
+//                leftDirection = false;
+//            }
+//
+//            if ((key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) && (!upDirection)) {
+//                downDirection = true;
+//                rightDirection = false;
+//                leftDirection = false;
+//            }
         }
     }
 
     /**
-     * Contrôle dans le menu
+     * Contrôles dans le menu
      */
     private class MenuControls extends KeyAdapter {
 
@@ -342,16 +385,17 @@ public class Board extends JPanel implements ActionListener{
             int key = e.getKeyCode();
 
             if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
-                System.out.println("Solo");
+                selectedGameMode = GameMode.SOLO;
                 inMenu = false;
-                inSoloGame = true;
+                gameHasStarted = true;
             }
 
             if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
-                System.out.println("Multi");
+                selectedGameMode = GameMode.MULTI;
                 inMenu = false;
-                inMultiGame = true;
             }
+
+            System.out.println(selectedGameMode.toString());
 
         }
     }
@@ -367,7 +411,7 @@ public class Board extends JPanel implements ActionListener{
             int key = e.getKeyCode();
 
             if (key == KeyEvent.VK_ENTER) {
-                inSoloGame = false;
+                gameHasStarted = false;
                 inMenu = true;
             }
 
