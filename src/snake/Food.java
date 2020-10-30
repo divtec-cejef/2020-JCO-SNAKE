@@ -1,4 +1,4 @@
-package sample;
+package snake;
 
 /**
  * Classe qui représente de la nourriture pour serpent

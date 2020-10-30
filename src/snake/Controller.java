@@ -1,4 +1,4 @@
-package sample;
+package snake;
 
 public class Controller {
 }
