@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -13,38 +12,38 @@ import javax.swing.Timer;
  * Classe qui représente un plateau de jeu
  */
 public class Board extends JPanel implements ActionListener{
-    private enum GameMode {
+    public enum GameMode {
         SOLO,
         MULTI
     }
 
     // Taille du plateau
-    private final int BOARD_WIDTH = 500;
-    private final int BOARD_HEIGHT = 500;
+    public static final int BOARD_WIDTH = 500;
+    public static final int BOARD_HEIGHT = 500;
     // Taille d'une case / d'une pomme
-    private final int TILE_SIZE = 10;
+    public static final int TILE_SIZE = 10;
     // Nombre maximal de cases
-    private final int ALL_DOTS = (BOARD_WIDTH*BOARD_HEIGHT)/(TILE_SIZE*TILE_SIZE);
-    // Emplacement des composants du serpent
-    private final int[] X = new int[ALL_DOTS];
-    private final int[] Y = new int[ALL_DOTS];
+    public static final int ALL_DOTS = (BOARD_WIDTH*BOARD_HEIGHT)/(TILE_SIZE*TILE_SIZE);
+    // Liste de tous les points sur le plateau de jeu
+    public static final int[] X = new int[ALL_DOTS];
+    public static final int[] Y = new int[ALL_DOTS];
 
     private boolean gameHasStarted = false;
     private boolean inMenu = true;
-    private boolean restartGame = false;
 
+    // Mode de jeu choisi par le joueur
     private GameMode selectedGameMode;
 
+    // Timer qui gère la vitesse de déplacement du serpent
     private Timer timer;
 
-    private MenuControls menuSelection = new MenuControls();
-    private GameOverSelection gameOverSelection = new GameOverSelection();
+    // Contrôles dans les fenêtres
+    private final MenuControls menuSelection = new MenuControls();
+    private final GameOverSelection gameOverSelection = new GameOverSelection();
 
+    // Objets du jeu
     Snake serpent;
-
-    private Image apple; // A mettre dans la classe Food
-    private int apple_x; // A mettre dans la classe Food
-    private int apple_y; // A mettre dans la classe Food
+    Food pomme;
 
     /**
      * Crée un plateau de jeu
@@ -63,35 +62,26 @@ public class Board extends JPanel implements ActionListener{
         setFocusable(true);
 
         setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
-        loadImages();
         initGame();
     }
 
     /**
-     * Récupère les images du jeu
-     */
-    private void loadImages() {
-        // A mettre dans la classe Food
-        ImageIcon imageIconApple = new ImageIcon("res/images/apple.png");
-        apple = imageIconApple.getImage();
-    }
-
-    /**
      * Lance le jeu
-     * - Crée le serpent
+     * - Crée le serpent et sa nourriture
      * - Place une pomme
      * - Lance le timer
      */
     private void initGame() {
 
-        serpent = new Snake(3, Snake.Color.GREEN);
+        serpent = new Snake(Snake.Color.GREEN);
+        pomme = new Food();
 
         for (int z = 0; z < serpent.getSnakeLenght(); z++) {
             X[z] = 50 - z * 10;
             Y[z] = 50;
         }
 
-        locateApple();
+        pomme.locateApple();
 
         timer = new Timer(serpent.getSnakeSpeed(), this);
         timer.start();
@@ -113,9 +103,9 @@ public class Board extends JPanel implements ActionListener{
 
             removeKeyListener(menuSelection);
             addKeyListener(new SoloGameControls());
-            g.drawImage(apple, apple_x, apple_y, this); // A mettre dans la classe Food
 
-            serpent.draw(g, X, Y, this);
+            pomme.draw(g, this);
+            serpent.draw(g, this);
 
             Toolkit.getDefaultToolkit().sync();
 
@@ -161,18 +151,6 @@ public class Board extends JPanel implements ActionListener{
 
     }
 
-    /**
-     * Vérifie si une pomme se fait manger
-     */
-    private void checkApple() {
-        // A mettre dans la classe Food
-        if ((X[0] == apple_x) && (Y[0] == apple_y)) {
-            serpent.ateApple();
-            timer.setDelay(serpent.getSnakeSpeed());
-            locateApple();
-        }
-    }
-
     private void checkCollision() {
 
         // On regarde si le serpent s'est touché lui-même
@@ -194,27 +172,14 @@ public class Board extends JPanel implements ActionListener{
         }
     }
 
-    /**
-     * On crée une nouvelle pomme, placée aléatoirement
-     */
-    private void locateApple() {
-        // A mettre dans la classe Food
-        // Utilisé pour calculer l'emplacement aléatoire d'une pomme
-        int RAND_POS = 50;
-        int r = (int) (Math.random() * RAND_POS);
-        apple_x = ((r * TILE_SIZE));
-
-        r = (int) (Math.random() * RAND_POS);
-        apple_y = ((r * TILE_SIZE));
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
         if (gameHasStarted) {
-            checkApple();
+            pomme.checkApple(serpent, timer);
             checkCollision();
-            serpent.move(TILE_SIZE, X, Y);
+            serpent.move();
+            serpent.setSnakeLastDirection(serpent.getSnakeDirection());
         }
 
         repaint();
