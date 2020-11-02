@@ -32,7 +32,7 @@ public class Snake {
 
     // Longueur du serpent
     private int snakeLength;
-    private final int INITIAL_SNAKE_LENGTH = 2;
+    private final int INITIAL_SNAKE_LENGTH = 3;
 
     public boolean isAlive = true;
 
@@ -81,8 +81,6 @@ public class Snake {
                 snakeDots.add(new SnakeDot(SnakeDot.DotType.Tail, snakeColor));
             else
                 snakeDots.add(new SnakeDot(SnakeDot.DotType.Body, snakeColor));
-
-
         }
     }
 

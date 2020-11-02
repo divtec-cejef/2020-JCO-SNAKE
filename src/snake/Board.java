@@ -227,8 +227,6 @@ public class Board extends JPanel implements ActionListener{
                 inMenu = false;
             }
 
-            System.out.println(selectedGameMode.toString());
-
         }
     }
 
