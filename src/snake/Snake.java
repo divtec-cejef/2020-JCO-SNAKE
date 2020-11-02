@@ -30,31 +30,13 @@ public class Snake {
     private int snakeSpeed = 140;
     private final int MINIMAL_SNAKE_SPEED = 10;
 
-    // Longueur du serpent
-    private int snakeLength;
+    // Longueur initiale du serpent
     private final int INITIAL_SNAKE_LENGTH = 3;
 
     public boolean isAlive = true;
 
     // Couleur du serpent
     private final Color snakeColor;
-
-//    /* Images du serpent */
-//    // Corps du serpent
-//    private Image bodyHorizonzal;
-//    private Image bodyVertical;
-//    // Tête du serpent
-//    private Image head;
-//    private Image headLeft;
-//    private Image headRight;
-//    private Image headUp;
-//    private Image headDown;
-//    // Queue du serpent
-//    private Image tail;
-//    private Image tailLeft;
-//    private Image tailRight;
-//    private Image tailUp;
-//    private Image tailDown;
 
     // Direction du serpent
     private Direction snakeDirection = Direction.RIGHT;
@@ -66,11 +48,9 @@ public class Snake {
      * @param snakeColor Couleur du serpent
      */
     public Snake(Color snakeColor) {
-        this.snakeLength = INITIAL_SNAKE_LENGTH;
         this.snakeColor = snakeColor;
 
         createDots(snakeColor);
-//        setImages(snakeColor);
     }
 
     private void createDots(Color snakeColor) {
@@ -84,72 +64,14 @@ public class Snake {
         }
     }
 
-//    /**
-//     * Initialise les sprites du serpent
-//     * @param snakeColor Couleur utilisée pour les sprites
-//     */
-//    private void setImages(Color snakeColor) {
-//        ImageIcon imageIconBodyHorizontal = new ImageIcon(pathToImages + snakeColor.toString() + "/body_horizontal.png");
-//        bodyHorizonzal = imageIconBodyHorizontal.getImage();
-//        ImageIcon imageIconBodyVertical = new ImageIcon(pathToImages + snakeColor.toString() + "/body_vertical.png");
-//        bodyVertical = imageIconBodyVertical.getImage();
-//
-//        ImageIcon imageIconHead = new ImageIcon(pathToImages + snakeColor.toString() + "/head_right.png");
-//        head = imageIconHead.getImage();
-//        ImageIcon imageIconTail = new ImageIcon(pathToImages + snakeColor.toString() + "/tail_right.png");
-//        tail = imageIconTail.getImage();
-//
-//        ImageIcon imageIconHeadLeft = new ImageIcon(pathToImages + snakeColor.toString() + "/head_left.png");
-//        headLeft = imageIconHeadLeft.getImage();
-//        ImageIcon imageIconHeadRight = new ImageIcon(pathToImages + snakeColor.toString() + "/head_right.png");
-//        headRight = imageIconHeadRight.getImage();
-//        ImageIcon imageIconHeadUp = new ImageIcon(pathToImages + snakeColor.toString() + "/head_up.png");
-//        headUp = imageIconHeadUp.getImage();
-//        ImageIcon imageIconHeadDown = new ImageIcon(pathToImages + snakeColor.toString() + "/head_down.png");
-//        headDown = imageIconHeadDown.getImage();
-//
-//
-//        ImageIcon imageIconTailLeft = new ImageIcon(pathToImages + snakeColor.toString() + "/tail_left.png");
-//        tailLeft = imageIconTailLeft.getImage();
-//        ImageIcon imageIconTailRight = new ImageIcon(pathToImages + snakeColor.toString() + "/tail_right.png");
-//        tailRight = imageIconTailRight.getImage();
-//        ImageIcon imageIconTailUp = new ImageIcon(pathToImages + snakeColor.toString() + "/tail_up.png");
-//        tailUp = imageIconTailUp.getImage();
-//        ImageIcon imageIconTailDown = new ImageIcon(pathToImages + snakeColor.toString() + "/tail_down.png");
-//        tailDown = imageIconTailDown.getImage();
-//
-//    }
-
     /**
      * Dessine le serpent sur le plateau de jeu
      * @param g Graphics
      * @param imageObserver Observer d'image
      */
     public void draw(Graphics g, ImageObserver imageObserver) {
-//        Image headSprite = head;
-//        Image tailSprite = tail;
-//
-//        switch (snakeDirection) {
-//            case LEFT:
-//                headSprite = headLeft;
-//                tailSprite = tailLeft;
-//                break;
-//            case RIGHT:
-//                headSprite = headRight;
-//                tailSprite = tailRight;
-//                break;
-//            case UP:
-//                headSprite = headUp;
-//                tailSprite = tailUp;
-//                break;
-//            case DOWN:
-//                headSprite = headDown;
-//                tailSprite = tailDown;
-//                break;
-//        }
 
         for (int z = 0; z < snakeDots.size(); z++) {
-            System.out.println(snakeDots.get(z).getDotDirection());
             snakeDots.get(z).draw(g, imageObserver, z);
         }
 
@@ -196,7 +118,10 @@ public class Snake {
      * Le serpent mange une pomme
      */
     public void ateApple() {
-        snakeLength++;
+        for (SnakeDot dot : snakeDots) {
+            dot.setDotDirection(snakeDirection);
+        }
+
         snakeDots.add(snakeDots.size() - 1, new SnakeDot(SnakeDot.DotType.Body, snakeColor));
         if (snakeSpeed > MINIMAL_SNAKE_SPEED)
             snakeSpeed -= MINIMAL_SNAKE_SPEED;
@@ -243,10 +168,4 @@ public class Snake {
         return snakeSpeed;
     }
 
-//    /**
-//     * @return La couleur du serpent
-//     */
-//    public Color getSnakeColor() {
-//        return snakeColor;
-//    }
 }

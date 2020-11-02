@@ -15,9 +15,6 @@ public class SnakeDot {
         Tail
     }
 
-    // Chemin vers les images
-    private final String pathToImages = "res/images/";
-
     /* Images du serpent */
     // Corps du serpent
     private Image bodyHorizonzal;
@@ -32,6 +29,11 @@ public class SnakeDot {
     private Image tailRight;
     private Image tailUp;
     private Image tailDown;
+    // Angles
+    private Image bodyDown2Right;
+    private Image bodyRight2Down;
+    private Image bodyRight2Up;
+    private Image bodyUp2Right;
 
     // Direction par défaut du serpent
     private final Snake.Direction INITIAL_DOT_DIRECTION = Snake.Direction.RIGHT;
@@ -47,19 +49,24 @@ public class SnakeDot {
     // Couleur du serpent
     private final Snake.Color dotColor;
 
-    // Crée un point de serpent
+    /**
+     * Crée un point de serpent
+     * @param dotType Le type de point que l'on veut créer
+     * @param dotColor La couleur de ce point
+     */
     public SnakeDot(DotType dotType, Snake.Color dotColor) {
         this.dotType = dotType;
         this.dotColor = dotColor;
 
-        setImages(dotColor);
+        setImages();
     }
 
     /**
      * Initialise les sprites du point
-     * @param dotColor Couleur utilisée pour les sprites
      */
-    private void setImages(Snake.Color dotColor) {
+    private void setImages() {
+        // Chemin vers les images
+        String pathToImages = "res/images/";
         switch (dotType) {
             // Le point est une tête
             case Head:
@@ -76,9 +83,18 @@ public class SnakeDot {
             case Body:
                 ImageIcon imageIconBodyHorizontal = new ImageIcon(pathToImages + dotColor.toString() + "/body_horizontal.png");
                 bodyHorizonzal = imageIconBodyHorizontal.getImage();
-
                 ImageIcon imageIconBodyVertical = new ImageIcon(pathToImages + dotColor.toString() + "/body_vertical.png");
                 bodyVertical = imageIconBodyVertical.getImage();
+
+                ImageIcon imageIconBodyDown2Right = new ImageIcon(pathToImages + dotColor.toString() + "/body_down2right.png");
+                bodyDown2Right = imageIconBodyDown2Right.getImage();
+                ImageIcon imageIconBodyRight2Down = new ImageIcon(pathToImages + dotColor.toString() + "/body_right2down.png");
+                bodyRight2Down = imageIconBodyRight2Down.getImage();
+                ImageIcon imageIconBodyRight2Up = new ImageIcon(pathToImages + dotColor.toString() + "/body_right2up.png");
+                bodyRight2Up = imageIconBodyRight2Up.getImage();
+                ImageIcon imageIconBodyUp2Right = new ImageIcon(pathToImages + dotColor.toString() + "/body_up2right.png");
+                bodyUp2Right = imageIconBodyUp2Right.getImage();
+
                 break;
             // Le point est une queue
             case Tail:
@@ -95,58 +111,61 @@ public class SnakeDot {
 
     }
 
+    /**
+     * Dessine le morceau de serpent sur le plateau de jeu
+     * @param g Graphics
+     * @param imageObserver Observer d'image
+     * @param index Emplacement où l'image doit être placée
+     */
     public void draw(Graphics g, ImageObserver imageObserver, int index){
-//        System.out.println(index);
         g.drawImage(setSprite(), Board.X[index], Board.Y[index], imageObserver);
     }
 
+    /**
+     * Défini le sprite utilisé par ce point, selon son type et sa direction
+     * @return Le sprite choisi
+     */
     private Image setSprite() {
-        if (dotType == DotType.Head) {
-            if (dotDirection == Snake.Direction.LEFT) {
-                return headLeft;
-            }
+        Image head = null;
+        Image tail = null;
+        Image body = null;
 
-            if (dotDirection == Snake.Direction.RIGHT) {
-                return headRight;
-            }
-
-            if (dotDirection == Snake.Direction.UP) {
-                return headUp;
-            }
-
-            if (dotDirection == Snake.Direction.DOWN) {
-                return headDown;
-            }
-
-        } else if (dotType == DotType.Tail) {
-            if (dotDirection == Snake.Direction.LEFT) {
-                return tailLeft;
-            }
-
-            if (dotDirection == Snake.Direction.RIGHT) {
-                return tailRight;
-            }
-
-            if (dotDirection == Snake.Direction.UP) {
-                return tailUp;
-            }
-
-            if (dotDirection == Snake.Direction.DOWN) {
-                return tailDown;
-            }
-
-        } else {
-            if (dotDirection == Snake.Direction.LEFT || dotDirection == Snake.Direction.RIGHT) {
-                return bodyHorizonzal;
-            }
-
-            if (dotDirection == Snake.Direction.UP || dotDirection == Snake.Direction.DOWN) {
-                return bodyVertical;
-            }
-
+        switch (dotDirection) {
+            case LEFT:
+                head = headLeft;
+                tail = tailLeft;
+                break;
+            case RIGHT:
+                head = headRight;
+                tail = tailRight;
+                break;
+            case UP:
+                head = headUp;
+                tail = tailUp;
+                break;
+            case DOWN:
+                head = headDown;
+                tail = tailDown;
+                break;
+        }
+        if (dotDirection == Snake.Direction.LEFT || dotDirection == Snake.Direction.RIGHT) {
+            body = bodyHorizonzal;
         }
 
-        return null;
+        if (dotDirection == Snake.Direction.UP || dotDirection == Snake.Direction.DOWN) {
+            body = bodyVertical;
+        }
+
+        switch (dotType) {
+            case Head:
+                return head;
+            case Body:
+                return body;
+            case Tail:
+                return tail;
+            default:
+                return null;
+        }
     }
 
     /**
@@ -168,6 +187,10 @@ public class SnakeDot {
      * @param dotDirection Nouvelle direction du point
      */
     public void setDotDirection(Snake.Direction dotDirection) {
+        if (dotDirection != dotPreviousDirection && this.dotDirection != dotPreviousDirection)
+            this.dotPreviousDirection = this.dotDirection;
         this.dotDirection = dotDirection;
+        System.out.println("Direction précédente de " + dotType.toString() + " : " + dotPreviousDirection);
+        System.out.println("Direction actuelle de "   + dotType.toString() + " : " + dotDirection + "\n");
     }
 }
