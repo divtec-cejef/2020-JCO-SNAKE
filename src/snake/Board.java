@@ -23,7 +23,7 @@ public class Board extends JPanel implements ActionListener{
     // Taille d'une case / d'une pomme
     public static final int TILE_SIZE = 10;
     // Nombre maximal de cases
-    public static final int ALL_DOTS = (BOARD_WIDTH*BOARD_HEIGHT)/(TILE_SIZE*TILE_SIZE);
+    public static final int ALL_DOTS = (BOARD_WIDTH * BOARD_HEIGHT) / (TILE_SIZE * TILE_SIZE);
     // Liste de tous les points sur le plateau de jeu
     public static final int[] X = new int[ALL_DOTS];
     public static final int[] Y = new int[ALL_DOTS];
@@ -39,7 +39,7 @@ public class Board extends JPanel implements ActionListener{
 
     // Contrôles dans les fenêtres
     private final MenuControls menuSelection = new MenuControls();
-    private final GameOverSelection gameOverSelection = new GameOverSelection();
+//    private final GameOverSelection gameOverSelection = new GameOverSelection();
 
     // Objets du jeu
     Snake serpent;
@@ -76,8 +76,8 @@ public class Board extends JPanel implements ActionListener{
         serpent = new Snake(Snake.Color.GREEN);
         pomme = new Food();
 
-        for (int z = 0; z < serpent.getSnakeLenght(); z++) {
-            X[z] = 50 - z * 10;
+        for (int z = 0; z < serpent.getSnakeLength(); z++) {
+            X[z] = 50 - z * TILE_SIZE;
             Y[z] = 50;
         }
 
@@ -109,52 +109,39 @@ public class Board extends JPanel implements ActionListener{
 
             Toolkit.getDefaultToolkit().sync();
 
-        } else if (!inMenu) {
-            gameOver(g);
         }
     }
 
     private void startGame(Graphics g) {
         String mainTitle = "SNAKE";
-        Font font = new Font("Consolas", Font.BOLD, 20);
-        FontMetrics metrics = getFontMetrics(font);
-
-        g.setColor(Color.white);
-        g.setFont(font);
-        g.drawString(mainTitle, (BOARD_WIDTH - metrics.stringWidth(mainTitle)) / 2, BOARD_HEIGHT / 3);
-
         String solo = "< SOLO";
-
-        g.drawString(solo, (BOARD_WIDTH - metrics.stringWidth(solo)) / 3, (int) (BOARD_HEIGHT / 1.65f));
-
         String multi = "MULTI >";
 
-        g.drawString(multi, (int) ((BOARD_WIDTH - metrics.stringWidth(multi)) / 1.5f), (int) (BOARD_HEIGHT / 1.65f));
-
-        removeKeyListener(gameOverSelection);
-
-    }
-
-    private void gameOver(Graphics g) {
-
-        addKeyListener(gameOverSelection);
-
-        String msg = "Perdu !";
-        String restart = "Appuyez sur ENTER pour rejouer";
+        Font titleFont = new Font("Consolas", Font.BOLD, 28);
         Font font = new Font("Consolas", Font.BOLD, 20);
+
         FontMetrics metrics = getFontMetrics(font);
+        FontMetrics titleMetrics = getFontMetrics(titleFont);
 
         g.setColor(Color.white);
+
+        g.setFont(titleFont);
+
+        if (!serpent.isAlive)
+            mainTitle = "Perdu !";
+
+        g.drawString(mainTitle, (BOARD_WIDTH - titleMetrics.stringWidth(mainTitle)) / 2, BOARD_HEIGHT / 3);
+
         g.setFont(font);
-        g.drawString(msg, (BOARD_WIDTH - metrics.stringWidth(msg)) / 2, (int) (BOARD_HEIGHT / 2.3f));
-        g.drawString(restart, (BOARD_WIDTH - metrics.stringWidth(restart)) / 2, (int) (BOARD_HEIGHT / 1.65f));
+        g.drawString(solo, (BOARD_WIDTH - metrics.stringWidth(solo)) / 3, (int) (BOARD_HEIGHT / 1.65f));
+        g.drawString(multi, (int) ((BOARD_WIDTH - metrics.stringWidth(multi)) / 1.5f), (int) (BOARD_HEIGHT / 1.65f));
 
     }
 
     private void checkCollision() {
 
         // On regarde si le serpent s'est touché lui-même
-        for (int z = serpent.getSnakeLenght(); z > 0; z--) {
+        for (int z = serpent.getSnakeLength(); z > 0; z--) {
             if ((z > 4) && (X[0] == X[z]) && (Y[0] == Y[z])) {
                 serpent.isAlive = false;
                 break;
@@ -169,6 +156,8 @@ public class Board extends JPanel implements ActionListener{
         // Si le serpent a touché un mur ou lui-même, la partie s'arrête
         if (!serpent.isAlive) {
             timer.stop();
+            inMenu = true;
+            addKeyListener(menuSelection);
         }
     }
 
@@ -179,7 +168,6 @@ public class Board extends JPanel implements ActionListener{
             pomme.checkApple(serpent, timer);
             checkCollision();
             serpent.move();
-            serpent.setSnakeLastDirection(serpent.getSnakeDirection());
         }
 
         repaint();
@@ -229,6 +217,9 @@ public class Board extends JPanel implements ActionListener{
                 selectedGameMode = GameMode.SOLO;
                 inMenu = false;
                 gameHasStarted = true;
+                if (!serpent.isAlive) {
+                    initGame();
+                }
             }
 
             if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
@@ -238,23 +229,6 @@ public class Board extends JPanel implements ActionListener{
 
             System.out.println(selectedGameMode.toString());
 
-        }
-    }
-
-    /**
-     * Contrôles dans l'écran Game Over
-     */
-    private class GameOverSelection extends KeyAdapter {
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-
-            int key = e.getKeyCode();
-
-            if (key == KeyEvent.VK_ENTER) {
-                gameHasStarted = false;
-                inMenu = true;
-            }
         }
     }
 
