@@ -1,7 +1,6 @@
 package snake;
 
-import java.awt.*;
-import java.awt.image.ImageObserver;
+import javafx.scene.canvas.GraphicsContext;
 import java.util.ArrayList;
 
 /**
@@ -53,6 +52,8 @@ public class Snake {
     public Snake(Color snakeColor) {
         this.snakeColor = snakeColor;
 
+        System.out.println("Serpent crée");
+
         createDots(snakeColor);
     }
 
@@ -76,13 +77,12 @@ public class Snake {
 
     /**
      * Dessine le serpent sur le plateau de jeu
-     * @param g Graphics
-     * @param imageObserver Observer d'image
+     * @param g GraphicsContext
      */
-    public void draw(Graphics g, ImageObserver imageObserver) {
+    public void draw(GraphicsContext g) {
 
         for (int z = 0; z < snakeDots.size(); z++) {
-            snakeDots.get(z).draw(g, imageObserver, z);
+            snakeDots.get(z).draw(g, z);
         }
 
 //        for (int z = 0; z < snakeLength; z++) {
@@ -104,8 +104,8 @@ public class Snake {
      */
     public void move() {
         for (int z = snakeDots.size(); z > 0; z--) {
-            Board.X[z] = Board.X[(z - 1)];
-            Board.Y[z] = Board.Y[(z - 1)];
+            Game.X[z] = Game.X[(z - 1)];
+            Game.Y[z] = Game.Y[(z - 1)];
         }
 
 //        switch (snakeDirection) {
@@ -125,16 +125,16 @@ public class Snake {
 
         switch (snakeDots.get(0).getDotDirection()) {
             case LEFT:
-                Board.X[0] -= Board.TILE_SIZE;
+                Game.X[0] -= Game.TILE_SIZE;
                 break;
             case RIGHT:
-                Board.X[0] += Board.TILE_SIZE;
+                Game.X[0] += Game.TILE_SIZE;
                 break;
             case UP:
-                Board.Y[0] -= Board.TILE_SIZE;
+                Game.Y[0] -= Game.TILE_SIZE;
                 break;
             case DOWN:
-                Board.Y[0] += Board.TILE_SIZE;
+                Game.Y[0] += Game.TILE_SIZE;
                 break;
         }
     }

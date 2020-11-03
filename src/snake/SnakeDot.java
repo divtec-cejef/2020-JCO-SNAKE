@@ -1,10 +1,8 @@
 package snake;
 
 import com.sun.istack.internal.Nullable;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.ImageObserver;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 /**
  * Représente un point du corps d'un serpent
@@ -69,55 +67,33 @@ public class SnakeDot {
      */
     private void getImages() {
         // Chemin vers les images
-        String pathToImages = "res/images/";
+        String pathToImages = "/images/";
         switch (dotType) {
             // Le point est une tête
             case Head:
-                ImageIcon imageIconHeadLeft = new ImageIcon(pathToImages + dotColor.toString() + "/head_left.png");
-                headLeft = imageIconHeadLeft.getImage();
-                ImageIcon imageIconHeadRight = new ImageIcon(pathToImages + dotColor.toString() + "/head_right.png");
-                headRight = imageIconHeadRight.getImage();
-                ImageIcon imageIconHeadUp = new ImageIcon(pathToImages + dotColor.toString() + "/head_up.png");
-                headUp = imageIconHeadUp.getImage();
-                ImageIcon imageIconHeadDown = new ImageIcon(pathToImages + dotColor.toString() + "/head_down.png");
-                headDown = imageIconHeadDown.getImage();
+                headLeft = new Image(pathToImages + dotColor.toString() + "/head_left.png");
+                headRight = new Image(pathToImages + dotColor.toString() + "/head_right.png");
+                headUp = new Image(pathToImages + dotColor.toString() + "/head_up.png");
+                headDown = new Image(pathToImages + dotColor.toString() + "/head_down.png");
 
                 break;
             // Le point fait partie du corps
             case Body:
-                ImageIcon imageIconBodyHorizontal = new ImageIcon(pathToImages + dotColor.toString() + "/body_horizontal.png");
-                bodyHorizonzal = imageIconBodyHorizontal.getImage();
-                ImageIcon imageIconBodyVertical = new ImageIcon(pathToImages + dotColor.toString() + "/body_vertical.png");
-                bodyVertical = imageIconBodyVertical.getImage();
+                bodyHorizonzal = new Image(pathToImages + dotColor.toString() + "/body_horizontal.png");
+                bodyVertical = new Image(pathToImages + dotColor.toString() + "/body_vertical.png");
 
-//                ImageIcon imageIconBodyDown2Right = new ImageIcon(pathToImages + dotColor.toString() + "/body_down2right.png");
-//                bodyDown2Right = imageIconBodyDown2Right.getImage();
-//                ImageIcon imageIconBodyRight2Down = new ImageIcon(pathToImages + dotColor.toString() + "/body_right2down.png");
-//                bodyRight2Down = imageIconBodyRight2Down.getImage();
-//                ImageIcon imageIconBodyRight2Up = new ImageIcon(pathToImages + dotColor.toString() + "/body_right2up.png");
-//                bodyRight2Up = imageIconBodyRight2Up.getImage();
-//                ImageIcon imageIconBodyUp2Right = new ImageIcon(pathToImages + dotColor.toString() + "/body_up2right.png");
-//                bodyUp2Right = imageIconBodyUp2Right.getImage();
-                ImageIcon imageIconBodyDown2Right = new ImageIcon(pathToImages + "RED/body_down2right.png");
-                bodyDown2Right = imageIconBodyDown2Right.getImage();
-                ImageIcon imageIconBodyRight2Down = new ImageIcon(pathToImages + "RED/body_right2down.png");
-                bodyRight2Down = imageIconBodyRight2Down.getImage();
-                ImageIcon imageIconBodyRight2Up = new ImageIcon(pathToImages + "RED/body_right2up.png");
-                bodyRight2Up = imageIconBodyRight2Up.getImage();
-                ImageIcon imageIconBodyUp2Right = new ImageIcon(pathToImages + "RED/body_up2right.png");
-                bodyUp2Right = imageIconBodyUp2Right.getImage();
+                bodyDown2Right = new Image(pathToImages + "RED/body_down2right.png");
+                bodyRight2Down = new Image(pathToImages + "RED/body_right2down.png");
+                bodyRight2Up = new Image(pathToImages + "RED/body_right2up.png");
+                bodyUp2Right = new Image(pathToImages + "RED/body_up2right.png");
 
                 break;
             // Le point est une queue
             case Tail:
-                ImageIcon imageIconTailLeft = new ImageIcon(pathToImages + dotColor.toString() + "/tail_left.png");
-                tailLeft = imageIconTailLeft.getImage();
-                ImageIcon imageIconTailRight = new ImageIcon(pathToImages + dotColor.toString() + "/tail_right.png");
-                tailRight = imageIconTailRight.getImage();
-                ImageIcon imageIconTailUp = new ImageIcon(pathToImages + dotColor.toString() + "/tail_up.png");
-                tailUp = imageIconTailUp.getImage();
-                ImageIcon imageIconTailDown = new ImageIcon(pathToImages + dotColor.toString() + "/tail_down.png");
-                tailDown = imageIconTailDown.getImage();
+                tailLeft = new Image(pathToImages + dotColor.toString() + "/tail_left.png");
+                tailRight = new Image(pathToImages + dotColor.toString() + "/tail_right.png");
+                tailUp = new Image(pathToImages + dotColor.toString() + "/tail_up.png");
+                tailDown = new Image(pathToImages + dotColor.toString() + "/tail_down.png");
 
                 break;
         }
@@ -125,16 +101,15 @@ public class SnakeDot {
 
     /**
      * Dessine le morceau de serpent sur le plateau de jeu
-     * @param g Graphics
-     * @param imageObserver Observer d'image
+     * @param g GraphicsContext
      * @param index Emplacement où l'image doit être placée
      */
-    public void draw(Graphics g, ImageObserver imageObserver, int index){
-        g.drawImage(setSprite(), Board.X[index], Board.Y[index], imageObserver);
+    public void draw(GraphicsContext g, int index){
+        g.drawImage(setSprite(), Game.X[index], Game.Y[index]);
     }
 
-    public void draw(Graphics g, ImageObserver imageObserver, Image sprite ) {
-        g.drawImage(setSprite(), Board.X[0], Board.Y[0], imageObserver);
+    public void draw(GraphicsContext g, Image sprite ) {
+        g.drawImage(setSprite(), Game.X[0], Game.Y[0]);
     }
 
     private Image setSprite() {

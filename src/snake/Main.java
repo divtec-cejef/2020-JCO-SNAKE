@@ -1,31 +1,30 @@
 package snake;
 
-import java.awt.EventQueue;
-import javax.swing.JFrame;
+import javafx.application.Application;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
-public class Main extends JFrame {
-    public Main() {
-        initUI();
-    }
+public class Main extends Application {
 
-    private void initUI() {
+    // Taille du plateau
+    public static final int BOARD_WIDTH = 500;
+    public static final int BOARD_HEIGHT = 500;
 
-        add(new Board());
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setResizable(false);
+        primaryStage.setTitle("Snake");
 
-        setResizable(false);
-        pack();
+        BorderPane root = new BorderPane();
+        root.getChildren().add(new Game(BOARD_WIDTH, BOARD_HEIGHT));
+        Board board = new Board(root, BOARD_WIDTH, BOARD_HEIGHT, Color.BLACK);
 
-        setTitle("Snake");
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        primaryStage.setScene(board);
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
-
-        EventQueue.invokeLater(() -> {
-            JFrame ex = new Main();
-            ex.setVisible(true);
-        });
+        launch(args);
     }
-
 }

@@ -1,8 +1,10 @@
 package snake;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.ImageObserver;
+import javafx.animation.Timeline;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.util.Duration;
+
 
 /**
  * Classe qui représente de la nourriture pour serpent
@@ -24,17 +26,15 @@ public class Food {
      * Initialise le sprite de la pomme
      */
     private void getImages(){
-        ImageIcon imageIconApple = new ImageIcon("res/images/apple.png");
-        apple = imageIconApple.getImage();
+        apple = new Image("/images/apple.png");
     }
 
     /**
      * Dessine la pomme sur le plateau de jeu
-     * @param g Graphics
-     * @param imageObserver Observer d'image
+     * @param g GraphicsContext
      */
-    public void draw(Graphics g, ImageObserver imageObserver){
-        g.drawImage(apple, apple_x, apple_y, imageObserver);
+    public void draw(GraphicsContext g){
+        g.drawImage(apple, apple_x, apple_y);
     }
 
     /**
@@ -42,10 +42,12 @@ public class Food {
      * @param serpent Serpent qui a mangé la pomme
      * @param timer Timer du jeu
      */
-    public void checkApple(Snake serpent, Timer timer) {
-        if ((Board.X[0] == apple_x) && (Board.Y[0] == apple_y)) {
+    public void checkApple(Snake serpent, Timeline timer) {
+        if ((Game.X[0] == apple_x) && (Game.Y[0] == apple_y)) {
             serpent.ateApple();
-            timer.setDelay(serpent.getSnakeSpeed());
+
+            Duration duration = new Duration(serpent.getSnakeSpeed());
+            timer.setDelay(duration);
             locateApple();
         }
     }
@@ -58,9 +60,9 @@ public class Food {
         int RANDOM_POSITION = 50;
 
         int r = (int) (Math.random() * RANDOM_POSITION);
-        apple_x = ((r * Board.TILE_SIZE));
+        apple_x = ((r * Game.TILE_SIZE));
 
         r = (int) (Math.random() * RANDOM_POSITION);
-        apple_y = ((r * Board.TILE_SIZE));
+        apple_y = ((r * Game.TILE_SIZE));
     }
 }
