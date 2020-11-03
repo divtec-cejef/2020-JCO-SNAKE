@@ -24,23 +24,26 @@ public class Snake {
         YELLOW
     }
 
-//    private String pathToImages = "res/images/";
-
     // Vitesse du serpent
     private int snakeSpeed = 140;
+    // Vitesse maximale du serpent
     private final int MINIMAL_SNAKE_SPEED = 10;
 
-    // Longueur initiale du serpent
-    private final int INITIAL_SNAKE_LENGTH = 3;
+    // Longueur initiale du serpent (ne peut pas être < 2)
+    private final int INITIAL_SNAKE_LENGTH = 2;
 
+    // Le serpent est en vie
     public boolean isAlive = true;
 
     // Couleur du serpent
     private final Color snakeColor;
 
+    // Direction initiale du serpent
+    private final Snake.Direction INITIAL_SNAKE_DIRECTION = Snake.Direction.RIGHT;
     // Direction du serpent
-    private Direction snakeDirection = Direction.RIGHT;
+    private Direction snakeDirection = INITIAL_SNAKE_DIRECTION;
 
+    // Liste des points du serpent
     private ArrayList<SnakeDot> snakeDots = new ArrayList<>();
 
     /**
@@ -53,14 +56,21 @@ public class Snake {
         createDots(snakeColor);
     }
 
+    /**
+     * Crée les points de base du serpent
+     * @param snakeColor Couleur du serpent
+     */
     private void createDots(Color snakeColor) {
         for (int z = 0; z < INITIAL_SNAKE_LENGTH; z++) {
             if (z == 0)
-                snakeDots.add(new SnakeDot(SnakeDot.DotType.Head, snakeColor));
+                // Crée une tête en premier
+                snakeDots.add(new SnakeDot(SnakeDot.DotType.Head, snakeColor, INITIAL_SNAKE_DIRECTION));
             else if (z == INITIAL_SNAKE_LENGTH - 1)
-                snakeDots.add(new SnakeDot(SnakeDot.DotType.Tail, snakeColor));
+                // Crée une queue en dernier
+                snakeDots.add(new SnakeDot(SnakeDot.DotType.Tail, snakeColor, INITIAL_SNAKE_DIRECTION));
             else
-                snakeDots.add(new SnakeDot(SnakeDot.DotType.Body, snakeColor));
+                // Crée un corps entre deux
+                snakeDots.add(new SnakeDot(SnakeDot.DotType.Body, snakeColor, INITIAL_SNAKE_DIRECTION));
         }
     }
 
@@ -98,7 +108,22 @@ public class Snake {
             Board.Y[z] = Board.Y[(z - 1)];
         }
 
-        switch (snakeDirection) {
+//        switch (snakeDirection) {
+//            case LEFT:
+//                Board.X[0] -= Board.TILE_SIZE;
+//                break;
+//            case RIGHT:
+//                Board.X[0] += Board.TILE_SIZE;
+//                break;
+//            case UP:
+//                Board.Y[0] -= Board.TILE_SIZE;
+//                break;
+//            case DOWN:
+//                Board.Y[0] += Board.TILE_SIZE;
+//                break;
+//        }
+
+        switch (snakeDots.get(0).getDotDirection()) {
             case LEFT:
                 Board.X[0] -= Board.TILE_SIZE;
                 break;
@@ -122,7 +147,7 @@ public class Snake {
             dot.setDotDirection(snakeDirection);
         }
 
-        snakeDots.add(snakeDots.size() - 1, new SnakeDot(SnakeDot.DotType.Body, snakeColor));
+        snakeDots.add(snakeDots.size() - 1, new SnakeDot(SnakeDot.DotType.Body, snakeColor, snakeDirection));
         if (snakeSpeed > MINIMAL_SNAKE_SPEED)
             snakeSpeed -= MINIMAL_SNAKE_SPEED;
     }
@@ -138,7 +163,7 @@ public class Snake {
      * @return La direction vers laquelle se dirige le serpent
      */
     public Direction getSnakeDirection() {
-        return snakeDots.get(0).getDotDirection();
+        return snakeDirection;
     }
 
     /**
@@ -146,6 +171,11 @@ public class Snake {
      * @param snakeDirection Nouvelle direction du serpent
      */
     public void setSnakeDirection(Direction snakeDirection) {
+        if (snakeDots.get(0).getDotPreviousDirection() != snakeDirection && snakeDots.get(0).getDotPreviousDirection() != this.snakeDirection) {
+            System.out.println("Direction précédente : " + snakeDots.get(0).getDotPreviousDirection());
+            System.out.println("Direction actuelle : " + snakeDirection + "\n");
+        }
+
         this.snakeDirection = snakeDirection;
         for (SnakeDot dot: snakeDots) {
             /* - Parcourir la liste
@@ -155,11 +185,11 @@ public class Snake {
              * - répéter
              * - mettre la queue à la fin
              */
+            dot.setDotPreviousDirection(dot.getDotDirection());
             dot.setDotDirection(snakeDirection);
         }
 //        snakeDots.get(0).setDotDirection(snakeDirection);
     }
-
 
     /**
      * @return La vitesse du serpent

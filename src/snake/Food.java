@@ -17,13 +17,13 @@ public class Food {
      * Crée une nouvelle pomme
      */
     public Food() {
-        setImages();
+        getImages();
     }
 
     /**
      * Initialise le sprite de la pomme
      */
-    private void setImages(){
+    private void getImages(){
         ImageIcon imageIconApple = new ImageIcon("res/images/apple.png");
         apple = imageIconApple.getImage();
     }

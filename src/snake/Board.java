@@ -11,24 +11,29 @@ import javax.swing.Timer;
 /**
  * Classe qui représente un plateau de jeu
  */
-public class Board extends JPanel implements ActionListener{
+public class Board extends JPanel implements ActionListener {
+    // Modes de jeu possibles
     public enum GameMode {
         SOLO,
         MULTI
     }
 
     // Taille du plateau
-    public static final int BOARD_WIDTH = 500;
-    public static final int BOARD_HEIGHT = 500;
+    private static final int BOARD_WIDTH = 500;
+    private static final int BOARD_HEIGHT = 500;
     // Taille d'une case / d'une pomme
     public static final int TILE_SIZE = 10;
     // Nombre maximal de cases
-    public static final int ALL_DOTS = (BOARD_WIDTH * BOARD_HEIGHT) / (TILE_SIZE * TILE_SIZE);
-    // Liste de tous les points sur le plateau de jeu
+    private static final int ALL_DOTS = (BOARD_WIDTH * BOARD_HEIGHT) / (TILE_SIZE * TILE_SIZE);
+    // Liste toutes les lignes du plateau de jeu
     public static final int[] X = new int[ALL_DOTS];
+    // Liste toutes les colonnes du plateau de jeu
     public static final int[] Y = new int[ALL_DOTS];
 
+    // Indique si le jeu a commencé
     private boolean gameHasStarted = false;
+
+    // Indique si le joueur est dans un menu
     private boolean inMenu = true;
 
     // Mode de jeu choisi par le joueur
@@ -39,7 +44,6 @@ public class Board extends JPanel implements ActionListener{
 
     // Contrôles dans les fenêtres
     private final MenuControls menuSelection = new MenuControls();
-//    private final GameOverSelection gameOverSelection = new GameOverSelection();
 
     // Objets du jeu
     Snake serpent;
@@ -94,6 +98,10 @@ public class Board extends JPanel implements ActionListener{
         doDrawing(g);
     }
 
+    /**
+     * Dessine les éléments graphiques dans la fenêtre
+     * @param g Graphique
+     */
     private void doDrawing(Graphics g) {
         if (inMenu) {
             gameMenu(g);
@@ -112,13 +120,17 @@ public class Board extends JPanel implements ActionListener{
         }
     }
 
+    /**
+     * Menu de sélection de mode de jeu
+     * @param g Graphiques
+     */
     private void gameMenu(Graphics g) {
         String mainTitle = "SNAKE";
         String solo = "< SOLO";
         String multi = "MULTI >";
 
         Font titleFont = new Font("Consolas", Font.BOLD, 28);
-        Font font = new Font("Consolas", Font.BOLD, 20);
+        Font font = new Font("Consolas", Font.BOLD, 26);
 
         FontMetrics metrics = getFontMetrics(font);
         FontMetrics titleMetrics = getFontMetrics(titleFont);
@@ -138,6 +150,9 @@ public class Board extends JPanel implements ActionListener{
 
     }
 
+    /**
+     * Vérifie si le serpent est entré en collision avec un mur ou lui-même
+     */
     private void checkCollision() {
 
         // On regarde si le serpent s'est touché lui-même

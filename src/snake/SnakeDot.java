@@ -8,7 +8,8 @@ import java.awt.image.ImageObserver;
  * Représente un point du corps d'un serpent
  */
 public class SnakeDot {
-    // Types de point possibles
+
+    // Types de points possibles
     public enum DotType {
         Head,
         Body,
@@ -35,16 +36,13 @@ public class SnakeDot {
     private Image bodyRight2Up;
     private Image bodyUp2Right;
 
-    // Direction par défaut du serpent
-    private final Snake.Direction INITIAL_DOT_DIRECTION = Snake.Direction.RIGHT;
-
     // Type de partie de serpent
     private final DotType dotType;
 
     // Direction du serpent
-    private Snake.Direction dotDirection = INITIAL_DOT_DIRECTION;
-    // Précédente direction du serpent
-    private Snake.Direction dotPreviousDirection = dotDirection;
+    private Snake.Direction dotDirection;
+    // Direction précédente du serpent
+    private Snake.Direction dotPreviousDirection;
 
     // Couleur du serpent
     private final Snake.Color dotColor;
@@ -53,18 +51,21 @@ public class SnakeDot {
      * Crée un point de serpent
      * @param dotType Le type de point que l'on veut créer
      * @param dotColor La couleur de ce point
+     * @param dotDirection La direction de ce point
      */
-    public SnakeDot(DotType dotType, Snake.Color dotColor) {
+    public SnakeDot(DotType dotType, Snake.Color dotColor, Snake.Direction dotDirection) {
         this.dotType = dotType;
         this.dotColor = dotColor;
+        this.dotDirection = dotDirection;
+        this.dotPreviousDirection = dotDirection;
 
-        setImages();
+        getImages();
     }
 
     /**
-     * Initialise les sprites du point
+     * Initialise les sprites du point selon son type
      */
-    private void setImages() {
+    private void getImages() {
         // Chemin vers les images
         String pathToImages = "res/images/";
         switch (dotType) {
@@ -78,6 +79,7 @@ public class SnakeDot {
                 headUp = imageIconHeadUp.getImage();
                 ImageIcon imageIconHeadDown = new ImageIcon(pathToImages + dotColor.toString() + "/head_down.png");
                 headDown = imageIconHeadDown.getImage();
+
                 break;
             // Le point fait partie du corps
             case Body:
@@ -106,9 +108,9 @@ public class SnakeDot {
                 tailUp = imageIconTailUp.getImage();
                 ImageIcon imageIconTailDown = new ImageIcon(pathToImages + dotColor.toString() + "/tail_down.png");
                 tailDown = imageIconTailDown.getImage();
+
                 break;
         }
-
     }
 
     /**
@@ -187,10 +189,14 @@ public class SnakeDot {
      * @param dotDirection Nouvelle direction du point
      */
     public void setDotDirection(Snake.Direction dotDirection) {
-        if (dotDirection != dotPreviousDirection && this.dotDirection != dotPreviousDirection)
-            this.dotPreviousDirection = this.dotDirection;
         this.dotDirection = dotDirection;
-        System.out.println("Direction précédente de " + dotType.toString() + " : " + dotPreviousDirection);
-        System.out.println("Direction actuelle de "   + dotType.toString() + " : " + dotDirection + "\n");
+    }
+
+    public Snake.Direction getDotPreviousDirection() {
+        return dotPreviousDirection;
+    }
+
+    public void setDotPreviousDirection(Snake.Direction dotPreviousDirection) {
+        this.dotPreviousDirection = dotPreviousDirection;
     }
 }
