@@ -30,7 +30,7 @@ public class Snake {
     private final int MINIMAL_SNAKE_SPEED = 10;
 
     // Longueur initiale du serpent (ne peut pas être < 2)
-    private final int INITIAL_SNAKE_LENGTH = 2;
+    private final int INITIAL_SNAKE_LENGTH = 3;
 
     // Le serpent est en vie
     public boolean isAlive = true;
@@ -171,9 +171,11 @@ public class Snake {
      * @param snakeDirection Nouvelle direction du serpent
      */
     public void setSnakeDirection(Direction snakeDirection) {
+        Direction previousDirection = null;
         if (snakeDots.get(0).getDotPreviousDirection() != snakeDirection && snakeDots.get(0).getDotPreviousDirection() != this.snakeDirection) {
-            System.out.println("Direction précédente : " + snakeDots.get(0).getDotPreviousDirection());
-            System.out.println("Direction actuelle : " + snakeDirection + "\n");
+            previousDirection = snakeDots.get(0).getDotPreviousDirection();
+//            System.out.println("Direction précédente : " + previousDirection);
+//            System.out.println("Direction actuelle : " + snakeDirection + "\n");
         }
 
         this.snakeDirection = snakeDirection;
@@ -185,6 +187,8 @@ public class Snake {
              * - répéter
              * - mettre la queue à la fin
              */
+            dot.setSprite(snakeDirection, previousDirection);
+
             dot.setDotPreviousDirection(dot.getDotDirection());
             dot.setDotDirection(snakeDirection);
         }
