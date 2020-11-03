@@ -96,7 +96,7 @@ public class Board extends JPanel implements ActionListener{
 
     private void doDrawing(Graphics g) {
         if (inMenu) {
-            startGame(g);
+            gameMenu(g);
         }
 
         if (serpent.isAlive && gameHasStarted) {
@@ -112,7 +112,7 @@ public class Board extends JPanel implements ActionListener{
         }
     }
 
-    private void startGame(Graphics g) {
+    private void gameMenu(Graphics g) {
         String mainTitle = "SNAKE";
         String solo = "< SOLO";
         String multi = "MULTI >";
