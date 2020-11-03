@@ -1,5 +1,7 @@
 package snake;
 
+import com.sun.istack.internal.Nullable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.ImageObserver;
@@ -88,13 +90,21 @@ public class SnakeDot {
                 ImageIcon imageIconBodyVertical = new ImageIcon(pathToImages + dotColor.toString() + "/body_vertical.png");
                 bodyVertical = imageIconBodyVertical.getImage();
 
-                ImageIcon imageIconBodyDown2Right = new ImageIcon(pathToImages + dotColor.toString() + "/body_down2right.png");
+//                ImageIcon imageIconBodyDown2Right = new ImageIcon(pathToImages + dotColor.toString() + "/body_down2right.png");
+//                bodyDown2Right = imageIconBodyDown2Right.getImage();
+//                ImageIcon imageIconBodyRight2Down = new ImageIcon(pathToImages + dotColor.toString() + "/body_right2down.png");
+//                bodyRight2Down = imageIconBodyRight2Down.getImage();
+//                ImageIcon imageIconBodyRight2Up = new ImageIcon(pathToImages + dotColor.toString() + "/body_right2up.png");
+//                bodyRight2Up = imageIconBodyRight2Up.getImage();
+//                ImageIcon imageIconBodyUp2Right = new ImageIcon(pathToImages + dotColor.toString() + "/body_up2right.png");
+//                bodyUp2Right = imageIconBodyUp2Right.getImage();
+                ImageIcon imageIconBodyDown2Right = new ImageIcon(pathToImages + "RED/body_down2right.png");
                 bodyDown2Right = imageIconBodyDown2Right.getImage();
-                ImageIcon imageIconBodyRight2Down = new ImageIcon(pathToImages + dotColor.toString() + "/body_right2down.png");
+                ImageIcon imageIconBodyRight2Down = new ImageIcon(pathToImages + "RED/body_right2down.png");
                 bodyRight2Down = imageIconBodyRight2Down.getImage();
-                ImageIcon imageIconBodyRight2Up = new ImageIcon(pathToImages + dotColor.toString() + "/body_right2up.png");
+                ImageIcon imageIconBodyRight2Up = new ImageIcon(pathToImages + "RED/body_right2up.png");
                 bodyRight2Up = imageIconBodyRight2Up.getImage();
-                ImageIcon imageIconBodyUp2Right = new ImageIcon(pathToImages + dotColor.toString() + "/body_up2right.png");
+                ImageIcon imageIconBodyUp2Right = new ImageIcon(pathToImages + "RED/body_up2right.png");
                 bodyUp2Right = imageIconBodyUp2Right.getImage();
 
                 break;
@@ -123,11 +133,19 @@ public class SnakeDot {
         g.drawImage(setSprite(), Board.X[index], Board.Y[index], imageObserver);
     }
 
+    public void draw(Graphics g, ImageObserver imageObserver, Image sprite ) {
+        g.drawImage(setSprite(), Board.X[0], Board.Y[0], imageObserver);
+    }
+
+    private Image setSprite() {
+        return setSprite(null, null);
+    }
+
     /**
      * Défini le sprite utilisé par ce point, selon son type et sa direction
      * @return Le sprite choisi
      */
-    private Image setSprite() {
+    public Image setSprite(@Nullable Snake.Direction headDirection, @Nullable Snake.Direction headPreviousDirection) {
         Image head = null;
         Image tail = null;
         Image body = null;
@@ -158,15 +176,40 @@ public class SnakeDot {
             body = bodyVertical;
         }
 
-        switch (dotType) {
-            case Head:
-                return head;
-            case Body:
-                return body;
-            case Tail:
-                return tail;
-            default:
-                return null;
+        if (headDirection != null && headPreviousDirection != null) {
+            switch (headPreviousDirection) {
+                case RIGHT:
+                    if (headDirection == Snake.Direction.UP) {
+                        body = bodyRight2Up;
+                        System.out.println("r2u");
+                    } else if (headDirection == Snake.Direction.DOWN) {
+                        body = bodyRight2Down;
+                        System.out.println("r2d");
+                    }
+                case UP:
+                    if (headDirection == Snake.Direction.RIGHT) {
+                        body = bodyUp2Right;
+                        System.out.println("u2r");
+                    }
+                case DOWN:
+                    if (headDirection == Snake.Direction.RIGHT) {
+                        body = bodyDown2Right;
+                        System.out.println("d2r");
+                    }
+            }
+
+            return body;
+        } else {
+            switch (dotType) {
+                case Head:
+                    return head;
+                case Body:
+                    return body;
+                case Tail:
+                    return tail;
+                default:
+                    return null;
+            }
         }
     }
 
