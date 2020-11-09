@@ -29,7 +29,7 @@ public class Grid {
         cols = (int) height / TILE_SIZE;
 
         // Place le serpent au centre de l'écran
-        snake = new Snake(this, new Dot(rows / 2, cols / 2));
+        snake = new Snake(this);
 
         // Place la pomme à un endroit aléatoire
         food = new Food(getRandomDot());
@@ -43,7 +43,7 @@ public class Grid {
         if (x < 0) x = rows - 1;
         if (y < 0) y = cols - 1;
 
-        return new Dot(x, y);
+        return new Dot(dot.getDotType(), x, y);
     }
 
     /**
@@ -53,7 +53,7 @@ public class Grid {
         Random random = new Random();
         Dot dot;
         do {
-            dot = new Dot(random.nextInt(rows), random.nextInt(cols));
+            dot = new Dot(Dot.DotType.FOOD, random.nextInt(rows), random.nextInt(cols));
         } while (dot.equals(snake.getHead()));
         return dot;
     }
@@ -73,19 +73,19 @@ public class Grid {
         }
     }
 
-//    /**
-//     * @return Les colonnes de la grille
-//     */
-//    public int getCols() {
-//        return cols;
-//    }
-//
-//    /**
-//     * @return Les lignes de la grille
-//     */
-//    public int getRows() {
-//        return rows;
-//    }
+    /**
+     * @return Les colonnes de la grille
+     */
+    public int getCols() {
+        return cols;
+    }
+
+    /**
+     * @return Les lignes de la grille
+     */
+    public int getRows() {
+        return rows;
+    }
 
     /**
      * @return La largeur de la grille
