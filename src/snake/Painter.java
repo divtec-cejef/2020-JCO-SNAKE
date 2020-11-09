@@ -10,7 +10,7 @@ public class Painter {
 
     public static void paint(Grid grid, GraphicsContext gc) {
         // Dessine le fond du jeu
-        gc.setFill(Grid.COLOR);
+        gc.setFill(Grid.BACKGROUND_COLOR);
         gc.fillRect(0, 0, grid.getWidth(), grid.getHeight());
 
         // Dessine la nourriture du serpent
@@ -20,7 +20,7 @@ public class Painter {
         Snake snake = grid.getSnake();
         gc.setFill(Snake.SNAKE_COLOR_CODE);
         for (Dot dot: snake.getDots()) {
-            paintSnake(dot, gc);
+            paintSnake(dot, snake.getSnakeDirection(), gc);
         }
 
         if (!snake.isSafe()) {
@@ -47,8 +47,11 @@ public class Painter {
      * @param snakeDot Point du serpent à dessiner
      * @param gc GraphicsContext
      */
-    private static void paintSnake(Dot snakeDot, GraphicsContext gc) {
-        gc.drawImage(getImages(snakeDot.getDotType()), snakeDot.getX() * TILE_SIZE, snakeDot.getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    private static void paintSnake(Dot snakeDot, Snake.Direction snakeDirection, GraphicsContext gc) {
+        gc.drawImage(getImages(snakeDot.getDotType(), snakeDirection),
+                            snakeDot.getX() * TILE_SIZE,
+                            snakeDot.getY() * TILE_SIZE,
+                            TILE_SIZE, TILE_SIZE);
     }
 
     /**
@@ -57,7 +60,10 @@ public class Painter {
      * @param gc GraphicsContext
      */
     private static void paintFood(Dot foodDot, GraphicsContext gc) {
-        gc.drawImage(getImages(foodDot.getDotType()), foodDot.getX() * TILE_SIZE, foodDot.getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        gc.drawImage(getImages(foodDot.getDotType(), Snake.Direction.NONE),
+                            foodDot.getX() * TILE_SIZE,
+                            foodDot.getY() * TILE_SIZE,
+                            TILE_SIZE, TILE_SIZE);
 
     }
 
@@ -71,20 +77,24 @@ public class Painter {
 //        gc.fillText("Appuyez sur ENTER pour recommencer.", TILE_SIZE, Main.HEIGHT - 10);
     }
 
-    private static Image getImages(Dot.DotType dotType) {
+    private static Image getImages(Dot.DotType dotType, Snake.Direction direction) {
+        if (dotType == Dot.DotType.FOOD)
+            return new Image("/images/apple.png");
+
         switch (dotType){
-            case FOOD:
-                return new Image("/images/apple.png");
             case HEAD:
-//                return new Image("/images/" + "GREEN" + "/head_up.png");
-                return new Image("/images/" + Snake.SNAKE_COLOR.toString() + "/head_up.png");
+                return new Image("/images/" + Snake.SNAKE_COLOR.toString() + "/head_" + direction.toString().toLowerCase() + ".png");
             case TAIL:
-//                return new Image("/images/" + "GREEN" + "/tail_up.png");
-                return new Image("/images/" + Snake.SNAKE_COLOR.toString() + "/tail_up.png");
+                return new Image("/images/" + Snake.SNAKE_COLOR.toString() + "/tail_" + direction.toString().toLowerCase() + ".png");
             case BODY:
             default:
-//                return new Image("/images/" + "GREEN" + "/body_horizontal.png");
-                return new Image("/images/" + Snake.SNAKE_COLOR.toString() + "/body_horizontal.png");
+                String orientation;
+                if (direction == Snake.Direction.LEFT || direction == Snake.Direction.RIGHT)
+                    orientation = "horizontal";
+                else
+                    orientation = "vertical";
+
+                return new Image("/images/" + Snake.SNAKE_COLOR.toString() + "/body_" + orientation + ".png");
         }
     }
 }
