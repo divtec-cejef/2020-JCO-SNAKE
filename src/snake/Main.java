@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -17,7 +18,9 @@ public class Main extends Application {
     public static final int WIDTH = 500;
     // Hauteur de la fenêtre
     public static final int HEIGHT = 500;
-    private static final Color BACKGROUND = Color.BLACK;
+    // Couleur des contours de la fenêtre
+    private static final Color BORDER_COLOR = Grid.BACKGROUND_COLOR;
+//    private static final Color BORDER_COLOR = Color.WHITE;
 
     private SnakeLoop loop;
     private Grid grid;
@@ -64,12 +67,13 @@ public class Main extends Application {
 
         root.getChildren().add(canvas);
 
-        Scene scene = new Scene(root, BACKGROUND);
+        Scene scene = new Scene(root, BORDER_COLOR);
 
         primaryStage.setResizable(false);
         primaryStage.setTitle("Snake");
         primaryStage.setOnCloseRequest(e -> System.exit(0));
         primaryStage.setScene(scene);
+        primaryStage.getIcons().add(new Image("/images/icon.png"));
         primaryStage.show();
 
         (new Thread(loop)).start();
