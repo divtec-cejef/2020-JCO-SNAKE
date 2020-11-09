@@ -34,12 +34,12 @@ public class Snake {
     // Grille du jeu
     private Grid grid;
     // Longueur du serpent en début de partie
-    private int INITIAL_SNAKE_LENGTH = 2;
+    private int INITIAL_SNAKE_LENGTH = 3;
     // Longueur du serpent
     private int length = INITIAL_SNAKE_LENGTH;
 
     // Direction initiale du serpent
-    private final Snake.Direction INITIAL_SNAKE_DIRECTION = Snake.Direction.RIGHT;
+    private final Snake.Direction INITIAL_SNAKE_DIRECTION = Snake.Direction.LEFT;
     // Direction du serpent
     private Direction snakeDirection = INITIAL_SNAKE_DIRECTION;
 
@@ -98,6 +98,7 @@ public class Snake {
     private void growTo(Dot dot) {
         length++;
         checkAndAdd(dot);
+        checkDotList();
     }
 
     /**
@@ -109,6 +110,7 @@ public class Snake {
         checkAndAdd(dot);
         // L'ancien emplacement est enlevé
         dots.remove(0);
+        checkDotList();
     }
 
     /**
@@ -118,10 +120,23 @@ public class Snake {
     private void checkAndAdd(Dot dot) {
         dot = grid.wrap(dot);
         safe &= !dots.contains(dot);
-        Dot dotForHead = dot;
-        dotForHead.setDotType(Dot.DotType.HEAD);
-        head = dotForHead;
+        head = dot;
         dots.add(dot);
+    }
+
+    /**
+     * Vérifie le type des éléments de la liste selon leur emplacement
+     */
+    private void checkDotList() {
+        for (int z = 0; z < dots.size(); z++) {
+            if (z == 0) {
+                dots.get(z).setDotType(Dot.DotType.TAIL);
+            } else if (z == dots.size() - 1) {
+                dots.get(z).setDotType(Dot.DotType.HEAD);
+            } else {
+                dots.get(z).setDotType(Dot.DotType.BODY);
+            }
+        }
     }
 
     /**
@@ -164,6 +179,7 @@ public class Snake {
      */
     public void move() {
         if (!isStill()) {
+//            shiftTo(head.translate(Dot.DotType.TAIL, xVelocity, yVelocity));
             shiftTo(head.translate(head.getDotType(), xVelocity, yVelocity));
         }
     }
@@ -173,7 +189,8 @@ public class Snake {
      */
     public void extend() {
         if (!isStill()) {
-            growTo(head.translate(head.getDotType(), xVelocity, yVelocity));
+//            growTo(head.translate(head.getDotType(), xVelocity, yVelocity));
+            growTo(head.translate(Dot.DotType.BODY, xVelocity, yVelocity));
         }
     }
 
