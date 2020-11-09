@@ -8,10 +8,6 @@ import java.util.List;
  */
 public class Snake {
 
-    // Provisoire; sera remplacé par des sprites
-    public static final javafx.scene.paint.Color SNAKE_COLOR_CODE = javafx.scene.paint.Color.GREEN;
-    public static final javafx.scene.paint.Color SNAKE_DEAD_COLOR_CODE = javafx.scene.paint.Color.RED;
-
     // Directions possibles du serpent
     public enum Direction {
         UP,
@@ -30,11 +26,11 @@ public class Snake {
     }
 
     // Couleur du serpent
-    public static final SnakeColor SNAKE_COLOR = SnakeColor.GREEN;
+    public static final SnakeColor SNAKE_COLOR = SnakeColor.YELLOW;
     // Grille du jeu
     private Grid grid;
     // Longueur du serpent en début de partie
-    private int INITIAL_SNAKE_LENGTH = 3;
+    private int INITIAL_SNAKE_LENGTH = 1;
     // Longueur du serpent
     private int length = INITIAL_SNAKE_LENGTH;
 
@@ -52,7 +48,7 @@ public class Snake {
 
     private int xVelocity;
     private int yVelocity;
-    private boolean safe;
+    private boolean isAlive;
 
     /**
      * Construit un serpent
@@ -65,7 +61,7 @@ public class Snake {
 //        dots.add(tailDot);
 //        head = headDot;
 //        tail = tailDot;
-        safe = true;
+        isAlive = true;
         this.grid = grid;
         xVelocity = 0;
         yVelocity = 0;
@@ -119,7 +115,7 @@ public class Snake {
      */
     private void checkAndAdd(Dot dot) {
         dot = grid.wrap(dot);
-        safe &= !dots.contains(dot);
+        isAlive &= !dots.contains(dot);
         head = dot;
         dots.add(dot);
     }
@@ -128,14 +124,18 @@ public class Snake {
      * Vérifie le type des éléments de la liste selon leur emplacement
      */
     private void checkDotList() {
-        for (int z = 0; z < dots.size(); z++) {
-            if (z == 0) {
-                dots.get(z).setDotType(Dot.DotType.TAIL);
-            } else if (z == dots.size() - 1) {
-                dots.get(z).setDotType(Dot.DotType.HEAD);
-            } else {
-                dots.get(z).setDotType(Dot.DotType.BODY);
+        if (length > 1) {
+            for (int z = 0; z < dots.size(); z++) {
+                if (z == 0) {
+                    dots.get(z).setDotType(Dot.DotType.TAIL);
+                } else if (z == dots.size() - 1) {
+                    dots.get(z).setDotType(Dot.DotType.HEAD);
+                } else {
+                    dots.get(z).setDotType(Dot.DotType.BODY);
+                }
             }
+        } else {
+            dots.get(0).setDotType(Dot.DotType.HEAD);
         }
     }
 
@@ -149,12 +149,12 @@ public class Snake {
     /**
      * @return {@code true} si le serpent ne s'est pas mangé lui-même
      */
-    public boolean isSafe() {
-        return safe || length == 1;
+    public boolean isDead() {
+        return !isAlive && length != 1;
     }
 
     /**
-     * @return L'emplacement de la tête du serpent
+     * @return Le point correspondant à la tête du serpent
      */
     public Dot getHead() {
         return head;
@@ -168,17 +168,17 @@ public class Snake {
     }
 
     /**
-     * @return {@code true} si le serpent ne se déplace pas
+     * @return {@code true} si le serpent se déplace
      */
-    private boolean isStill() {
-        return xVelocity == 0 & yVelocity == 0;
+    private boolean isMoving() {
+        return !(xVelocity == 0 & yVelocity == 0);
     }
 
     /**
      * Déplace le serpent d'une case
      */
     public void move() {
-        if (!isStill()) {
+        if (isMoving()) {
 //            shiftTo(head.translate(Dot.DotType.TAIL, xVelocity, yVelocity));
             shiftTo(head.translate(head.getDotType(), xVelocity, yVelocity));
         }
@@ -188,7 +188,7 @@ public class Snake {
      * Fait grandir le serpent
      */
     public void extend() {
-        if (!isStill()) {
+        if (isMoving()) {
 //            growTo(head.translate(head.getDotType(), xVelocity, yVelocity));
             growTo(head.translate(Dot.DotType.BODY, xVelocity, yVelocity));
         }
@@ -221,36 +221,9 @@ public class Snake {
         yVelocity = 0;
         snakeDirection = Direction.RIGHT;
     }
-
-//    // Vitesse du serpent
-//    private int snakeSpeed = 140;
-//    // Vitesse maximale du serpent
-//    private final int MINIMAL_SNAKE_SPEED = 10;
-//
-//    // Longueur initiale du serpent (ne peut pas être < 2)
-//    private final int INITIAL_SNAKE_LENGTH = 3;
-//
-//    // Le serpent est en vie
-//    public boolean isAlive = true;
-//
-//    // Couleur du serpent
-//    private final Color snakeColor;
-//
-//
 //    // Liste des points du serpent
 //    private ArrayList<SnakeDot> snakeDots = new ArrayList<>();
 //
-//    /**
-//     * Crée un nouveau serpent
-//     * @param snakeColor Couleur du serpent
-//     */
-//    public Snake(Color snakeColor) {
-//        this.snakeColor = snakeColor;
-//
-//        System.out.println("Serpent crée");
-//
-//        createDots(snakeColor);
-//    }
 //
 //    /**
 //     * Crée les points de base du serpent
