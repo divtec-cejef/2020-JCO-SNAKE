@@ -93,6 +93,7 @@ public class Snake {
      */
     private void growTo(Dot dot) {
         length++;
+        Main.timelineRate += 5;
         checkAndAdd(dot);
         checkDotList();
     }

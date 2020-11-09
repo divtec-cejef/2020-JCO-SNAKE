@@ -1,5 +1,8 @@
 package snake;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -8,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * Point d'entrée du jeu
@@ -15,7 +19,9 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     // Nom du jeu
-    private static final String GAME_NAME = "Snake";
+    private static final String GAME_NAME = "SNAKE";
+    public static double INITIAL_TIMELINE_RATE = 6;
+    public static double timelineRate = INITIAL_TIMELINE_RATE;
     // Chemin vers l'icône du jeu
     private final String ICON_PATH = "/images/icon.png";
 
@@ -26,6 +32,7 @@ public class Main extends Application {
     // Couleur des contours de la fenêtre
     private static final Color BORDER_COLOR = Grid.BACKGROUND_COLOR;
 
+    private Timeline timeline;
     private SnakeLoop loop;
     private Grid grid;
     private GraphicsContext context;
@@ -62,7 +69,6 @@ public class Main extends Application {
                 case ENTER:
                     if (loop.isPaused()) {
                         reset();
-                        (new Thread(loop)).start();
                     }
             }
         });
@@ -80,7 +86,7 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image(ICON_PATH));
         primaryStage.show();
 
-        (new Thread(loop)).start();
+        update();
     }
 
     /**
@@ -89,6 +95,28 @@ public class Main extends Application {
     private void reset() {
         grid = new Grid(WIDTH, HEIGHT);
         loop = new SnakeLoop(grid, context);
-        Painter.paint(grid, context);
+        timelineRate = INITIAL_TIMELINE_RATE;
+        update();
+    }
+
+    /**
+     * Mets à jour le jeu
+     */
+    private void update() {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            grid.update();
+            Painter.paint(grid, context);
+
+            if (grid.getSnake().isDead()) {
+                timeline.pause();
+                loop.pause();
+                Painter.paintResetMessage(context);
+            }
+
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
+        timeline.setRate(timelineRate);
     }
 }
