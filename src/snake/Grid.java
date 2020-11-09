@@ -11,7 +11,8 @@ public class Grid {
 
     // La taille d'une case de la grille
     public static final int TILE_SIZE = 10;
-    public static final Color COLOR = new Color(0.1, 0.1, 0.1, 1);
+    // Couleur de fond de la grille
+    public static final Color BACKGROUND_COLOR = new Color(0.1, 0.1, 0.1, 1);
 
     private final int cols;     // Le nombre de colonnes de la grille
     private final int rows;     // Le nombre de lignes de la grille
