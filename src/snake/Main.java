@@ -1,30 +1,86 @@
 package snake;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * Point d'entrée du jeu
+ */
 public class Main extends Application {
 
-    // Taille du plateau
-    public static final int BOARD_WIDTH = 500;
-    public static final int BOARD_HEIGHT = 500;
+    // Largeur de la fenêtre
+    private static final int WIDTH = 500;
+    // Hauteur de la fenêtre
+    private static final int HEIGHT = 500;
+    private static final Color BACKGROUND = Color.BLACK;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setResizable(false);
-        primaryStage.setTitle("Snake");
-
-        BorderPane root = new BorderPane();
-        root.getChildren().add(new Game(BOARD_WIDTH, BOARD_HEIGHT));
-        Board board = new Board(root, BOARD_WIDTH, BOARD_HEIGHT, Color.BLACK);
-
-        primaryStage.setScene(board);
-        primaryStage.show();
-    }
+    private SnakeLoop loop;
+    private Grid grid;
+    private GraphicsContext context;
 
     public static void main(String[] args) {
-        launch(args);
+        Application.launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        StackPane root = new StackPane();
+        Canvas canvas = new Canvas(WIDTH, HEIGHT);
+        context = canvas.getGraphicsContext2D();
+
+        canvas.setFocusTraversable(true);
+        canvas.setOnKeyPressed(e -> {
+            Snake snake = grid.getSnake();
+            if (loop.isKeyPressed()) {
+                return;
+            }
+            switch (e.getCode()) {
+                case UP:
+                    snake.setUp();
+                    break;
+                case DOWN:
+                    snake.setDown();
+                    break;
+                case LEFT:
+                    snake.setLeft();
+                    break;
+                case RIGHT:
+                    snake.setRight();
+                    break;
+                case ENTER:
+                    if (loop.isPaused()) {
+                        reset();
+                        (new Thread(loop)).start();
+                    }
+            }
+        });
+
+        reset();
+
+        root.getChildren().add(canvas);
+
+        Scene scene = new Scene(root, BACKGROUND);
+
+        primaryStage.setResizable(false);
+        primaryStage.setTitle("Snake");
+        primaryStage.setOnCloseRequest(e -> System.exit(0));
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        (new Thread(loop)).start();
+    }
+
+    /**
+     * Réinitialise le jeu
+     */
+    private void reset() {
+        grid = new Grid(WIDTH, HEIGHT);
+        loop = new SnakeLoop(grid, context);
+        Painter.paint(grid, context);
     }
 }
