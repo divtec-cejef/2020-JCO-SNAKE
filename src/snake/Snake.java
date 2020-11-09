@@ -12,6 +12,15 @@ public class Snake {
     public static final javafx.scene.paint.Color SNAKE_COLOR_CODE = javafx.scene.paint.Color.GREEN;
     public static final javafx.scene.paint.Color SNAKE_DEAD_COLOR_CODE = javafx.scene.paint.Color.RED;
 
+    // Directions possibles du serpent
+    public enum Direction {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    }
+
+    // Couleurs possbiles pour le serpent
     public enum Color {
         GREEN,
         RED,
@@ -19,29 +28,69 @@ public class Snake {
         YELLOW
     }
 
+    // Couleur du serpent
     public static final Color SNAKE_COLOR = Color.GREEN;
+    // Grille du jeu
     private Grid grid;
-    private int length;
-    private boolean safe;
+    // Longueur du serpent en début de partie
+    private int INITIAL_SNAKE_LENGTH = 2;
+    // Longueur du serpent
+    private int length = INITIAL_SNAKE_LENGTH;
+
+    // Direction initiale du serpent
+    private final Snake.Direction INITIAL_SNAKE_DIRECTION = Snake.Direction.RIGHT;
+    // Direction du serpent
+    private Direction snakeDirection = INITIAL_SNAKE_DIRECTION;
+
+    // Liste des points du serpent
     private List<Dot> dots;
+    // Tête du serpent
     private Dot head;
+    // Queue du serpent
+    private Dot tail;
+
     private int xVelocity;
     private int yVelocity;
+    private boolean safe;
 
     /**
      * Construit un serpent
-     * @param initialDot Le point où sera mise la tête du serpent
+//     * @param headDot Le point où sera mise la tête du serpent
+//     * @param tailDot Le point où sera mise la queue du serpent
      */
-    public Snake(Grid grid, Dot initialDot) {
-        length = 1;
+    public Snake(Grid grid) {
         dots = new LinkedList<>();
-        dots.add(initialDot);
-        head = initialDot;
+//        dots.add(headDot);
+//        dots.add(tailDot);
+//        head = headDot;
+//        tail = tailDot;
         safe = true;
         this.grid = grid;
         xVelocity = 0;
         yVelocity = 0;
+        createDots();
     }
+
+    /**
+     * Crée les points de base du serpent
+     */
+    private void createDots() {
+        for (int z = 0; z < INITIAL_SNAKE_LENGTH; z++) {
+            if (z == 0) {
+                // Crée une tête en premier
+                head = new Dot(Dot.DotType.HEAD, grid.getRows() / 2, grid.getCols() / 2);
+                dots.add(head);
+            } else if (z == INITIAL_SNAKE_LENGTH - 1) {
+                // Crée une queue en dernier
+                tail = new Dot(Dot.DotType.TAIL, grid.getRows() / 2 + z, grid.getCols() / 2);
+                dots.add(tail);
+            } else
+                // Crée un corps entre deux
+                dots.add(new Dot(Dot.DotType.BODY, grid.getRows() / 2 + z, grid.getCols() / 2));
+        }
+    }
+
+
 
     /**
      * Est appelé après que le serpent ait mangé une pomme,
@@ -71,8 +120,9 @@ public class Snake {
     private void checkAndAdd(Dot dot) {
         dot = grid.wrap(dot);
         safe &= !dots.contains(dot);
-        dots.add(dot);
         head = dot;
+        dot.setDotType(Dot.DotType.BODY);
+        dots.add(dot);
     }
 
     /**
@@ -108,7 +158,7 @@ public class Snake {
      */
     public void move() {
         if (!isStill()) {
-            shiftTo(head.translate(xVelocity, yVelocity));
+            shiftTo(head.translate(head.getDotType(), xVelocity, yVelocity));
         }
     }
 
@@ -117,7 +167,7 @@ public class Snake {
      */
     public void extend() {
         if (!isStill()) {
-            growTo(head.translate(xVelocity, yVelocity));
+            growTo(head.translate(head.getDotType(), xVelocity, yVelocity));
         }
     }
 
@@ -125,41 +175,30 @@ public class Snake {
         if (yVelocity == 1 && length > 1) return;
         xVelocity = 0;
         yVelocity = -1;
+        snakeDirection = Direction.UP;
     }
 
     public void setDown() {
         if (yVelocity == -1 && length > 1) return;
         xVelocity = 0;
         yVelocity = 1;
+        snakeDirection = Direction.DOWN;
     }
 
     public void setLeft() {
         if (xVelocity == 1 && length > 1) return;
         xVelocity = -1;
         yVelocity = 0;
+        snakeDirection = Direction.LEFT;
     }
 
     public void setRight() {
         if (xVelocity == -1 && length > 1) return;
         xVelocity = 1;
         yVelocity = 0;
+        snakeDirection = Direction.RIGHT;
     }
-//    // Directions possibles du serpent
-//    public enum Direction {
-//        UP,
-//        DOWN,
-//        LEFT,
-//        RIGHT
-//    }
-//
-//    // Couleurs possibles pour le serpent
-//    public enum Color {
-//        GREEN,
-//        RED,
-//        BLUE,
-//        YELLOW
-//    }
-//
+
 //    // Vitesse du serpent
 //    private int snakeSpeed = 140;
 //    // Vitesse maximale du serpent
@@ -174,10 +213,6 @@ public class Snake {
 //    // Couleur du serpent
 //    private final Color snakeColor;
 //
-//    // Direction initiale du serpent
-//    private final Snake.Direction INITIAL_SNAKE_DIRECTION = Snake.Direction.RIGHT;
-//    // Direction du serpent
-//    private Direction snakeDirection = INITIAL_SNAKE_DIRECTION;
 //
 //    // Liste des points du serpent
 //    private ArrayList<SnakeDot> snakeDots = new ArrayList<>();
