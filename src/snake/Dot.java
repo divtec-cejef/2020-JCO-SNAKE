@@ -86,6 +86,6 @@ public class Dot {
      * @return Les coordonnées du point sous forme de texte
      */
     public String toString() {
-        return dotType + " " + x + ", " + y;
+        return dotType + ", " + x + ", " + y;
     }
 }

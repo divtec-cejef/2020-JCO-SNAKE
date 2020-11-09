@@ -14,13 +14,17 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
+    // Nom du jeu
+    private static final String GAME_NAME = "Snake";
+    // Chemin vers l'icône du jeu
+    private final String ICON_PATH = "/images/icon.png";
+
     // Largeur de la fenêtre
     public static final int WIDTH = 500;
     // Hauteur de la fenêtre
     public static final int HEIGHT = 500;
     // Couleur des contours de la fenêtre
     private static final Color BORDER_COLOR = Grid.BACKGROUND_COLOR;
-//    private static final Color BORDER_COLOR = Color.WHITE;
 
     private SnakeLoop loop;
     private Grid grid;
@@ -70,10 +74,10 @@ public class Main extends Application {
         Scene scene = new Scene(root, BORDER_COLOR);
 
         primaryStage.setResizable(false);
-        primaryStage.setTitle("Snake");
+        primaryStage.setTitle(GAME_NAME);
         primaryStage.setOnCloseRequest(e -> System.exit(0));
         primaryStage.setScene(scene);
-        primaryStage.getIcons().add(new Image("/images/icon.png"));
+        primaryStage.getIcons().add(new Image(ICON_PATH));
         primaryStage.show();
 
         (new Thread(loop)).start();

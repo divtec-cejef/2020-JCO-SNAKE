@@ -8,6 +8,9 @@ import static snake.Grid.TILE_SIZE;
 
 public class Painter {
 
+    private static final String PATH_TO_IMAGES = "/images/";
+    private static final String PATH_TO_SNAKE = PATH_TO_IMAGES + Snake.SNAKE_COLOR.toString() + "/";
+
     public static void paint(Grid grid, GraphicsContext gc) {
         // Dessine le fond du jeu
         gc.setFill(Grid.BACKGROUND_COLOR);
@@ -79,13 +82,13 @@ public class Painter {
 
     private static Image getImages(Dot.DotType dotType, Snake.Direction direction) {
         if (dotType == Dot.DotType.FOOD)
-            return new Image("/images/apple.png");
+            return new Image(PATH_TO_IMAGES + "apple.png");
 
         switch (dotType){
             case HEAD:
-                return new Image("/images/" + Snake.SNAKE_COLOR.toString() + "/head_" + direction.toString().toLowerCase() + ".png");
+                return new Image(PATH_TO_SNAKE + "head_" + direction.toString().toLowerCase() + ".png");
             case TAIL:
-                return new Image("/images/" + Snake.SNAKE_COLOR.toString() + "/tail_" + direction.toString().toLowerCase() + ".png");
+                return new Image(PATH_TO_SNAKE + "tail_" + direction.toString().toLowerCase() + ".png");
             case BODY:
             default:
                 String orientation;
@@ -94,7 +97,7 @@ public class Painter {
                 else
                     orientation = "vertical";
 
-                return new Image("/images/" + Snake.SNAKE_COLOR.toString() + "/body_" + orientation + ".png");
+                return new Image(PATH_TO_SNAKE + "body_" + orientation + ".png");
         }
     }
 }

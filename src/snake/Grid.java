@@ -1,7 +1,6 @@
 package snake;
 
 import javafx.scene.paint.Color;
-
 import java.util.Random;
 
 /**
@@ -14,8 +13,10 @@ public class Grid {
     // Couleur de fond de la grille
     public static final Color BACKGROUND_COLOR = new Color(0.1, 0.1, 0.1, 1);
 
-    private final int cols;     // Le nombre de colonnes de la grille
-    private final int rows;     // Le nombre de lignes de la grille
+    // Le nombre de colonnes de la grille
+    private final int cols;
+    // Le nombre de lignes de la grille
+    private final int rows;
 
     private Snake snake;
     private Food food;
@@ -36,6 +37,11 @@ public class Grid {
         food = new Food(getRandomDot());
     }
 
+    /**
+     * Aligne le point sur la grille
+     * @param dot Le point dont on veut corriger l'emplacement
+     * @return Le point aligné correctement
+     */
     public Dot wrap(Dot dot) {
         int x = dot.getX();
         int y = dot.getY();
@@ -52,18 +58,19 @@ public class Grid {
      */
     private Dot getRandomDot() {
         Random random = new Random();
-        Dot dot;
+        Dot randomDot;
         do {
-            dot = new Dot(Dot.DotType.FOOD, random.nextInt(rows), random.nextInt(cols));
-        } while (dot.equals(snake.getHead()));
-        return dot;
+            randomDot = new Dot(Dot.DotType.FOOD, random.nextInt(rows), random.nextInt(cols));
+        } while (randomDot.equals(snake.getHead()));
+        return randomDot;
     }
 
     /**
+     * Méthode appelée à chaque cycle d'éxécution
+     *
      * Teste si le serpent mange une pomme
      * - S'il en mange : fais grandir le serpent et place une pomme
      * - Sinon : déplace le serpent sur la case suivante
-     * Appelée à chaque cycle d'éxécution
      */
     public void update() {
         if (food.getDot().equals(snake.getHead())) {
