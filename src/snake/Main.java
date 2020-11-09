@@ -14,9 +14,9 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     // Largeur de la fenêtre
-    private static final int WIDTH = 500;
+    public static final int WIDTH = 500;
     // Hauteur de la fenêtre
-    private static final int HEIGHT = 500;
+    public static final int HEIGHT = 500;
     private static final Color BACKGROUND = Color.BLACK;
 
     private SnakeLoop loop;
