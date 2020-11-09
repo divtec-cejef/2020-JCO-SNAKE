@@ -53,18 +53,31 @@ public class Main extends Application {
             if (loop.isKeyPressed()) {
                 return;
             }
+
             switch (e.getCode()) {
                 case UP:
-                    snake.setUp();
+                    if (!loop.isPaused()) {
+                        if (snake.getSnakeDirection() != Snake.Direction.DOWN)
+                            snake.setUp();
+                    }
                     break;
                 case DOWN:
-                    snake.setDown();
+                    if (!loop.isPaused()) {
+                        if (snake.getSnakeDirection() != Snake.Direction.UP)
+                            snake.setDown();
+                    }
                     break;
                 case LEFT:
-                    snake.setLeft();
+                    if (!loop.isPaused()) {
+                        if (snake.getSnakeDirection() != Snake.Direction.RIGHT)
+                            snake.setLeft();
+                    }
                     break;
                 case RIGHT:
-                    snake.setRight();
+                    if (!loop.isPaused()) {
+                        if (snake.getSnakeDirection() != Snake.Direction.LEFT)
+                            snake.setRight();
+                    }
                     break;
                 case ENTER:
                     if (loop.isPaused()) {
@@ -87,6 +100,7 @@ public class Main extends Application {
         primaryStage.show();
 
         update();
+
     }
 
     /**
