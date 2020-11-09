@@ -1,15 +1,9 @@
 package snake;
 
-import javafx.scene.paint.Color;
-
 /**
  * Classe qui représente de la nourriture pour serpent
  */
 public class Food {
-
-    // Remplacer par un sprite
-    public static final Color FOOD_COLOR = Color.RED;
-
     private Dot foodDot;
 
     Food(Dot dot) {
