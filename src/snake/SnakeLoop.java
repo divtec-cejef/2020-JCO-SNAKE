@@ -20,8 +20,8 @@ public class SnakeLoop implements Runnable {
     public SnakeLoop(final Grid grid, final GraphicsContext context) {
         this.grid = grid;
         this.context = context;
-        frameRate = 20;
-        interval = 3000.0f / frameRate; // 1000 ms en une seconde
+        frameRate = 60;
+        interval = 8000.0f / frameRate; // 1000 ms en une seconde
         running = true;
         paused = false;
         keyIsPressed = false;
