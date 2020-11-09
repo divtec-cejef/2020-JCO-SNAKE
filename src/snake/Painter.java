@@ -11,6 +11,11 @@ public class Painter {
     private static final String PATH_TO_IMAGES = "/images/";
     private static final String PATH_TO_SNAKE = PATH_TO_IMAGES + Snake.SNAKE_COLOR.toString() + "/";
 
+    /**
+     *
+     * @param grid
+     * @param gc
+     */
     public static void paint(Grid grid, GraphicsContext gc) {
         // Dessine le fond du jeu
         gc.setFill(Grid.BACKGROUND_COLOR);
@@ -21,19 +26,18 @@ public class Painter {
 
         // Dessine le serpent
         Snake snake = grid.getSnake();
-        gc.setFill(Snake.SNAKE_COLOR_CODE);
         for (Dot dot: snake.getDots()) {
             paintSnake(dot, snake.getSnakeDirection(), gc);
         }
 
-        if (!snake.isSafe()) {
-            gc.setFill(Snake.SNAKE_DEAD_COLOR_CODE);
+        if (snake.isDead()) {
+            gc.setFill(Color.RED);
             paintDot(snake.getHead(), gc);
         }
 
         // Dessine le score
         gc.setFill(Color.BEIGE);
-        gc.fillText("Score : " + 100 * (snake.getDots().size() - 2), TILE_SIZE / 2.0f, 15);
+        gc.fillText("Score : " + 100 * snake.getDots().size(), TILE_SIZE / 2.0f, 15);
     }
 
     /**
