@@ -1,20 +1,13 @@
 package snake;
 
-import javafx.scene.paint.Color;
-
 import java.util.Random;
+
+import static snake.Constants.TILE_SIZE;
 
 /**
  * Représente une grille
  */
 public class Grid {
-
-    // La taille d'une case de la grille
-    public static final int TILE_SIZE = 10;
-    // Couleur de fond de la grille
-    public static final Color BACKGROUND_COLOR = new Color(0.1, 0.1, 0.1, 1);
-    // Couleur des textes
-    public static final Color TEXT_COLOR = Color.BEIGE;
 
     // Le nombre de colonnes de la grille
     private final int cols;

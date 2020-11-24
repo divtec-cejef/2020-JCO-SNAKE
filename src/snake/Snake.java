@@ -3,6 +3,8 @@ package snake;
 import java.util.LinkedList;
 import java.util.List;
 
+import static snake.Constants.INITIAL_SNAKE_LENGTH;
+
 /**
  * Classe qui représente un serpent
  */
@@ -30,17 +32,15 @@ public class Snake {
         NONE
     }
 
-    // Couleur du serpent
+    /**
+     * Couleur du serpent
+     */
     public static final SnakeColor SNAKE_COLOR = SnakeColor.YELLOW;
-    // Longueur du serpent en début de partie
-    public final int INITIAL_SNAKE_LENGTH = 2;
-    // Direction initiale du serpent
-    private final Snake.Direction INITIAL_SNAKE_DIRECTION = Snake.Direction.LEFT;
 
     // Longueur du serpent
-    private int length = INITIAL_SNAKE_LENGTH;
+    private int length = Constants.INITIAL_SNAKE_LENGTH;
     // Direction du serpent
-    private Direction snakeDirection = INITIAL_SNAKE_DIRECTION;
+    private Direction snakeDirection = Constants.INITIAL_SNAKE_DIRECTION;
     // Grille du jeu
     private Grid grid;
     // Liste des points du serpent

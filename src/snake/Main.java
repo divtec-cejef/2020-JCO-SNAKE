@@ -13,29 +13,20 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import static snake.Constants.HEIGHT;
+import static snake.Constants.WIDTH;
+import static snake.Constants.INITIAL_TIMELINE_RATE;
+
 /**
  * Point d'entrée du jeu
  */
 public class Main extends Application {
-
     // Nom du jeu
     private static final String GAME_NAME = "SNAKE";
-
-    // Largeur de la fenêtre
-    public static final int WIDTH = 500;
-    // Hauteur de la fenêtre
-    public static final int HEIGHT = 500;
-
-    // Couleur des contours de la fenêtre
-    private static final Color BORDER_COLOR = Grid.BACKGROUND_COLOR;
-
-    // Vitesse du jeu
-    public static double INITIAL_TIMELINE_RATE = 5;
-
-    // Chemin vers les images dans l'arborescence de fichiers
-    public static final String PATH_TO_IMAGES = "/images/";
     // Chemin vers l'icône du jeu
-    private final String ICON_PATH = PATH_TO_IMAGES + "icon.png";
+    private final String ICON_PATH = Constants.PATH_TO_IMAGES + "icon.png";
+    // Couleur des contours de la fenêtre
+    private static final Color BORDER_COLOR = Constants.BACKGROUND_COLOR;
 
     private Timeline timeline;
     public static double timelineRate = INITIAL_TIMELINE_RATE;
