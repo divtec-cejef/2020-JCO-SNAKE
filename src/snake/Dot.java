@@ -5,6 +5,9 @@ package snake;
  */
 public class Dot {
 
+    /**
+     * Types de point possibles
+     */
     public enum DotType {
         HEAD,
         BODY,
@@ -22,7 +25,6 @@ public class Dot {
 
     /**
      * Contruit un point
-     *
      * @param dotType Type du point
      * @param x Emplacement X
      * @param y Emplacement Y

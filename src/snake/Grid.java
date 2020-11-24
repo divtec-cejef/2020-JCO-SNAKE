@@ -12,14 +12,16 @@ public class Grid {
     public static final int TILE_SIZE = 10;
     // Couleur de fond de la grille
     public static final Color BACKGROUND_COLOR = new Color(0.1, 0.1, 0.1, 1);
+    // Couleur des textes
+    public static final Color TEXT_COLOR = Color.BEIGE;
 
     // Le nombre de colonnes de la grille
     private final int cols;
     // Le nombre de lignes de la grille
     private final int rows;
 
-    private Snake snake;
-    private Food food;
+    private final Snake snake;
+    private final Food food;
 
     /**
      * Crée une nouvelle grille
@@ -38,7 +40,7 @@ public class Grid {
     }
 
     /**
-     * Aligne le point sur la grille
+     * Aligne un point sur la grille
      * @param dot Le point dont on veut corriger l'emplacement
      * @return Le point aligné correctement
      */
@@ -50,6 +52,7 @@ public class Grid {
         if (x < 0) x = rows - 1;
         if (y < 0) y = cols - 1;
 
+        // Recrée et retourne le point avec le bon alignement
         return new Dot(dot.getDotType(), x, y);
     }
 
@@ -69,7 +72,7 @@ public class Grid {
      * Méthode appelée à chaque cycle d'éxécution
      *
      * Teste si le serpent mange une pomme
-     * - S'il en mange : fais grandir le serpent et place une pomme
+     * - S'il en mange une : fais grandir le serpent et place une pomme
      * - Sinon : déplace le serpent sur la case suivante
      */
     public void update() {

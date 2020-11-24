@@ -55,30 +55,51 @@ public class SnakeLoop {
 //        }
 //    }
 
+    /**
+     * Stop le jeu
+     */
     public void stop() {
         running = false;
     }
 
+    /**
+     * @return si une touche est pressée
+     */
     public boolean isKeyPressed() {
         return keyIsPressed;
     }
 
+    /**
+     * Défini qu'une touche est pressée
+     */
     public void setKeyPressed() {
         keyIsPressed = true;
     }
 
+    /**
+     * Relance le jeu
+     */
     public void resume() {
         paused = false;
     }
 
+    /**
+     * Mets le jeu sur pause
+     */
     public void pause() {
         paused = true;
     }
 
+    /**
+     * @return si le jeu est en pause
+     */
     public boolean isPaused() {
         return paused;
     }
 
+    /**
+     * @return si le jeu est en cours
+     */
     public boolean isRunning() {
         return running;
     }

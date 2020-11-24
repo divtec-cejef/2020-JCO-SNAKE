@@ -4,21 +4,25 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
+// Importation des constantes nécessaires
+import static snake.Grid.BACKGROUND_COLOR;
+import static snake.Grid.TEXT_COLOR;
 import static snake.Grid.TILE_SIZE;
+import static snake.Main.PATH_TO_IMAGES;
 
 public class Painter {
 
-    private static final String PATH_TO_IMAGES = "/images/";
-    private static final String PATH_TO_SNAKE = PATH_TO_IMAGES + Snake.SNAKE_COLOR.toString() + "/";
+    // Le chemin vers les images du serpent
+    private static final String PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + Snake.SNAKE_COLOR.toString() + "/";
 
     /**
-     *
-     * @param grid
-     * @param gc
+     * Dessine sur la grille
+     * @param grid grille sur laquelle on veut dessiner
+     * @param gc GraphicsContext
      */
     public static void paint(Grid grid, GraphicsContext gc) {
         // Dessine le fond du jeu
-        gc.setFill(Grid.BACKGROUND_COLOR);
+        gc.setFill(BACKGROUND_COLOR);
         gc.fillRect(0, 0, grid.getWidth(), grid.getHeight());
 
         // Dessine la nourriture du serpent
@@ -36,7 +40,7 @@ public class Painter {
         }
 
         // Dessine le score
-        gc.setFill(Color.BEIGE);
+        gc.setFill(TEXT_COLOR);
         gc.fillText("Score : " + 100 * snake.getDots().size(), TILE_SIZE / 2.0f, 15);
     }
 
@@ -79,20 +83,26 @@ public class Painter {
      * @param gc GraphicsContext
      */
     public static void paintResetMessage(GraphicsContext gc) {
-        gc.setFill(Color.AQUAMARINE);
+        gc.setFill(TEXT_COLOR);
         gc.fillText("Appuyez sur ENTER pour recommencer.", Main.WIDTH / 3.2f, Main.HEIGHT / 2.0f);
 //        gc.fillText("Appuyez sur ENTER pour recommencer.", TILE_SIZE, Main.HEIGHT - 10);
     }
 
+    /**
+     * Récupère les images utilisées pour le jeu
+     * @param dotType Le type du point dont on veut l'image
+     * @param direction La direction du serpent, pour récupérer l'orientation de son corps
+     * @return L'image correspondante aux paramètres fournis
+     */
     private static Image getImages(Dot.DotType dotType, Snake.Direction direction) {
-        if (dotType == Dot.DotType.FOOD)
+        if (dotType == Dot.DotType.FOOD || direction == Snake.Direction.NONE)
             return new Image(PATH_TO_IMAGES + "apple.png");
 
         switch (dotType){
             case HEAD:
-                return new Image(PATH_TO_SNAKE + "head_" + direction.toString().toLowerCase() + ".png");
+                return new Image(PATH_TO_SNAKE_IMAGES + "head_" + direction.toString().toLowerCase() + ".png");
             case TAIL:
-                return new Image(PATH_TO_SNAKE + "tail_" + direction.toString().toLowerCase() + ".png");
+                return new Image(PATH_TO_SNAKE_IMAGES + "tail_" + direction.toString().toLowerCase() + ".png");
             case BODY:
             default:
                 String orientation;
@@ -101,7 +111,7 @@ public class Painter {
                 else
                     orientation = "vertical";
 
-                return new Image(PATH_TO_SNAKE + "body_" + orientation + ".png");
+                return new Image(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
         }
     }
 }

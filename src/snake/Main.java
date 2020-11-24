@@ -22,8 +22,10 @@ public class Main extends Application {
     private static final String GAME_NAME = "SNAKE";
     public static double INITIAL_TIMELINE_RATE = 6;
     public static double timelineRate = INITIAL_TIMELINE_RATE;
+    // Chemin vers les images dans l'arborescence de fichiers
+    public static final String PATH_TO_IMAGES = "/images/";
     // Chemin vers l'icône du jeu
-    private final String ICON_PATH = "/images/icon.png";
+    private final String ICON_PATH = PATH_TO_IMAGES + "icon.png";
 
     // Largeur de la fenêtre
     public static final int WIDTH = 500;
