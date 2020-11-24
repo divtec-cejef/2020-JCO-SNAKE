@@ -42,9 +42,14 @@ public class Constants {
     public static double INITIAL_TIMELINE_RATE = 5;
 
     /**
+     * Augmentation de la vitesse du jeu
+     */
+    public static double TIMELINE_RATE_INCREASE = 3;
+
+    /**
      * Longueur du serpent en début de partie
      */
-    public static final int INITIAL_SNAKE_LENGTH = 2;
+    public static final int INITIAL_SNAKE_LENGTH = 3;
 
     /**
      * Direction initiale du serpent
