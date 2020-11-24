@@ -2,7 +2,6 @@ package snake;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 // Importation des constantes nécessaires
 import static snake.Grid.BACKGROUND_COLOR;
@@ -11,9 +10,6 @@ import static snake.Grid.TILE_SIZE;
 import static snake.Main.PATH_TO_IMAGES;
 
 public class Painter {
-
-    // Le chemin vers les images du serpent
-    private static final String PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + Snake.SNAKE_COLOR.toString() + "/";
 
     /**
      * Dessine sur la grille
@@ -26,56 +22,52 @@ public class Painter {
         gc.fillRect(0, 0, grid.getWidth(), grid.getHeight());
 
         // Dessine la nourriture du serpent
-        paintFood(grid.getFood().getDot(), gc);
+        paintImage(grid.getFood().getDot(), Snake.Direction.NONE, gc);
 
         // Dessine le serpent
         Snake snake = grid.getSnake();
         for (Dot dot: snake.getDots()) {
-            paintSnake(dot, snake.getSnakeDirection(), gc);
+            paintImage(dot, snake.getSnakeDirection(), gc);
         }
 
-        if (snake.isDead()) {
-            gc.setFill(Color.RED);
-            paintDot(snake.getHead(), gc);
-        }
+        // Dessine la tête du serpent lorsqu'il est mort
+        if (snake.isDead())
+            paintDeadSnakeHead(snake.getHead(), snake.getSnakeDirection(), gc);
 
         // Dessine le score
         gc.setFill(TEXT_COLOR);
-        gc.fillText("Score : " + 100 * snake.getDots().size(), TILE_SIZE / 2.0f, 15);
+        gc.fillText("Score : " + 100 * (snake.getDots().size() - snake.INITIAL_SNAKE_LENGTH), TILE_SIZE / 2.0f, 15);
     }
 
     /**
-     * Dessine un point dans la fenêtre
-     * @param dot Le point à dessiner
+     * Dessine une image sur la grille
+     * @param dot Point à dessiner
+     * @param direction Orientation du point
      * @param gc GraphicsContext
      */
-    private static void paintDot(Dot dot, GraphicsContext gc) {
-        gc.fillRect(dot.getX() * TILE_SIZE, dot.getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    private static void paintImage(Dot dot, Snake.Direction direction, GraphicsContext gc) {
+        gc.drawImage(getImages(dot.getDotType(), direction, Snake.SNAKE_COLOR),
+                    dot.getX() * TILE_SIZE,
+                    dot.getY() * TILE_SIZE,
+                    TILE_SIZE, TILE_SIZE);
     }
 
     /**
-     * Dessine le serpent sur la grille de jeu
-     * @param snakeDot Point du serpent à dessiner
+     * Change la couleur de la tête du serpent lorsqu'il est mort
+     * @param snakeHeadDot Point correspondant à la tête du serpent
+     * @param snakeDirection Direction de la tête
      * @param gc GraphicsContext
      */
-    private static void paintSnake(Dot snakeDot, Snake.Direction snakeDirection, GraphicsContext gc) {
-        gc.drawImage(getImages(snakeDot.getDotType(), snakeDirection),
-                            snakeDot.getX() * TILE_SIZE,
-                            snakeDot.getY() * TILE_SIZE,
-                            TILE_SIZE, TILE_SIZE);
-    }
+    private static void paintDeadSnakeHead(Dot snakeHeadDot, Snake.Direction snakeDirection, GraphicsContext gc) {
+        Snake.SnakeColor deathColor = Snake.SnakeColor.RED;
 
-    /**
-     * Dessine la nourriture du serpent sur la grille de jeu
-     * @param foodDot Point à dessiner
-     * @param gc GraphicsContext
-     */
-    private static void paintFood(Dot foodDot, GraphicsContext gc) {
-        gc.drawImage(getImages(foodDot.getDotType(), Snake.Direction.NONE),
-                            foodDot.getX() * TILE_SIZE,
-                            foodDot.getY() * TILE_SIZE,
-                            TILE_SIZE, TILE_SIZE);
+        if (Snake.SNAKE_COLOR == Snake.SnakeColor.RED)
+            deathColor = Snake.SnakeColor.BLUE;
 
+        gc.drawImage(getImages(snakeHeadDot.getDotType(), snakeDirection, deathColor),
+                snakeHeadDot.getX() * TILE_SIZE,
+                snakeHeadDot.getY() * TILE_SIZE,
+                TILE_SIZE, TILE_SIZE);
     }
 
     /**
@@ -94,7 +86,10 @@ public class Painter {
      * @param direction La direction du serpent, pour récupérer l'orientation de son corps
      * @return L'image correspondante aux paramètres fournis
      */
-    private static Image getImages(Dot.DotType dotType, Snake.Direction direction) {
+    private static Image getImages(Dot.DotType dotType, Snake.Direction direction, Snake.SnakeColor snakeColor) {
+        // Le chemin vers les images du serpent
+        String PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + snakeColor.toString() + "/";
+
         if (dotType == Dot.DotType.FOOD || direction == Snake.Direction.NONE)
             return new Image(PATH_TO_IMAGES + "apple.png");
 

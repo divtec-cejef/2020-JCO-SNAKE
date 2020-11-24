@@ -26,23 +26,23 @@ public class Snake {
         GREEN,
         RED,
         BLUE,
-        YELLOW
+        YELLOW,
+        NONE
     }
 
     // Couleur du serpent
     public static final SnakeColor SNAKE_COLOR = SnakeColor.YELLOW;
-    // Grille du jeu
-    private Grid grid;
     // Longueur du serpent en début de partie
-    private int INITIAL_SNAKE_LENGTH = 1;
-    // Longueur du serpent
-    private int length = INITIAL_SNAKE_LENGTH;
-
+    public final int INITIAL_SNAKE_LENGTH = 2;
     // Direction initiale du serpent
     private final Snake.Direction INITIAL_SNAKE_DIRECTION = Snake.Direction.LEFT;
+
+    // Longueur du serpent
+    private int length = INITIAL_SNAKE_LENGTH;
     // Direction du serpent
     private Direction snakeDirection = INITIAL_SNAKE_DIRECTION;
-
+    // Grille du jeu
+    private Grid grid;
     // Liste des points du serpent
     private List<Dot> dots;
     // Tête du serpent
@@ -87,12 +87,12 @@ public class Snake {
     }
 
     /**
-     * Est appelé après que le serpent ait mangé une pomme, augmente sa taille et place une nouvelle pomme
+     * Est appelé après que le serpent ait mangé une pomme, augmente sa taille et sa vitesse et place une nouvelle pomme
      * @param dot Le point où était placée la nourriture que le serpent à mangé
      */
     private void growTo(Dot dot) {
         length++;
-        Main.timelineRate += 5;
+        Main.addToRate(1);
         checkAndAdd(dot);
         checkDotList();
     }

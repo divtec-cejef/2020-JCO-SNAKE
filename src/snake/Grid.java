@@ -1,6 +1,7 @@
 package snake;
 
 import javafx.scene.paint.Color;
+
 import java.util.Random;
 
 /**
@@ -25,8 +26,8 @@ public class Grid {
 
     /**
      * Crée une nouvelle grille
-     * @param width
-     * @param height
+     * @param width Largeur de la grille
+     * @param height Hauteur de la grille
      */
     public Grid(final double width, final double height) {
         rows = (int) width / TILE_SIZE;
@@ -69,10 +70,10 @@ public class Grid {
     }
 
     /**
-     * Méthode appelée à chaque cycle d'éxécution
+     * Méthode appelée à chaque cycle d'éxécution<br>
      *
-     * Teste si le serpent mange une pomme
-     * - S'il en mange une : fais grandir le serpent et place une pomme
+     * Teste si le serpent mange une pomme<br>
+     * - S'il en mange une : fais grandir le serpent et place une pomme<br>
      * - Sinon : déplace le serpent sur la case suivante
      */
     public void update() {

@@ -20,24 +20,30 @@ public class Main extends Application {
 
     // Nom du jeu
     private static final String GAME_NAME = "SNAKE";
-    public static double INITIAL_TIMELINE_RATE = 6;
-    public static double timelineRate = INITIAL_TIMELINE_RATE;
-    // Chemin vers les images dans l'arborescence de fichiers
-    public static final String PATH_TO_IMAGES = "/images/";
-    // Chemin vers l'icône du jeu
-    private final String ICON_PATH = PATH_TO_IMAGES + "icon.png";
 
     // Largeur de la fenêtre
     public static final int WIDTH = 500;
     // Hauteur de la fenêtre
     public static final int HEIGHT = 500;
+
     // Couleur des contours de la fenêtre
     private static final Color BORDER_COLOR = Grid.BACKGROUND_COLOR;
 
+    // Vitesse du jeu
+    public static double INITIAL_TIMELINE_RATE = 5;
+
+    // Chemin vers les images dans l'arborescence de fichiers
+    public static final String PATH_TO_IMAGES = "/images/";
+    // Chemin vers l'icône du jeu
+    private final String ICON_PATH = PATH_TO_IMAGES + "icon.png";
+
     private Timeline timeline;
-    private SnakeLoop loop;
+    public static double timelineRate = INITIAL_TIMELINE_RATE;
+    private boolean paused;
+
     private Grid grid;
     private GraphicsContext context;
+    private boolean keyIsPressed;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -52,43 +58,41 @@ public class Main extends Application {
         canvas.setFocusTraversable(true);
         canvas.setOnKeyPressed(e -> {
             Snake snake = grid.getSnake();
-            if (loop.isKeyPressed()) {
+            if (isKeyPressed()) {
                 return;
             }
 
             switch (e.getCode()) {
                 case UP:
-                    if (!loop.isPaused()) {
+                    if (!isPaused()) {
                         if (snake.getSnakeDirection() != Snake.Direction.DOWN)
                             snake.setUp();
                     }
                     break;
                 case DOWN:
-                    if (!loop.isPaused()) {
+                    if (!isPaused()) {
                         if (snake.getSnakeDirection() != Snake.Direction.UP)
                             snake.setDown();
                     }
                     break;
                 case LEFT:
-                    if (!loop.isPaused()) {
+                    if (!isPaused()) {
                         if (snake.getSnakeDirection() != Snake.Direction.RIGHT)
                             snake.setLeft();
                     }
                     break;
                 case RIGHT:
-                    if (!loop.isPaused()) {
+                    if (!isPaused()) {
                         if (snake.getSnakeDirection() != Snake.Direction.LEFT)
                             snake.setRight();
                     }
                     break;
                 case ENTER:
-                    if (loop.isPaused()) {
-                        reset();
+                    if (isPaused()) {
+                        startGame();
                     }
             }
         });
-
-        reset();
 
         root.getChildren().add(canvas);
 
@@ -101,31 +105,26 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image(ICON_PATH));
         primaryStage.show();
 
-        update();
+        startGame();
 
     }
 
     /**
-     * Réinitialise le jeu
+     * Lance le jeu
      */
-    private void reset() {
+    private void startGame() {
         grid = new Grid(WIDTH, HEIGHT);
-        loop = new SnakeLoop(grid, context);
         timelineRate = INITIAL_TIMELINE_RATE;
-        update();
-    }
+        paused = false;
+        keyIsPressed = false;
 
-    /**
-     * Mets à jour le jeu
-     */
-    private void update() {
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             grid.update();
             Painter.paint(grid, context);
 
             if (grid.getSnake().isDead()) {
                 timeline.pause();
-                loop.pause();
+                pause();
                 Painter.paintResetMessage(context);
             }
 
@@ -134,5 +133,42 @@ public class Main extends Application {
         timeline.play();
 
         timeline.setRate(timelineRate);
+    }
+
+    /**
+     * Augmente la vitesse du jeu
+     * @param rateIncrease Vitesse à ajouter
+     */
+    public static void addToRate(double rateIncrease) {
+        timelineRate += rateIncrease;
+    }
+
+//    /**
+//     * Change la vitesse du jeu
+//     * @param newRate Nouvelle vitesse
+//     */
+//    public static void setRate(double newRate) {
+//        timelineRate = newRate;
+//    }
+
+    /**
+     * Mets le jeu sur pause
+     */
+    public void pause() {
+        paused = true;
+    }
+
+    /**
+     * @return si le jeu est en pause
+     */
+    public boolean isPaused() {
+        return paused;
+    }
+
+    /**
+     * @return si une touche est pressée
+     */
+    public boolean isKeyPressed() {
+        return keyIsPressed;
     }
 }
