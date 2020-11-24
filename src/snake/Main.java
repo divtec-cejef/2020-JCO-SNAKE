@@ -104,7 +104,7 @@ public class Main extends Application {
      * Lance le jeu
      */
     private void startGame() {
-        grid = new Grid(WIDTH, HEIGHT);
+        grid = new Grid();
         timelineRate = INITIAL_TIMELINE_RATE;
         paused = false;
         keyIsPressed = false;
@@ -112,9 +112,9 @@ public class Main extends Application {
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             grid.update();
             Painter.paint(grid, context);
+            timeline.setRate(timelineRate);
 
             if (grid.getSnake().isDead()) {
-                timeline.pause();
                 pause();
                 Painter.paintResetMessage(context);
             }
@@ -147,6 +147,7 @@ public class Main extends Application {
      */
     public void pause() {
         paused = true;
+        timeline.pause();
     }
 
     /**

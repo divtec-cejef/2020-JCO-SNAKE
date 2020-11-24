@@ -2,6 +2,8 @@ package snake;
 
 import java.util.Random;
 
+import static snake.Constants.WIDTH;
+import static snake.Constants.HEIGHT;
 import static snake.Constants.TILE_SIZE;
 
 /**
@@ -19,12 +21,10 @@ public class Grid {
 
     /**
      * Crée une nouvelle grille
-     * @param width Largeur de la grille
-     * @param height Hauteur de la grille
      */
-    public Grid(final double width, final double height) {
-        rows = (int) width / TILE_SIZE;
-        cols = (int) height / TILE_SIZE;
+    public Grid() {
+        rows = WIDTH / TILE_SIZE;
+        cols = HEIGHT / TILE_SIZE;
 
         // Place le serpent au centre de l'écran
         snake = new Snake(this);

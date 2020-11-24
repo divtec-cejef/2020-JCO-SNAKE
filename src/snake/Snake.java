@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static snake.Constants.INITIAL_SNAKE_LENGTH;
+import static snake.Constants.TIMELINE_RATE_INCREASE;
 
 /**
  * Classe qui représente un serpent
@@ -38,7 +39,7 @@ public class Snake {
     public static final SnakeColor SNAKE_COLOR = SnakeColor.YELLOW;
 
     // Longueur du serpent
-    private int length = Constants.INITIAL_SNAKE_LENGTH;
+    private int length = INITIAL_SNAKE_LENGTH;
     // Direction du serpent
     private Direction snakeDirection = Constants.INITIAL_SNAKE_DIRECTION;
     // Grille du jeu
@@ -92,7 +93,7 @@ public class Snake {
      */
     private void growTo(Dot dot) {
         length++;
-        Main.addToRate(1);
+        Main.addToRate(TIMELINE_RATE_INCREASE);
         checkAndAdd(dot);
         checkDotList();
     }
