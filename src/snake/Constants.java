@@ -37,19 +37,19 @@ public class Constants {
     public static final String PATH_TO_IMAGES = "/images/";
 
     /**
-     * Vitesse du jeu
+     * Vitesse de base du serpent
      */
-    public static double INITIAL_TIMELINE_RATE = 5;
+    public static final int INITIAL_SNAKE_VELOCITY = 1;
 
     /**
-     * Augmentation de la vitesse du jeu
+     * Augmentation de la vitesse du serpent
      */
-    public static double TIMELINE_RATE_INCREASE = 3;
+    public static final int SNAKE_VELOCITY_INCREASE = 5;
 
     /**
      * Longueur du serpent en début de partie
      */
-    public static final int INITIAL_SNAKE_LENGTH = 3;
+    public static final int INITIAL_SNAKE_LENGTH = 2;
 
     /**
      * Direction initiale du serpent
