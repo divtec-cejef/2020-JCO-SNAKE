@@ -29,10 +29,10 @@ public class Painter {
     public static void paintMenu(GraphicsContext gc) {
         initGrid(gc);
 
-        gc.fillText("< Solo", WIDTH / 2.2f - 110, HEIGHT / 2.0f + 40);
-        gc.fillText("Multi >", WIDTH / 2.2f, HEIGHT / 2.0f + 40);
+        gc.fillText("< Solo", WIDTH * 0.3f, HEIGHT / 2.0f + 40);
+        gc.fillText("Multi >", WIDTH * 0.6f, HEIGHT / 2.0f + 40);
         gc.setFont(Font.font("Consolas", 24));
-        gc.fillText("SNAKE ", WIDTH / 2.3f, 155);
+        gc.fillText("SNAKE ", WIDTH * 0.43f, 155);
     }
 
     /**
@@ -58,7 +58,7 @@ public class Painter {
         }
 
         // Dessine le score
-        gc.fillText("Score : " + snake.getScore(), TILE_SIZE / 2.0f, 15);
+        gc.fillText("Score : " + snake.getScore(), TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
     }
 
     /**
@@ -97,9 +97,8 @@ public class Painter {
      * @param gc GraphicsContext
      */
     public static void paintResetMessage(GraphicsContext gc) {
-        String text = "Appuyez sur [ENTER] pour recommencer.\n      [Q] pour quitter";
-        gc.fillText(text, Constants.WIDTH / 5.2f, Constants.HEIGHT / 2.0f);
-//        gc.fillText("Appuyez sur ENTER pour recommencer.", TILE_SIZE, Main.HEIGHT - 10);
+        gc.fillText("Appuyez sur [ENTER] pour recommencer.", WIDTH * 0.2f, HEIGHT * 0.5f);
+        gc.fillText("[Q] pour quitter", WIDTH * 0.38f, HEIGHT * 0.54f);
     }
 
     /**
