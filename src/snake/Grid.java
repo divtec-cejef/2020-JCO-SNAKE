@@ -2,9 +2,8 @@ package snake;
 
 import java.util.Random;
 
-import static snake.Constants.WIDTH;
-import static snake.Constants.HEIGHT;
-import static snake.Constants.TILE_SIZE;
+// Importation des constantes
+import static snake.Constants.*;
 
 /**
  * Représente une grille
