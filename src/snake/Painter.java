@@ -2,24 +2,46 @@ package snake;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.text.Font;
 
-// Importation des constantes nécessaires
-import static snake.Constants.TEXT_COLOR;
-import static snake.Constants.TILE_SIZE;
-import static snake.Constants.PATH_TO_IMAGES;
-import static snake.Constants.INITIAL_SNAKE_LENGTH;
+// Importation des constantes
+import static snake.Constants.*;
 
+/**
+ * Dessine des choses
+ */
 public class Painter {
+
+    private static void initGrid(GraphicsContext gc){
+        // Dessine le fond du jeu
+        gc.setFill(BACKGROUND_COLOR);
+        gc.fillRect(0, 0, WIDTH, HEIGHT);
+
+        // Prépare le texte
+        gc.setFill(TEXT_COLOR);
+        gc.setFont(Font.font("Consolas", 16));
+    }
+
+    /**
+     * Affiche le menu de sélection de mode de jeu
+     * @param gc
+     */
+    public static void paintMenu(GraphicsContext gc) {
+        initGrid(gc);
+
+        gc.fillText("< Solo", WIDTH / 2.2f - 110, HEIGHT / 2.0f + 40);
+        gc.fillText("Multi >", WIDTH / 2.2f, HEIGHT / 2.0f + 40);
+        gc.setFont(Font.font("Consolas", 24));
+        gc.fillText("SNAKE ", WIDTH / 2.3f, 155);
+    }
 
     /**
      * Dessine sur la grille
      * @param grid grille sur laquelle on veut dessiner
      * @param gc GraphicsContext
      */
-    public static void paint(Grid grid, GraphicsContext gc) {
-        // Dessine le fond du jeu
-        gc.setFill(Constants.BACKGROUND_COLOR);
-        gc.fillRect(0, 0, grid.getWidth(), grid.getHeight());
+    public static void paintGame(Grid grid, GraphicsContext gc) {
+        initGrid(gc);
 
         // Dessine la nourriture du serpent
         paintImage(grid.getFood().getDot(), Snake.Direction.NONE, gc);
@@ -30,12 +52,13 @@ public class Painter {
             paintImage(dot, snake.getSnakeDirection(), gc);
 
         // Dessine la tête du serpent lorsqu'il est mort
-        if (snake.isDead())
+        if (snake.isDead()) {
             paintDeadSnakeHead(snake.getHead(), snake.getSnakeDirection(), gc);
+            paintResetMessage(gc);
+        }
 
         // Dessine le score
-        gc.setFill(TEXT_COLOR);
-        gc.fillText("Score : " + 100 * (snake.getDots().size() - INITIAL_SNAKE_LENGTH), TILE_SIZE / 2.0f, 15);
+        gc.fillText("Score : " + snake.getScore(), TILE_SIZE / 2.0f, 15);
     }
 
     /**
@@ -74,8 +97,8 @@ public class Painter {
      * @param gc GraphicsContext
      */
     public static void paintResetMessage(GraphicsContext gc) {
-        gc.setFill(TEXT_COLOR);
-        gc.fillText("Appuyez sur ENTER pour recommencer.", Constants.WIDTH / 3.2f, Constants.HEIGHT / 2.0f);
+        String text = "Appuyez sur [ENTER] pour recommencer.\n      [Q] pour quitter";
+        gc.fillText(text, Constants.WIDTH / 5.2f, Constants.HEIGHT / 2.0f);
 //        gc.fillText("Appuyez sur ENTER pour recommencer.", TILE_SIZE, Main.HEIGHT - 10);
     }
 
