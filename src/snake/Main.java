@@ -21,13 +21,15 @@ import static snake.Constants.*;
  */
 public class Main extends Application {
     // Nom du jeu
-    private static final String GAME_NAME = "SNAKE";
+    private final String GAME_NAME = "SNAKE";
     // Chemin vers l'icône du jeu
     private final String ICON_PATH = Constants.PATH_TO_IMAGES + "icon.png";
     // Couleur des contours de la fenêtre
-    private static final Color BORDER_COLOR = Constants.BACKGROUND_COLOR;
+    private final Color BORDER_COLOR = Constants.BACKGROUND_COLOR;
 
+    // Boucle du jeu
     private Timeline timeline;
+    // Jeu sur pause
     private boolean paused;
 
     private boolean isInMenu = true;
@@ -53,9 +55,9 @@ public class Main extends Application {
                     case LEFT:
                         startSoloGame();
                         break;
-                    case RIGHT:
-                        startMultiGame();
-                        break;
+//                    case RIGHT:
+//                        startMultiGame();
+//                        break;
                 }
             } else {
                 Snake snake = grid.getSnake();
@@ -96,7 +98,7 @@ public class Main extends Application {
                     case Q:
                         if (isPaused()) {
                             isInMenu = true;
-                            showMenu();
+                            Painter.paintMenu(context);
                         }
                         break;
                 }
@@ -107,18 +109,17 @@ public class Main extends Application {
 
         Scene scene = new Scene(root, BORDER_COLOR);
 
+        // Paramètres de la fenêtre
         primaryStage.setResizable(false);
         primaryStage.setTitle(GAME_NAME);
         primaryStage.setOnCloseRequest(e -> System.exit(0));
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(ICON_PATH));
+
+        // Affiche la fenêtre
         primaryStage.show();
 
-        showMenu();
-
-    }
-
-    private void showMenu() {
+        // Affiche le menu de sélection de mode de jeu
         Painter.paintMenu(context);
 
     }
@@ -146,9 +147,12 @@ public class Main extends Application {
         timeline.setRate(2);
     }
 
-    private void startMultiGame() {
-
-    }
+//    /**
+//     * Lance une partie multijoueur
+//     */
+//    private void startMultiGame() {
+//
+//    }
 
     /**
      * Mets le jeu sur pause

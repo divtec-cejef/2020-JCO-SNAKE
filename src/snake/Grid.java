@@ -25,7 +25,7 @@ public class Grid {
         rows = WIDTH / TILE_SIZE;
         cols = HEIGHT / TILE_SIZE;
 
-        // Place le serpent au centre de l'écran
+        // Place le serpent sur la grille
         snake = new Snake(this);
 
         // Place la pomme à un endroit aléatoire
@@ -40,13 +40,14 @@ public class Grid {
     public Dot wrap(Dot dot) {
         int x = dot.getX();
         int y = dot.getY();
+
         if (x >= rows) x = 0;
         if (y >= cols) y = 0;
         if (x < 0) x = rows - 1;
         if (y < 0) y = cols - 1;
 
         // Recrée et retourne le point avec le bon alignement
-        return new Dot(dot.getDotType(), x, y);
+        return new Dot(dot.getDotType(), x, y, dot.getDirection());
     }
 
     /**
@@ -56,14 +57,14 @@ public class Grid {
         Random random = new Random();
         Dot randomDot;
         do {
-            randomDot = new Dot(Dot.DotType.FOOD, random.nextInt(rows), random.nextInt(cols));
+            randomDot = new Dot(Dot.DotType.FOOD, random.nextInt(rows), random.nextInt(cols), Snake.Direction.NONE);
         } while (randomDot.equals(snake.getHead()));
+
         return randomDot;
     }
 
     /**
      * Méthode appelée à chaque cycle d'éxécution<br>
-     *
      * Teste si le serpent mange une pomme<br>
      * - S'il en mange une : fais grandir le serpent et place une pomme<br>
      * - Sinon : déplace le serpent sur la case suivante
@@ -89,20 +90,6 @@ public class Grid {
      */
     public int getRows() {
         return rows;
-    }
-
-    /**
-     * @return La largeur de la grille
-     */
-    public double getWidth() {
-        return rows * TILE_SIZE;
-    }
-
-    /**
-     * @return La hauteur de la grille
-     */
-    public double getHeight() {
-        return cols * TILE_SIZE;
     }
 
     /**

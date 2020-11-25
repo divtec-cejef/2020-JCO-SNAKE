@@ -41,7 +41,7 @@ public class Snake {
     // Longueur du serpent
     private int length = INITIAL_SNAKE_LENGTH;
     // Direction du serpent
-    private Direction snakeDirection = Constants.INITIAL_SNAKE_DIRECTION;
+    private Direction snakeDirection = INITIAL_SNAKE_DIRECTION;
     // Grille du jeu
     private Grid grid;
     // Liste des points du serpent
@@ -82,15 +82,15 @@ public class Snake {
         for (int z = 0; z < INITIAL_SNAKE_LENGTH; z++) {
             if (z == 0) {
                 // Crée une tête en premier
-                head = new Dot(Dot.DotType.HEAD, grid.getRows() / 2, grid.getCols() / 2);
+                head = new Dot(Dot.DotType.HEAD, grid.getRows() / 2, grid.getCols() / 2, INITIAL_SNAKE_DIRECTION);
                 dots.add(head);
             } else if (z == INITIAL_SNAKE_LENGTH - 1) {
                 // Crée une queue en dernier
-                tail = new Dot(Dot.DotType.TAIL, grid.getRows() / 2 + z, grid.getCols() / 2);
+                tail = new Dot(Dot.DotType.TAIL, grid.getRows() / 2 + z, grid.getCols() / 2, INITIAL_SNAKE_DIRECTION);
                 dots.add(tail);
             } else
                 // Crée un corps entre deux
-                dots.add(new Dot(Dot.DotType.BODY, grid.getRows() / 2 + z, grid.getCols() / 2));
+                dots.add(new Dot(Dot.DotType.BODY, grid.getRows() / 2 + z, grid.getCols() / 2, INITIAL_SNAKE_DIRECTION));
         }
     }
 
@@ -177,6 +177,15 @@ public class Snake {
     }
 
     /**
+     * Modifie la direction du serpent
+     * @param newDirection Nouvelle direction du serpent
+     */
+    public void setSnakeDirection(Direction newDirection) {
+        snakeDirection = newDirection;
+        head.setDirection(newDirection);
+    }
+
+    /**
      * @return {@code true} si le serpent se déplace
      */
     private boolean isMoving() {
@@ -188,7 +197,7 @@ public class Snake {
      */
     public void move() {
         if (isMoving()) {
-            shiftTo(head.translate(head.getDotType(), stepX, stepY));
+            shiftTo(head.translate(head.getDotType(), stepX, stepY, head.getDirection()));
 //            shiftTo(head.translate(head.getDotType(), xVelocity, yVelocity));
         }
     }
@@ -198,11 +207,14 @@ public class Snake {
      */
     public void extend() {
         if (isMoving()) {
-            growTo(head.translate(head.getDotType(), stepX, stepY));
+            growTo(head.translate(head.getDotType(), stepX, stepY, head.getDirection()));
 //            growTo(head.translate(head.getDotType(), xVelocity, yVelocity));
         }
     }
 
+    /**
+     * @return le score associé à ce serpent
+     */
     public int getScore() {
         return score;
     }
@@ -215,7 +227,7 @@ public class Snake {
         yVelocity = -velocity;
         stepX = 0;
         stepY = -1;
-        snakeDirection = Direction.UP;
+        setSnakeDirection(Direction.UP);
     }
 
     /**
@@ -226,7 +238,7 @@ public class Snake {
         yVelocity = velocity;
         stepX = 0;
         stepY = 1;
-        snakeDirection = Direction.DOWN;
+        setSnakeDirection(Direction.DOWN);
     }
 
     /**
@@ -237,7 +249,7 @@ public class Snake {
         yVelocity = 0;
         stepX = -1;
         stepY = 0;
-        snakeDirection = Direction.LEFT;
+        setSnakeDirection(Direction.LEFT);
     }
 
     /**
@@ -248,9 +260,12 @@ public class Snake {
         yVelocity = 0;
         stepX = 1;
         stepY = 0;
-        snakeDirection = Direction.RIGHT;
+        setSnakeDirection(Direction.RIGHT);
     }
 
+    /**
+     * Augmente la vitesse du serpent
+     */
     public void increaseVelocity() {
         velocity += SNAKE_VELOCITY_INCREASE;
 

@@ -20,6 +20,8 @@ public class Dot {
     // Coordonnée Y du point
     private final int y;
 
+    private Snake.Direction direction;
+
     // Type du point
     private DotType dotType;
 
@@ -29,10 +31,11 @@ public class Dot {
      * @param x Emplacement X
      * @param y Emplacement Y
      */
-    Dot(final DotType dotType, final int x, final int y) {
+    Dot(final DotType dotType, final int x, final int y, Snake.Direction direction) {
         this.dotType = dotType;
         this.x = x;
         this.y = y;
+        this.direction = direction;
     }
 
     /**
@@ -69,8 +72,8 @@ public class Dot {
      * @param dy différence de coordonnée Y
      * @return un point avec les nouvelles coordonnées
      */
-    public Dot translate(DotType dotType, int dx, int dy) {
-        return new Dot(dotType, x + dx, y + dy);
+    public Dot translate(DotType dotType, int dx, int dy, Snake.Direction direction) {
+        return new Dot(dotType, x + dx, y + dy, direction);
     }
 
     /**
@@ -81,7 +84,22 @@ public class Dot {
     public boolean equals(Object other) {
         if (!(other instanceof Dot)) return false;
         Dot dot = (Dot) other;
-        return x == dot.x & y == dot.y;
+        return x == dot.x && y == dot.y;
+    }
+
+    /**
+     * @return la direction attribuée à ce point
+     */
+    public Snake.Direction getDirection() {
+        return direction;
+    }
+
+    /**
+     * Modifie la direction du point
+     * @param direction Nouvelle direction attribuée à ce point
+     */
+    public void setDirection(Snake.Direction direction) {
+        this.direction = direction;
     }
 
     /**
