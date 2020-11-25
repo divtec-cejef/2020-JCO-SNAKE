@@ -3,8 +3,8 @@ package snake;
 import java.util.LinkedList;
 import java.util.List;
 
-import static snake.Constants.INITIAL_SNAKE_LENGTH;
-import static snake.Constants.TIMELINE_RATE_INCREASE;
+// Importation des constantes
+import static snake.Constants.*;
 
 /**
  * Classe qui représente un serpent
@@ -51,8 +51,13 @@ public class Snake {
     // Queue du serpent
     private Dot tail;
 
+    private int score;
+
+    private int velocity = INITIAL_SNAKE_VELOCITY;
     private int xVelocity;
     private int yVelocity;
+    private int stepX;
+    private int stepY;
     private boolean isAlive;
 
     /**
@@ -65,6 +70,8 @@ public class Snake {
         this.grid = grid;
         xVelocity = 0;
         yVelocity = 0;
+        stepX = 0;
+        stepY = 0;
         createDots();
     }
 
@@ -93,7 +100,7 @@ public class Snake {
      */
     private void growTo(Dot dot) {
         length++;
-        Main.addToRate(TIMELINE_RATE_INCREASE);
+        increaseVelocity();
         checkAndAdd(dot);
         checkDotList();
     }
@@ -118,6 +125,7 @@ public class Snake {
         dot = grid.wrap(dot);
         isAlive &= !dots.contains(dot);
         head = dot;
+        score = 100 * (this.getDots().size() - INITIAL_SNAKE_LENGTH);
         dots.add(dot);
     }
 
@@ -151,7 +159,7 @@ public class Snake {
      * @return {@code true} si le serpent s'est mangé lui-même
      */
     public boolean isDead() {
-        return !isAlive && length != 1;
+        return !isAlive && length != INITIAL_SNAKE_LENGTH;
     }
 
     /**
@@ -180,7 +188,8 @@ public class Snake {
      */
     public void move() {
         if (isMoving()) {
-            shiftTo(head.translate(head.getDotType(), xVelocity, yVelocity));
+            shiftTo(head.translate(head.getDotType(), stepX, stepY));
+//            shiftTo(head.translate(head.getDotType(), xVelocity, yVelocity));
         }
     }
 
@@ -189,17 +198,23 @@ public class Snake {
      */
     public void extend() {
         if (isMoving()) {
-            growTo(head.translate(Dot.DotType.BODY, xVelocity, yVelocity));
+            growTo(head.translate(head.getDotType(), stepX, stepY));
+//            growTo(head.translate(head.getDotType(), xVelocity, yVelocity));
         }
+    }
+
+    public int getScore() {
+        return score;
     }
 
     /**
      * Déplace le serpent vers le haut
      */
     public void setUp() {
-        if (yVelocity == 1 && length > 1) return;
         xVelocity = 0;
-        yVelocity = -1;
+        yVelocity = -velocity;
+        stepX = 0;
+        stepY = -1;
         snakeDirection = Direction.UP;
     }
 
@@ -207,9 +222,10 @@ public class Snake {
      * Déplace le serpent vers le bas
      */
     public void setDown() {
-        if (yVelocity == -1 && length > 1) return;
         xVelocity = 0;
-        yVelocity = 1;
+        yVelocity = velocity;
+        stepX = 0;
+        stepY = 1;
         snakeDirection = Direction.DOWN;
     }
 
@@ -217,9 +233,10 @@ public class Snake {
      * Déplace le serpent vers la gauche
      */
     public void setLeft() {
-        if (xVelocity == 1 && length > 1) return;
-        xVelocity = -1;
+        xVelocity = -velocity;
         yVelocity = 0;
+        stepX = -1;
+        stepY = 0;
         snakeDirection = Direction.LEFT;
     }
 
@@ -227,9 +244,28 @@ public class Snake {
      * Déplace le serpent vers la droite
      */
     public void setRight() {
-        if (xVelocity == -1 && length > 1) return;
-        xVelocity = 1;
+        xVelocity = velocity;
         yVelocity = 0;
+        stepX = 1;
+        stepY = 0;
         snakeDirection = Direction.RIGHT;
+    }
+
+    public void increaseVelocity() {
+        velocity += SNAKE_VELOCITY_INCREASE;
+
+        if (xVelocity != 0) {
+            if (xVelocity < 0)
+                xVelocity = -velocity;
+            else
+                xVelocity = velocity;
+        }
+
+        if (yVelocity != 0) {
+            if (yVelocity < 0)
+                yVelocity = -velocity;
+            else
+                yVelocity = velocity;
+        }
     }
 }
