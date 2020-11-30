@@ -8,7 +8,7 @@ import javafx.scene.text.Font;
 import static snake.Constants.*;
 
 /**
- * Dessine des choses
+ * Dessine des éléments sur la grille
  */
 public class Painter {
 
@@ -16,7 +16,6 @@ public class Painter {
 
     /**
      * Initiallise la surface de jeu
-     *
      * @param gc GraphicsContext
      */
     private static void initGrid(GraphicsContext gc) {
