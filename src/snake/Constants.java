@@ -49,7 +49,7 @@ public class Constants {
     /**
      * Longueur du serpent en début de partie
      */
-    public static final int INITIAL_SNAKE_LENGTH = 2;
+    public static final int INITIAL_SNAKE_LENGTH = 3;
 
     /**
      * Direction initiale du serpent
