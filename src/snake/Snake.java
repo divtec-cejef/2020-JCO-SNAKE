@@ -1,7 +1,6 @@
 package snake;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 // Importation des constantes
 import static snake.Constants.*;
@@ -26,11 +25,20 @@ public class Snake {
         RED,
         BLUE,
         YELLOW,
-        NONE
+        NONE;
+
+        private static final List<SnakeColor> COLOR_POSSIBILITIES =
+                Collections.unmodifiableList(Arrays.asList(values()));
+        private static final int SIZE = COLOR_POSSIBILITIES.size();
+        private static final Random RANDOM = new Random();
+
+        public static SnakeColor randomColor()  {
+            return COLOR_POSSIBILITIES.get(RANDOM.nextInt(SIZE));
+        }
     }
 
     // Couleur du serpent
-    public static final SnakeColor SNAKE_COLOR = SnakeColor.GREEN;
+    public static final SnakeColor SNAKE_COLOR = SnakeColor.randomColor();
 
     private final int MINIMUM_SNAKE_LENGTH = 2;
 
@@ -285,4 +293,5 @@ public class Snake {
                 yVelocity = velocity;
         }
     }
+
 }

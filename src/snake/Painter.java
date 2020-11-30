@@ -149,9 +149,9 @@ public class Painter {
                     orientation = "vertical";
                 }
 
-//                if (isCorner(dotDirection))
-//                    return checkForCorner(PATH_TO_SNAKE_IMAGES, dotDirection);
-//                else
+                if (isCorner(dotDirection))
+                    return checkForCorner(PATH_TO_SNAKE_IMAGES, dotDirection);
+                else
                     return new Image(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
         }
     }
@@ -172,13 +172,13 @@ public class Painter {
      * @return L'image correspondant aux paramètres fournis
      */
     private static Image checkForCorner(String rootPath, Snake.Direction bodyDirection) {
-        String oldDirection = "";
+        String oldDirection = "down";
         if (bodyDirection == Snake.Direction.UP)
             oldDirection = "up";
         else if (bodyDirection == Snake.Direction.DOWN)
             oldDirection = "down";
 
-        String newDirection = "";
+        String newDirection = "left";
         switch (snake.getSnakeDirection()){
             case RIGHT:
                 newDirection = "left";
@@ -200,7 +200,7 @@ public class Painter {
         }
 
         if (bodyDirection == Snake.Direction.RIGHT && snake.getSnakeDirection() == Snake.Direction.UP) {
-            oldDirection = "up";
+            oldDirection = "down";
             newDirection = "right";
         }
 
@@ -211,6 +211,8 @@ public class Painter {
 
         // Nom de l'image de l'angle
         String imageName = "corner_" + oldDirection + newDirection.substring(0, 1).toUpperCase() + newDirection.substring(1) + ".png";
+
+        // Vérification de l'existence de l'image
         switch (imageName) {
             case "corner_downLeft.png":
             case "corner_downRight.png":

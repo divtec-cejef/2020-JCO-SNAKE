@@ -148,7 +148,7 @@ public class Main extends Application {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        timeline.setDelay(new Duration(2.0));
+        timeline.setDelay(new Duration(10.0));
         timeline.setRate(2);
     }
 
