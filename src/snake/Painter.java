@@ -30,7 +30,6 @@ public class Painter {
 
     /**
      * Affiche le menu de sélection de mode de jeu
-     *
      * @param gc GraphicsContext
      */
     public static void paintMenu(GraphicsContext gc) {
@@ -44,7 +43,6 @@ public class Painter {
 
     /**
      * Dessine sur la grille
-     *
      * @param grid grille sur laquelle on veut dessiner
      * @param gc   GraphicsContext
      */
@@ -82,7 +80,6 @@ public class Painter {
 
     /**
      * Dessine l'image d'un point sur la grille
-     *
      * @param dot Point à dessiner
      * @param gc  GraphicsContext
      */
