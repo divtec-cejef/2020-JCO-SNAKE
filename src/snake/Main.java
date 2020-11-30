@@ -59,6 +59,7 @@ public class Main extends Application {
 //                        startMultiGame();
 //                        break;
                 }
+
             } else {
                 Snake snake = grid.getSnake();
 
@@ -137,6 +138,8 @@ public class Main extends Application {
         grid = new Grid();
         paused = false;
         keyIsPressed = false;
+
+        Snake.SNAKE_COLOR = Snake.SnakeColor.randomColor();
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             grid.update();
