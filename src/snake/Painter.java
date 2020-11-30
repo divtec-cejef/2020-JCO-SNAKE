@@ -3,8 +3,11 @@ package snake;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 // Importation des constantes
+import java.awt.image.TileObserver;
+
 import static snake.Constants.*;
 
 /**
@@ -25,6 +28,7 @@ public class Painter {
 
         // Prépare le format des textes
         gc.setFill(TEXT_COLOR);
+        gc.setTextAlign(TextAlignment.CENTER);
         gc.setFont(Font.font("Consolas", 16));
     }
 
@@ -35,10 +39,10 @@ public class Painter {
     public static void paintMenu(GraphicsContext gc) {
         initGrid(gc);
 
-        gc.fillText("< Solo", WIDTH * 0.3f, HEIGHT * 0.5f + 40);
-//        gc.fillText("Multi >", WIDTH * 0.6f, HEIGHT * 0.5f + 40);
+        gc.fillText("< Solo", WIDTH * 0.31f, HEIGHT * 0.6f);
+//        gc.fillText("Multi >", WIDTH * 0.65f, HEIGHT * 0.6f);
         gc.setFont(Font.font("Consolas", 24));
-        gc.fillText("SNAKE ", WIDTH * 0.43f, 155);
+        gc.fillText("SNAKE ", WIDTH / 2.0f, HEIGHT * 0.4);
     }
 
     /**
@@ -75,7 +79,7 @@ public class Painter {
         }
 
         // Dessine le score
-        gc.fillText("Score : " + snake.getScore(), TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
+        gc.fillText("Score : " + snake.getScore(), TILE_SIZE * 5, TILE_SIZE * 1.5f);
     }
 
     /**
@@ -114,9 +118,10 @@ public class Painter {
      * @param gc GraphicsContext
      */
     public static void paintResetMessage(GraphicsContext gc) {
-        gc.fillText("Appuyez sur [ENTER] pour recommencer.", WIDTH * 0.2f, HEIGHT * 0.5f);
-        gc.fillText("[Q] pour changer de mode de jeu.", WIDTH * 0.25f, HEIGHT * 0.54f);
-        gc.fillText("[ESC] pour quitter.", WIDTH * 0.35f, HEIGHT * 0.58f);
+        gc.fillText("Appuyez sur [ENTER] pour recommencer.", WIDTH / 2.0f, HEIGHT * 0.5f);
+        gc.fillText("[Q] pour changer de mode de jeu.", WIDTH / 2.0f, HEIGHT * 0.54f);
+        gc.fillText("[ESC] pour quitter.", WIDTH / 2.0f, HEIGHT * 0.58f);
+
     }
 
     /**
@@ -188,7 +193,7 @@ public class Painter {
                 break;
         }
 
-        boolean isInvalidDirection = false;
+        boolean isInvalidPath = false;
         if (bodyDirection == Snake.Direction.RIGHT && snake.getSnakeDirection() == Snake.Direction.DOWN) {
             oldDirection = "up";
             newDirection = "right";
@@ -221,15 +226,23 @@ public class Painter {
                 break;
             default:
                 System.out.println(imageName + " : n'existe pas");
-                isInvalidDirection = true;
+                isInvalidPath = true;
         }
 
         // Chemin vers l'image
         String imagePath = rootPath + imageName;
-//                    System.out.println(imagePath);
-        if (!isInvalidDirection)
-            return new Image(imagePath);
-        return new Image(rootPath + "tail_up.png");
 
+        // Si l'image n'est pas valide, on la remplace par une autre image
+        if (!isInvalidPath)
+            return new Image(imagePath);
+
+        String orientation;
+        if (bodyDirection == Snake.Direction.LEFT || bodyDirection == Snake.Direction.RIGHT) {
+            orientation = "horizontal";
+        } else {
+            orientation = "vertical";
+        }
+
+        return new Image(rootPath + "body_" + orientation + ".png");
     }
 }
