@@ -115,17 +115,16 @@ public class Painter {
 
     /**
      * Affiche le message de fin de jeu
-     *
      * @param gc GraphicsContext
      */
     public static void paintResetMessage(GraphicsContext gc) {
         gc.fillText("Appuyez sur [ENTER] pour recommencer.", WIDTH * 0.2f, HEIGHT * 0.5f);
-        gc.fillText("[Q] pour quitter", WIDTH * 0.38f, HEIGHT * 0.54f);
+        gc.fillText("[Q] pour changer de mode de jeu.", WIDTH * 0.25f, HEIGHT * 0.54f);
+        gc.fillText("[ESC] pour quitter.", WIDTH * 0.35f, HEIGHT * 0.58f);
     }
 
     /**
      * Récupère les images utilisées pour le jeu
-     *
      * @param dot       Point dont on veut l'image
      * @param bodyColor La couleur des parties du serpent
      * @return L'image correspondante aux paramètres fournis
@@ -177,9 +176,6 @@ public class Painter {
      * @return L'image correspondant aux paramètres fournis
      */
     private static Image checkForCorner(String rootPath, Snake.Direction bodyDirection) {
-        /*
-         * idée de louis : Marquer la case de l'angle
-         */
         String oldDirection = "";
         if (bodyDirection == Snake.Direction.UP)
             oldDirection = "up";

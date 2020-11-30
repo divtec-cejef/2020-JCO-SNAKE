@@ -101,6 +101,11 @@ public class Main extends Application {
                             Painter.paintMenu(context);
                         }
                         break;
+                    case ESCAPE:
+                        if (isPaused()) {
+                            primaryStage.close();
+                        }
+                        break;
                 }
             }
         });
