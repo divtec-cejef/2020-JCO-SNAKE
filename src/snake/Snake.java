@@ -32,13 +32,17 @@ public class Snake {
         private static final int SIZE = COLOR_POSSIBILITIES.size();
         private static final Random RANDOM = new Random();
 
-        public static SnakeColor randomColor()  {
-            return COLOR_POSSIBILITIES.get(RANDOM.nextInt(SIZE));
+        public static SnakeColor randomColor() {
+            SnakeColor color = COLOR_POSSIBILITIES.get(RANDOM.nextInt(SIZE));
+            while (color == NONE) {
+                color = COLOR_POSSIBILITIES.get(RANDOM.nextInt(SIZE));
+            }
+            return color;
         }
     }
 
     // Couleur du serpent
-    public static final SnakeColor SNAKE_COLOR = SnakeColor.randomColor();
+    public static SnakeColor SNAKE_COLOR = SnakeColor.randomColor();
 
     private final int MINIMUM_SNAKE_LENGTH = 2;
 
