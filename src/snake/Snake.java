@@ -11,9 +11,7 @@ import static snake.Constants.*;
  */
 public class Snake {
 
-    /**
-     * Directions possibles du serpent
-     */
+    // Directions possibles du serpent
     public enum Direction {
         UP,
         DOWN,
@@ -22,9 +20,7 @@ public class Snake {
         NONE
     }
 
-    /**
-     * Couleurs que le serpent peut avoir
-     */
+    // Couleurs que le serpent peut avoir
     public enum SnakeColor {
         GREEN,
         RED,
@@ -33,15 +29,19 @@ public class Snake {
         NONE
     }
 
-    /**
-     * Couleur du serpent
-     */
-    public static final SnakeColor SNAKE_COLOR = SnakeColor.YELLOW;
+    // Couleur du serpent
+    public static final SnakeColor SNAKE_COLOR = SnakeColor.GREEN;
+
+    private final int MINIMUM_SNAKE_LENGTH = 2;
 
     // Longueur du serpent
     private int length = INITIAL_SNAKE_LENGTH;
-    // Direction du serpent
-    private Direction snakeDirection = INITIAL_SNAKE_DIRECTION;
+
+    /*
+     * Direction du serpent
+     * On démarre sans direction pour pouvoir partir n'importe où
+     */
+    private Direction snakeDirection = Direction.NONE;
     // Grille du jeu
     private Grid grid;
     // Liste des points du serpent
@@ -50,18 +50,20 @@ public class Snake {
     private Dot head;
     // Queue du serpent
     private Dot tail;
-
+    // Score du joueur
     private int score;
 
+    // Vitesse du serpent
     private int velocity = INITIAL_SNAKE_VELOCITY;
     private int xVelocity;
     private int yVelocity;
     private int stepX;
     private int stepY;
+
     private boolean isAlive;
 
     /**
-     * Construit un serpent
+     * Construit un nouveau serpent
      * @param grid Grille de jeu
      */
     public Snake(Grid grid) {
@@ -86,11 +88,11 @@ public class Snake {
                 dots.add(head);
             } else if (z == INITIAL_SNAKE_LENGTH - 1) {
                 // Crée une queue en dernier
-                tail = new Dot(Dot.DotType.TAIL, grid.getRows() / 2 + z, grid.getCols() / 2, INITIAL_SNAKE_DIRECTION);
+                tail = new Dot(Dot.DotType.TAIL, grid.getRows() / 2, grid.getCols() / 2, INITIAL_SNAKE_DIRECTION);
                 dots.add(tail);
             } else
                 // Crée un corps entre deux
-                dots.add(new Dot(Dot.DotType.BODY, grid.getRows() / 2 + z, grid.getCols() / 2, INITIAL_SNAKE_DIRECTION));
+                dots.add(new Dot(Dot.DotType.BODY, grid.getRows() / 2, grid.getCols() / 2, INITIAL_SNAKE_DIRECTION));
         }
     }
 
@@ -159,7 +161,7 @@ public class Snake {
      * @return {@code true} si le serpent s'est mangé lui-même
      */
     public boolean isDead() {
-        return !isAlive && length != INITIAL_SNAKE_LENGTH;
+        return !isAlive && length != MINIMUM_SNAKE_LENGTH;
     }
 
     /**
