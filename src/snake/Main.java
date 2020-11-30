@@ -23,9 +23,9 @@ public class Main extends Application {
     // Nom du jeu
     private final String GAME_NAME = "SNAKE";
     // Chemin vers l'icône du jeu
-    private final String ICON_PATH = Constants.PATH_TO_IMAGES + "icon.png";
+    private final String ICON_PATH = PATH_TO_IMAGES + "icon.png";
     // Couleur des contours de la fenêtre
-    private final Color BORDER_COLOR = Constants.BACKGROUND_COLOR;
+    private final Color BORDER_COLOR = BACKGROUND_COLOR;
 
     // Boucle du jeu
     private Timeline timeline;
