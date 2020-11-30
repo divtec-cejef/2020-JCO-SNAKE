@@ -30,6 +30,7 @@ public class Dot {
      * @param dotType Type du point
      * @param x Emplacement X
      * @param y Emplacement Y
+     * @param direction Direction du point
      */
     Dot(final DotType dotType, final int x, final int y, Snake.Direction direction) {
         this.dotType = dotType;
