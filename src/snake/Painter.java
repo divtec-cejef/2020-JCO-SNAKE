@@ -167,16 +167,18 @@ public class Painter {
      * @return {@code true} si il faut placer un angle
      */
     private static boolean isCorner(Snake.Direction bodyDirection) {
-        return bodyDirection != snake.getSnakeDirection();
+        return bodyDirection != snake.getHead().getDirection();
     }
 
     /**
      * Défini l'image utilisé pour l'angle formé par le corps du serpent
-     * @param rootPath Chemin vers le corps du serpent
+     * @param imagesPath Chemin vers les images du corps du serpent
      * @param bodyDirection Direction du serpent
      * @return L'image correspondant aux paramètres fournis
      */
-    private static Image checkForCorner(String rootPath, Snake.Direction bodyDirection) {
+    public static Image checkForCorner(String imagesPath, Snake.Direction bodyDirection) {
+        Snake.Direction snakeDirection = snake.getHead().getDirection();
+
         String oldDirection = "down";
         if (bodyDirection == Snake.Direction.UP)
             oldDirection = "up";
@@ -184,7 +186,7 @@ public class Painter {
             oldDirection = "down";
 
         String newDirection = "left";
-        switch (snake.getSnakeDirection()){
+        switch (snakeDirection){
             case RIGHT:
                 newDirection = "left";
                 break;
@@ -193,23 +195,23 @@ public class Painter {
                 break;
         }
 
-        boolean isInvalidPath = false;
-        if (bodyDirection == Snake.Direction.RIGHT && snake.getSnakeDirection() == Snake.Direction.DOWN) {
+        boolean isValidImage = true;
+        if (bodyDirection == Snake.Direction.RIGHT && snakeDirection == Snake.Direction.DOWN) {
             oldDirection = "up";
             newDirection = "right";
         }
 
-        if (bodyDirection == Snake.Direction.LEFT && snake.getSnakeDirection() == Snake.Direction.UP) {
-            oldDirection = "down";
-            newDirection = "left";
-        }
-
-        if (bodyDirection == Snake.Direction.RIGHT && snake.getSnakeDirection() == Snake.Direction.UP) {
+        if (bodyDirection == Snake.Direction.RIGHT && snakeDirection == Snake.Direction.UP) {
             oldDirection = "down";
             newDirection = "right";
         }
 
-        if (bodyDirection == Snake.Direction.LEFT && snake.getSnakeDirection() == Snake.Direction.DOWN) {
+        if (bodyDirection == Snake.Direction.LEFT && snakeDirection == Snake.Direction.UP) {
+            oldDirection = "down";
+            newDirection = "left";
+        }
+
+        if (bodyDirection == Snake.Direction.LEFT && snakeDirection == Snake.Direction.DOWN) {
             oldDirection = "up";
             newDirection = "left";
         }
@@ -226,15 +228,15 @@ public class Painter {
                 break;
             default:
                 System.out.println(imageName + " : n'existe pas");
-                isInvalidPath = true;
+                isValidImage = false;
         }
 
         // Chemin vers l'image
-        String imagePath = rootPath + imageName;
+        String spritePath = imagesPath + imageName;
 
         // Si l'image n'est pas valide, on la remplace par une autre image
-        if (!isInvalidPath)
-            return new Image(imagePath);
+        if (isValidImage)
+            return new Image(spritePath);
 
         String orientation;
         if (bodyDirection == Snake.Direction.LEFT || bodyDirection == Snake.Direction.RIGHT) {
@@ -243,6 +245,6 @@ public class Painter {
             orientation = "vertical";
         }
 
-        return new Image(rootPath + "body_" + orientation + ".png");
+        return new Image(imagesPath + "body_" + orientation + ".png");
     }
 }
