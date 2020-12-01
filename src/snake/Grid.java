@@ -16,7 +16,7 @@ public class Grid {
     private final int rows;
 
     private final Snake snake;
-    private final Food food;
+    private Food food = new Food();
 
     /**
      * Crée une nouvelle grille
@@ -29,7 +29,8 @@ public class Grid {
         snake = new Snake(this);
 
         // Place la pomme à un endroit aléatoire
-        food = new Food(getRandomDot());
+//        food = new Food(getRandomDot());
+        food = setNewFood();
     }
 
     /**
@@ -47,20 +48,48 @@ public class Grid {
         if (y < 0) y = cols - 1;
 
         // Recrée et retourne le point avec le bon alignement
-        return new Dot(dot.getDotType(), x, y, dot.getDirection());
+        return new Dot(dot.getDotType(), x, y, dot.getSprite(), dot.getDirection());
     }
 
     /**
-     * @return un point tiré au hasard
+     * Aligne un point sur la grille
+     * @param dot Le point dont on veut corriger l'emplacement
+     * @return Le point aligné correctement
      */
-    private Dot getRandomDot() {
-        Random random = new Random();
-        Dot randomDot;
-        do {
-            randomDot = new Dot(Dot.DotType.FOOD, random.nextInt(rows), random.nextInt(cols), Snake.Direction.NONE);
-        } while (randomDot.equals(snake.getHead()));
+    public SnakeDot wrap(SnakeDot dot) {
+        int x = dot.getX();
+        int y = dot.getY();
 
-        return randomDot;
+        if (x >= rows) x = 0;
+        if (y >= cols) y = 0;
+        if (x < 0) x = rows - 1;
+        if (y < 0) y = cols - 1;
+
+        // Recrée et retourne le point avec le bon alignement
+        return new SnakeDot(dot.getDotType(), x, y, dot.getSprite(), dot.getDirection());
+    }
+
+//    /**
+//     * @return un point tiré au hasard
+//     */
+//    private Dot getRandomDot() {
+//        Random random = new Random();
+//        Dot randomDot;
+//        do {
+//            randomDot = new Dot(Dot.DotType.FOOD, random.nextInt(rows), random.nextInt(cols), Food.getSprite(), Snake.Direction.NONE);
+//        } while (randomDot.equals(snake.getHead()));
+//
+//        return randomDot;
+//    }
+
+    private Food setNewFood() {
+        Random random = new Random();
+        Food randomApple;
+        do {
+            randomApple = new Food(random.nextInt(rows), random.nextInt(cols));
+        } while (randomApple.equals(snake.getHead()));
+
+        return randomApple;
     }
 
     /**
@@ -70,9 +99,11 @@ public class Grid {
      * - Sinon : déplace le serpent sur la case suivante
      */
     public void update() {
+//        if (food.getDot().equals(snake.getHead())) {
         if (food.getDot().equals(snake.getHead())) {
             snake.extend();
-            food.setDot(getRandomDot());
+            food = setNewFood();
+//            food.setDot(getRandomDot());
         } else {
             snake.move();
         }
