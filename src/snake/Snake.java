@@ -44,8 +44,6 @@ public class Snake {
     // Couleur du serpent
     public static SnakeColor SNAKE_COLOR = SnakeColor.randomColor();
 
-    private final int MINIMUM_SNAKE_LENGTH = 2;
-
     // Longueur du serpent
     private int length = INITIAL_SNAKE_LENGTH;
 
@@ -57,11 +55,11 @@ public class Snake {
     // Grille du jeu
     private Grid grid;
     // Liste des points du serpent
-    private List<Dot> dots;
+    private List<SnakeDot> dots;
     // Tête du serpent
-    private Dot head;
+    private SnakeDot head;
     // Queue du serpent
-    private Dot tail;
+    private SnakeDot tail;
     // Score du joueur
     private int score;
 
@@ -73,6 +71,7 @@ public class Snake {
     private int stepY;
 
     private boolean isAlive;
+    private boolean canDie;
 
     /**
      * Construit un nouveau serpent
@@ -81,6 +80,7 @@ public class Snake {
     public Snake(Grid grid) {
         dots = new LinkedList<>();
         isAlive = true;
+        canDie = false;
         this.grid = grid;
         xVelocity = 0;
         yVelocity = 0;
@@ -96,15 +96,15 @@ public class Snake {
         for (int z = 0; z < INITIAL_SNAKE_LENGTH; z++) {
             if (z == 0) {
                 // Crée une tête en premier
-                head = new Dot(Dot.DotType.HEAD, grid.getRows() / 2, grid.getCols() / 2, INITIAL_SNAKE_DIRECTION);
+                head = createNewSnakeParts(Dot.DotType.HEAD, grid.getRows() / 2, grid.getCols() / 2);
                 dots.add(head);
             } else if (z == INITIAL_SNAKE_LENGTH - 1) {
                 // Crée une queue en dernier
-                tail = new Dot(Dot.DotType.TAIL, grid.getRows() / 2, grid.getCols() / 2, INITIAL_SNAKE_DIRECTION);
+                tail = createNewSnakeParts(Dot.DotType.TAIL, grid.getRows() / 2, grid.getCols() / 2);
                 dots.add(tail);
             } else
                 // Crée un corps entre deux
-                dots.add(new Dot(Dot.DotType.BODY, grid.getRows() / 2, grid.getCols() / 2, INITIAL_SNAKE_DIRECTION));
+                dots.add(createNewSnakeParts(Dot.DotType.BODY, grid.getRows() / 2, grid.getCols() / 2));
         }
     }
 
@@ -112,8 +112,9 @@ public class Snake {
      * Est appelé après que le serpent ait mangé une pomme, augmente sa taille et sa vitesse et place une nouvelle pomme
      * @param dot Le point où était placée la nourriture que le serpent à mangé
      */
-    private void growTo(Dot dot) {
+    private void growTo(SnakeDot dot) {
         length++;
+        canDie = true;
         increaseVelocity();
         checkAndAdd(dot);
         checkDotList();
@@ -123,7 +124,7 @@ public class Snake {
      * Replace la tête du serpent et enlève son ancienne position
      * @param dot Le nouvel emplacement de la tête du serpent
      */
-    private void shiftTo(Dot dot) {
+    private void shiftTo(SnakeDot dot) {
         // Le nouvel emplacement de la tête est défini
         checkAndAdd(dot);
         // L'ancien emplacement est enlevé
@@ -135,9 +136,10 @@ public class Snake {
      * Vérifie où placer un point sur la grille qui représente la tête
      * @param dot Le point vers lequel déplacer le serpent
      */
-    private void checkAndAdd(Dot dot) {
+    private void checkAndAdd(SnakeDot dot) {
         dot = grid.wrap(dot);
-        isAlive &= !dots.contains(dot);
+        if (canDie)
+            isAlive &= !dots.contains(dot);
         head = dot;
         score = 100 * (this.getDots().size() - INITIAL_SNAKE_LENGTH);
         dots.add(dot);
@@ -165,7 +167,7 @@ public class Snake {
     /**
      * @return Tous les points sur lesquels se trouve le serpent
      */
-    public List<Dot> getDots() {
+    public List<SnakeDot> getDots() {
         return dots;
     }
 
@@ -173,13 +175,13 @@ public class Snake {
      * @return {@code true} si le serpent s'est mangé lui-même
      */
     public boolean isDead() {
-        return !isAlive && length != MINIMUM_SNAKE_LENGTH;
+        return !isAlive && canDie;
     }
 
     /**
      * @return Le point correspondant à la tête du serpent
      */
-    public Dot getHead() {
+    public SnakeDot getHead() {
         return head;
     }
 
@@ -211,7 +213,8 @@ public class Snake {
      */
     public void move() {
         if (isMoving()) {
-            shiftTo(head.translate(head.getDotType(), stepX, stepY, head.getDirection()));
+//            if (!dots.contains(head.translate(stepX, stepY)))
+                shiftTo(head.translate(stepX, stepY));
 //            shiftTo(head.translate(head.getDotType(), xVelocity, yVelocity));
         }
     }
@@ -221,7 +224,8 @@ public class Snake {
      */
     public void extend() {
         if (isMoving()) {
-            growTo(head.translate(head.getDotType(), stepX, stepY, head.getDirection()));
+            growTo(head.translate(stepX, stepY));
+//            growTo(head.translate(head.getDotType(), stepX, stepY, head.getDirection()));
 //            growTo(head.translate(head.getDotType(), xVelocity, yVelocity));
         }
     }
@@ -298,4 +302,40 @@ public class Snake {
         }
     }
 
+    /**
+     * @param bodyType type du point dont on veut le sprite
+     * @return un sprite choisi selon les paramètres fournis
+     */
+    private Sprite getSnakeSprite(Dot.DotType bodyType) {
+        // Le chemin vers les images du serpent
+        String PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + SNAKE_COLOR.toString() + "/";
+
+        switch (bodyType) {
+            case HEAD:
+                return new Sprite(PATH_TO_SNAKE_IMAGES + "head_" + INITIAL_SNAKE_DIRECTION.toString().toLowerCase() + ".png");
+            case TAIL:
+                return new Sprite(PATH_TO_SNAKE_IMAGES + "tail_" + INITIAL_SNAKE_DIRECTION.toString().toLowerCase() + ".png");
+            case BODY:
+            default:
+                String orientation;
+                if (INITIAL_SNAKE_DIRECTION == Snake.Direction.LEFT || INITIAL_SNAKE_DIRECTION == Snake.Direction.RIGHT) {
+                    orientation = "horizontal";
+                } else {
+                    orientation = "vertical";
+                }
+
+                return new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
+        }
+    }
+
+    /**
+     * Crée un nouveau morceau de corps de serpent
+     * @param dotType le type de point de ce corps
+     * @param x sa position x
+     * @param y sa position y
+     * @return ce point
+     */
+    private SnakeDot createNewSnakeParts(Dot.DotType dotType, int x, int y) {
+        return new SnakeDot(dotType, x, y, getSnakeSprite(dotType), INITIAL_SNAKE_DIRECTION);
+    }
 }
