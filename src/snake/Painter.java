@@ -6,8 +6,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 // Importation des constantes
-import java.awt.image.TileObserver;
-
 import static snake.Constants.*;
 
 /**
@@ -58,8 +56,12 @@ public class Painter {
 
         // Dessine le serpent
         snake = grid.getSnake();
-        for (Dot dot : snake.getDots())
-            paintDot(dot, gc);
+        SnakeDot previousDot = null;
+        for (SnakeDot dot : snake.getDots()) {
+            paintSnake(dot, previousDot, gc);
+            previousDot = dot;
+        }
+
 //        for (int i = 0; i < snake.getDots().size(); i++) {
 //            Dot snakeDot = snake.getDots().get(i);
 //
@@ -88,11 +90,20 @@ public class Painter {
      * @param gc  GraphicsContext
      */
     private static void paintDot(Dot dot, GraphicsContext gc) {
-//        gc.drawImage(getImages(dot.getDotType(), dot.getDirection(), Snake.SNAKE_COLOR),
         gc.drawImage(getImages(dot, Snake.SNAKE_COLOR),
                 dot.getX() * TILE_SIZE,
                 dot.getY() * TILE_SIZE,
                 TILE_SIZE, TILE_SIZE);
+
+    }
+
+    private static void paintSnake(SnakeDot dot, SnakeDot previousDot, GraphicsContext gc) {
+        dot.setSnakeSprite(previousDot);
+        gc.drawImage(dot.getSprite(),
+                dot.getX() * TILE_SIZE,
+                dot.getY() * TILE_SIZE,
+                TILE_SIZE, TILE_SIZE);
+
     }
 
     /**
@@ -100,7 +111,7 @@ public class Painter {
      * @param snakeHeadDot   Point correspondant à la tête du serpent
      * @param gc             GraphicsContext
      */
-    private static void paintDeadSnakeHead(Dot snakeHeadDot, GraphicsContext gc) {
+    private static void paintDeadSnakeHead(SnakeDot snakeHeadDot, GraphicsContext gc) {
         Snake.SnakeColor deathColor = Snake.SnakeColor.RED;
 
         if (Snake.SNAKE_COLOR == Snake.SnakeColor.RED)
@@ -154,97 +165,97 @@ public class Painter {
                     orientation = "vertical";
                 }
 
-                if (isCorner(dotDirection))
-                    return checkForCorner(PATH_TO_SNAKE_IMAGES, dotDirection);
-                else
+//                if (isCorner(dotDirection))
+//                    return checkForCorner(PATH_TO_SNAKE_IMAGES, dotDirection);
+//                else
                     return new Image(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
         }
     }
 
-    /**
-     * Vérifie si un angle doit être placé
-     * @param bodyDirection Direction du corps du serpent
-     * @return {@code true} si il faut placer un angle
-     */
-    private static boolean isCorner(Snake.Direction bodyDirection) {
-        return bodyDirection != snake.getHead().getDirection();
-    }
-
-    /**
-     * Défini l'image utilisé pour l'angle formé par le corps du serpent
-     * @param imagesPath Chemin vers les images du corps du serpent
-     * @param bodyDirection Direction du serpent
-     * @return L'image correspondant aux paramètres fournis
-     */
-    public static Image checkForCorner(String imagesPath, Snake.Direction bodyDirection) {
-        Snake.Direction snakeDirection = snake.getHead().getDirection();
-
-        String oldDirection = "down";
-        if (bodyDirection == Snake.Direction.UP)
-            oldDirection = "up";
-        else if (bodyDirection == Snake.Direction.DOWN)
-            oldDirection = "down";
-
-        String newDirection = "left";
-        switch (snakeDirection){
-            case RIGHT:
-                newDirection = "left";
-                break;
-            case LEFT:
-                newDirection = "right";
-                break;
-        }
-
-        boolean isValidImage = true;
-        if (bodyDirection == Snake.Direction.RIGHT && snakeDirection == Snake.Direction.DOWN) {
-            oldDirection = "up";
-            newDirection = "right";
-        }
-
-        if (bodyDirection == Snake.Direction.RIGHT && snakeDirection == Snake.Direction.UP) {
-            oldDirection = "down";
-            newDirection = "right";
-        }
-
-        if (bodyDirection == Snake.Direction.LEFT && snakeDirection == Snake.Direction.UP) {
-            oldDirection = "down";
-            newDirection = "left";
-        }
-
-        if (bodyDirection == Snake.Direction.LEFT && snakeDirection == Snake.Direction.DOWN) {
-            oldDirection = "up";
-            newDirection = "left";
-        }
-
-        // Nom de l'image de l'angle
-        String imageName = "corner_" + oldDirection + newDirection.substring(0, 1).toUpperCase() + newDirection.substring(1) + ".png";
-
-        // Vérification de l'existence de l'image
-        switch (imageName) {
-            case "corner_downLeft.png":
-            case "corner_downRight.png":
-            case "corner_upLeft.png":
-            case "corner_upRight.png":
-                break;
-            default:
-                System.out.println(imageName + " : n'existe pas");
-                isValidImage = false;
-        }
-
-        // Chemin vers l'image
-        String spritePath = imagesPath + imageName;
-
-        // Si l'image n'est pas valide, on la remplace par une autre image
-        if (isValidImage)
-            return new Image(spritePath);
-
-        String orientation;
-        if (bodyDirection == Snake.Direction.LEFT || bodyDirection == Snake.Direction.RIGHT) {
-            orientation = "horizontal";
-        } else {
-            orientation = "vertical";
-        }
-
-        return new Image(imagesPath + "body_" + orientation + ".png");
-    }
+//    /**
+//     * Vérifie si un angle doit être placé
+//     * @param bodyDirection Direction du corps du serpent
+//     * @return {@code true} si il faut placer un angle
+//     */
+//    private static boolean isCorner(Snake.Direction bodyDirection) {
+//        return bodyDirection != snake.getHead().getDirection();
+//    }
+//
+//    /**
+//     * Défini l'image utilisé pour l'angle formé par le corps du serpent
+//     * @param imagesPath Chemin vers les images du corps du serpent
+//     * @param bodyDirection Direction du serpent
+//     * @return L'image correspondant aux paramètres fournis
+//     */
+//    public static Image checkForCorner(String imagesPath, Snake.Direction bodyDirection) {
+//        Snake.Direction snakeDirection = snake.getHead().getDirection();
+//
+//        String oldDirection = "down";
+//        if (bodyDirection == Snake.Direction.UP)
+//            oldDirection = "up";
+//        else if (bodyDirection == Snake.Direction.DOWN)
+//            oldDirection = "down";
+//
+//        String newDirection = "left";
+//        switch (snakeDirection){
+//            case RIGHT:
+//                newDirection = "left";
+//                break;
+//            case LEFT:
+//                newDirection = "right";
+//                break;
+//        }
+//
+//        boolean isValidImage = true;
+//        if (bodyDirection == Snake.Direction.RIGHT && snakeDirection == Snake.Direction.DOWN) {
+//            oldDirection = "up";
+//            newDirection = "right";
+//        }
+//
+//        if (bodyDirection == Snake.Direction.RIGHT && snakeDirection == Snake.Direction.UP) {
+//            oldDirection = "down";
+//            newDirection = "right";
+//        }
+//
+//        if (bodyDirection == Snake.Direction.LEFT && snakeDirection == Snake.Direction.UP) {
+//            oldDirection = "down";
+//            newDirection = "left";
+//        }
+//
+//        if (bodyDirection == Snake.Direction.LEFT && snakeDirection == Snake.Direction.DOWN) {
+//            oldDirection = "up";
+//            newDirection = "left";
+//        }
+//
+//        // Nom de l'image de l'angle
+//        String imageName = "corner_" + oldDirection + newDirection.substring(0, 1).toUpperCase() + newDirection.substring(1) + ".png";
+//
+//        // Vérification de l'existence de l'image
+//        switch (imageName) {
+//            case "corner_downLeft.png":
+//            case "corner_downRight.png":
+//            case "corner_upLeft.png":
+//            case "corner_upRight.png":
+//                break;
+//            default:
+//                System.out.println(imageName + " : n'existe pas");
+//                isValidImage = false;
+//        }
+//
+//        // Chemin vers l'image
+//        String spritePath = imagesPath + imageName;
+//
+//        // Si l'image n'est pas valide, on la remplace par une autre image
+//        if (isValidImage)
+//            return new Image(spritePath);
+//
+//        String orientation;
+//        if (bodyDirection == Snake.Direction.LEFT || bodyDirection == Snake.Direction.RIGHT) {
+//            orientation = "horizontal";
+//        } else {
+//            orientation = "vertical";
+//        }
+//
+//        return new Image(imagesPath + "body_" + orientation + ".png");
+//    }
 }
