@@ -59,7 +59,8 @@ public class Painter {
         SnakeDot previousDot = null;
         for (SnakeDot dot : snake.getDots()) {
             paintSnake(dot, previousDot, gc);
-            previousDot = dot;
+            if (dot.getDotType() == Dot.DotType.HEAD)
+                previousDot = dot;
         }
 
 //        for (int i = 0; i < snake.getDots().size(); i++) {
