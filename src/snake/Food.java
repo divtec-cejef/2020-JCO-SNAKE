@@ -1,31 +1,27 @@
 package snake;
 
+// Importation des constantes
+import static snake.Constants.*;
+
 /**
  * Classe qui représente de la nourriture pour serpent
  */
-public class Food {
-    private Dot foodDot;
+public class Food extends Dot {
 
     /**
      * Crée une nouvelle nourriture pour serpent
-     * @param dot Point représentant cette nourriture
      */
-    Food(Dot dot) {
-        this.foodDot = dot;
+    public Food() {
+        super(DotType.FOOD, 0, 0, new Sprite(PATH_TO_IMAGES + "apple.png"), Snake.Direction.NONE);
     }
 
     /**
-     * @return un point de type nourriture
+     * Crée une nouvelle nourriture pour serpent
+     * @param x coordonnée x de cette nourriture
+     * @param y coordonnée y de cette nourriture
      */
-    public Dot getDot() {
-        return foodDot;
+    public Food (int x, int y) {
+        super(DotType.FOOD, x, y, new Sprite(PATH_TO_IMAGES + "apple.png"), Snake.Direction.NONE);
     }
 
-    /**
-     * Modifie un point de nourriture
-     * @param dot Nouveau point
-     */
-    public void setDot(Dot dot) {
-        this.foodDot = dot;
-    }
 }
