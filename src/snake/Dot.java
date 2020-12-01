@@ -1,5 +1,8 @@
 package snake;
 
+// Importation des constantes
+import static snake.Constants.*;
+
 /**
  * Représente un point
  */
@@ -16,11 +19,14 @@ public class Dot {
     }
 
     // Coordonnée X du point
-    private final int x;
+    private int x;
     // Coordonnée Y du point
-    private final int y;
+    private int y;
 
     private Snake.Direction direction;
+    private Snake.Direction previousDirection = null;
+
+    private Sprite sprite;
 
     // Type du point
     private DotType dotType;
@@ -30,12 +36,14 @@ public class Dot {
      * @param dotType Type du point
      * @param x Emplacement X
      * @param y Emplacement Y
+     * @param sprite Image du point
      * @param direction Direction du point
      */
-    Dot(final DotType dotType, final int x, final int y, Snake.Direction direction) {
+    Dot(DotType dotType, int x, int y, Sprite sprite, Snake.Direction direction) {
         this.dotType = dotType;
         this.x = x;
         this.y = y;
+        this.sprite = sprite;
         this.direction = direction;
     }
 
@@ -51,6 +59,22 @@ public class Dot {
      */
     public int getY() {
         return y;
+    }
+
+    /**
+     * Change la coordonnée x du point
+     * @param x Nouvelle coordonnée x
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    /**
+     * Change la coordonnée x du point
+     * @param y Nouvelle coordonnée y
+     */
+    public void setY(int y) {
+        this.y = y;
     }
 
     /**
@@ -73,8 +97,8 @@ public class Dot {
      * @param dy différence de coordonnée Y
      * @return un point avec les nouvelles coordonnées
      */
-    public Dot translate(DotType dotType, int dx, int dy, Snake.Direction direction) {
-        return new Dot(dotType, x + dx, y + dy, direction);
+    public Dot translate(int dx, int dy) {
+        return new Dot(dotType, x + dx, y + dy, sprite, direction);
     }
 
     /**
@@ -96,17 +120,38 @@ public class Dot {
     }
 
     /**
+     * @return la précédente direction de ce point
+     */
+    public Snake.Direction getPreviousDirection() {
+        return previousDirection;
+    }
+
+    /**
      * Modifie la direction du point
      * @param direction Nouvelle direction attribuée à ce point
      */
     public void setDirection(Snake.Direction direction) {
+        this.previousDirection = this.direction;
         this.direction = direction;
     }
 
     /**
-     * @return Les coordonnées du point sous forme de texte
+     * @return le sprite de ce point
      */
-    public String toString() {
-        return dotType + ", " + x + ", " + y;
+    public Sprite getSprite() {
+        return sprite;
     }
+
+    /**
+     * Modifie le sprite de ce point
+     * @param sprite Nouveau sprite du point
+     */
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
+
+    public Dot getDot() {
+        return this;
+    }
+
 }
