@@ -62,6 +62,7 @@ public class Main extends Application {
 
             } else {
                 Snake snake = grid.getSnake();
+                Snake.Direction snakeDirection = snake.getSnakeDirection();
 
                 if (isKeyPressed()) {
                     return;
@@ -70,25 +71,25 @@ public class Main extends Application {
                 switch (e.getCode()) {
                     case UP:
                         if (!isPaused()) {
-                            if (snake.getSnakeDirection() != Snake.Direction.DOWN)
+                            if (snakeDirection != Snake.Direction.DOWN && snakeDirection != Snake.Direction.UP)
                                 snake.setUp();
                         }
                         break;
                     case DOWN:
                         if (!isPaused()) {
-                            if (snake.getSnakeDirection() != Snake.Direction.UP)
+                            if (snakeDirection != Snake.Direction.UP && snakeDirection != Snake.Direction.DOWN)
                                 snake.setDown();
                         }
                         break;
                     case LEFT:
                         if (!isPaused()) {
-                            if (snake.getSnakeDirection() != Snake.Direction.RIGHT)
+                            if (snakeDirection != Snake.Direction.RIGHT && snakeDirection != Snake.Direction.LEFT)
                                 snake.setLeft();
                         }
                         break;
                     case RIGHT:
                         if (!isPaused()) {
-                            if (snake.getSnakeDirection() != Snake.Direction.LEFT)
+                            if (snakeDirection != Snake.Direction.LEFT && snakeDirection != Snake.Direction.RIGHT)
                                 snake.setRight();
                         }
                         break;
