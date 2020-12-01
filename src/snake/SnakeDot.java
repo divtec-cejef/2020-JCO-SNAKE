@@ -1,7 +1,5 @@
 package snake;
 
-import javafx.scene.image.Image;
-
 // Importation des constantes
 import static snake.Constants.*;
 
@@ -9,6 +7,7 @@ public class SnakeDot extends Dot {
 
     DotType dotType;
     Snake.Direction direction;
+    Snake.SnakeColor color;
 
     /**
      * Contruit un point
@@ -19,15 +18,20 @@ public class SnakeDot extends Dot {
      * @param sprite    Image du point
      * @param direction Direction du point
      */
-    public SnakeDot(DotType dotType, int x, int y, Sprite sprite, Snake.Direction direction) {
+    public SnakeDot(DotType dotType, int x, int y, Snake.SnakeColor color, Sprite sprite, Snake.Direction direction) {
         super(dotType, x, y, sprite, direction);
         this.dotType = dotType;
         this.direction = direction;
+        this.color = color;
     }
 
     @Override
     public SnakeDot translate(int dx, int dy) {
-        return new SnakeDot(this.getDotType(), this.getX() + dx, this.getY() + dy, this.getSprite(), this.getDirection());
+        return new SnakeDot(this.getDotType(), this.getX() + dx, this.getY() + dy, this.color, this.getSprite(), this.getDirection());
+    }
+
+    public Snake.SnakeColor getColor() {
+        return color;
     }
 
 
@@ -36,7 +40,7 @@ public class SnakeDot extends Dot {
      */
     public void setSnakeSprite(SnakeDot previousDot) {
         // Le chemin vers les images du serpent
-        String PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + Snake.SNAKE_COLOR.toString() + "/";
+        String PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + color.toString() + "/";
 
         switch (this.getDotType()) {
             case HEAD:

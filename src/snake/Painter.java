@@ -1,7 +1,6 @@
 package snake;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
@@ -13,7 +12,8 @@ import static snake.Constants.*;
  */
 public class Painter {
 
-    private static Snake snake;
+    private static Snake playerOneSnake;
+    private static Snake playerTwoSnake;
 
     /**
      * Initiallise la surface de jeu
@@ -38,7 +38,7 @@ public class Painter {
         initGrid(gc);
 
         gc.fillText("< Solo", WIDTH * 0.31f, HEIGHT * 0.6f);
-//        gc.fillText("Multi >", WIDTH * 0.65f, HEIGHT * 0.6f);
+        gc.fillText("Multi >", WIDTH * 0.65f, HEIGHT * 0.6f);
         gc.setFont(Font.font("Consolas", 24));
         gc.fillText("SNAKE ", WIDTH / 2.0f, HEIGHT * 0.4);
     }
@@ -55,12 +55,24 @@ public class Painter {
         paintDot(grid.getFood().getDot(), gc);
 
         // Dessine le serpent
-        snake = grid.getSnake();
+        playerOneSnake = grid.getPlayerOneSnake();
+
         SnakeDot previousDot = null;
-        for (SnakeDot dot : snake.getDots()) {
+        for (SnakeDot dot : playerOneSnake.getDots()) {
             paintSnake(dot, previousDot, gc);
             if (dot.getDotType() == Dot.DotType.HEAD)
                 previousDot = dot;
+        }
+
+        if (Main.isInMultiGame) {
+            playerTwoSnake = grid.getPlayerTwoSnake();
+
+            SnakeDot previousDot2 = null;
+            for (SnakeDot dot : playerTwoSnake.getDots()) {
+                paintSnake(dot, previousDot2, gc);
+                if (dot.getDotType() == Dot.DotType.HEAD)
+                    previousDot2 = dot;
+            }
         }
 
 //        for (int i = 0; i < snake.getDots().size(); i++) {
@@ -76,13 +88,22 @@ public class Painter {
 //        }
 
         // Dessine la tête du serpent d'une autre couleur lorsqu'il est mort
-        if (snake.isDead()) {
-            paintDeadSnakeHead(snake.getHead(), gc);
+        if (playerOneSnake.isDead()) {
+//            paintDeadSnakeHead(snake.getHead(), gc);
+            paintResetMessage(gc);
+        }
+
+        if (Main.isInMultiGame && playerTwoSnake.isDead()) {
+//            paintDeadSnakeHead(snake.getHead(), gc);
             paintResetMessage(gc);
         }
 
         // Dessine le score
-        gc.fillText("Score : " + snake.getScore(), TILE_SIZE * 5, TILE_SIZE * 1.5f);
+        if (Main.isInMultiGame) {
+            gc.fillText("Score Joueur 1 : " + playerOneSnake.getScore(), TILE_SIZE * 5, TILE_SIZE * 1.5f);
+            gc.fillText("Score Joueur 2 : " + playerTwoSnake.getScore(), TILE_SIZE * 5, TILE_SIZE * 3.2f);
+        } else
+            gc.fillText("Score : " + playerOneSnake.getScore(), TILE_SIZE * 5, TILE_SIZE * 1.5f);
     }
 
     /**
@@ -91,10 +112,10 @@ public class Painter {
      * @param gc  GraphicsContext
      */
     private static void paintDot(Dot dot, GraphicsContext gc) {
-        gc.drawImage(getImages(dot, Snake.SNAKE_COLOR),
-                dot.getX() * TILE_SIZE,
-                dot.getY() * TILE_SIZE,
-                TILE_SIZE, TILE_SIZE);
+//        gc.drawImage(getImages(dot, Snake.SNAKE_COLOR),
+//                dot.getX() * TILE_SIZE,
+//                dot.getY() * TILE_SIZE,
+//                TILE_SIZE, TILE_SIZE);
 
     }
 
@@ -115,8 +136,8 @@ public class Painter {
     private static void paintDeadSnakeHead(SnakeDot snakeHeadDot, GraphicsContext gc) {
         Snake.SnakeColor deathColor = Snake.SnakeColor.RED;
 
-        if (Snake.SNAKE_COLOR == Snake.SnakeColor.RED)
-            deathColor = Snake.SnakeColor.BLUE;
+//        if (Snake.SNAKE_COLOR == Snake.SnakeColor.RED)
+//            deathColor = Snake.SnakeColor.BLUE;
 
         gc.drawImage(getImages(snakeHeadDot, deathColor),
                 snakeHeadDot.getX() * TILE_SIZE,
@@ -142,21 +163,21 @@ public class Painter {
      * @param bodyColor La couleur des parties du serpent
      * @return L'image correspondante aux paramètres fournis
      */
-    private static Image getImages(Dot dot, Snake.SnakeColor bodyColor) {
+    private static Sprite getImages(Dot dot, Snake.SnakeColor bodyColor) {
         Dot.DotType dotType = dot.getDotType();
         Snake.Direction dotDirection = dot.getDirection();
 
         if (dotType == Dot.DotType.FOOD)
-            return new Image(PATH_TO_IMAGES + "apple.png");
+            return new Sprite(PATH_TO_IMAGES + "apple.png");
 
         // Le chemin vers les images du serpent
         String PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + bodyColor.toString() + "/";
 
         switch (dotType) {
             case HEAD:
-                return new Image(PATH_TO_SNAKE_IMAGES + "head_" + dotDirection.toString().toLowerCase() + ".png");
+                return new Sprite(PATH_TO_SNAKE_IMAGES + "head_" + dotDirection.toString().toLowerCase() + ".png");
             case TAIL:
-                return new Image(PATH_TO_SNAKE_IMAGES + "tail_" + dotDirection.toString().toLowerCase() + ".png");
+                return new Sprite(PATH_TO_SNAKE_IMAGES + "tail_" + dotDirection.toString().toLowerCase() + ".png");
             case BODY:
             default:
                 String orientation;
@@ -169,7 +190,7 @@ public class Painter {
 //                if (isCorner(dotDirection))
 //                    return checkForCorner(PATH_TO_SNAKE_IMAGES, dotDirection);
 //                else
-                    return new Image(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
+                    return new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
         }
     }
 

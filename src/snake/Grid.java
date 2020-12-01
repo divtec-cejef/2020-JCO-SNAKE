@@ -15,8 +15,9 @@ public class Grid {
     // Le nombre de lignes de la grille
     private final int rows;
 
-    private final Snake snake;
-    private Food food = new Food();
+    private final Snake playerOneSnake;
+    private Snake playerTwoSnake = null;
+    private Food food;
 
     /**
      * Crée une nouvelle grille
@@ -26,7 +27,10 @@ public class Grid {
         cols = HEIGHT / TILE_SIZE;
 
         // Place le serpent sur la grille
-        snake = new Snake(this);
+        playerOneSnake = new Snake(this);
+
+        if (Main.isInMultiGame)
+            playerTwoSnake = new Snake(this);
 
         // Place la pomme à un endroit aléatoire
 //        food = new Food(getRandomDot());
@@ -66,7 +70,7 @@ public class Grid {
         if (y < 0) y = cols - 1;
 
         // Recrée et retourne le point avec le bon alignement
-        return new SnakeDot(dot.getDotType(), x, y, dot.getSprite(), dot.getDirection());
+        return new SnakeDot(dot.getDotType(), x, y, dot.getColor(), dot.getSprite(), dot.getDirection());
     }
 
 //    /**
@@ -87,7 +91,7 @@ public class Grid {
         Food randomApple;
         do {
             randomApple = new Food(random.nextInt(rows), random.nextInt(cols));
-        } while (randomApple.equals(snake.getHead()));
+        } while (randomApple.equals(playerOneSnake.getHead()));
 
         return randomApple;
     }
@@ -100,12 +104,20 @@ public class Grid {
      */
     public void update() {
 //        if (food.getDot().equals(snake.getHead())) {
-        if (food.getDot().equals(snake.getHead())) {
-            snake.extend();
+        if (food.getDot().equals(playerOneSnake.getHead())) {
+            playerOneSnake.extend();
             food = setNewFood();
 //            food.setDot(getRandomDot());
         } else {
-            snake.move();
+            playerOneSnake.move();
+        }
+
+        if (food.getDot().equals(playerTwoSnake.getHead())) {
+            playerTwoSnake.extend();
+            food = setNewFood();
+//            food.setDot(getRandomDot());
+        } else {
+            playerTwoSnake.move();
         }
     }
 
@@ -126,8 +138,12 @@ public class Grid {
     /**
      * @return le serpent
      */
-    public Snake getSnake() {
-        return snake;
+    public Snake getPlayerOneSnake() {
+        return playerOneSnake;
+    }
+
+    public Snake getPlayerTwoSnake() {
+        return playerTwoSnake;
     }
 
     /**

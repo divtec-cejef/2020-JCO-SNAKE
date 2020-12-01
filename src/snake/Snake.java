@@ -42,7 +42,7 @@ public class Snake {
     }
 
     // Couleur du serpent
-    public static SnakeColor SNAKE_COLOR = SnakeColor.randomColor();
+    public SnakeColor SNAKE_COLOR = SnakeColor.randomColor();
 
     // Longueur du serpent
     private int length = INITIAL_SNAKE_LENGTH;
@@ -336,6 +336,6 @@ public class Snake {
      * @return ce point
      */
     private SnakeDot createNewSnakeParts(Dot.DotType dotType, int x, int y) {
-        return new SnakeDot(dotType, x, y, getSnakeSprite(dotType), INITIAL_SNAKE_DIRECTION);
+        return new SnakeDot(dotType, x, y, SNAKE_COLOR, getSnakeSprite(dotType), INITIAL_SNAKE_DIRECTION);
     }
 }

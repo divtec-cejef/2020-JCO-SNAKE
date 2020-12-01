@@ -4,10 +4,12 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -33,6 +35,7 @@ public class Main extends Application {
     private boolean paused;
 
     private boolean isInMenu = true;
+    public static boolean isInMultiGame = false;
 
     private Grid grid;
     private GraphicsContext context;
@@ -49,72 +52,103 @@ public class Main extends Application {
         context = canvas.getGraphicsContext2D();
 
         canvas.setFocusTraversable(true);
-        canvas.setOnKeyPressed(e -> {
-            if (isInMenu) {
-                switch (e.getCode()) {
-                    case LEFT:
-                        startSoloGame();
-                        break;
-//                    case RIGHT:
-//                        startMultiGame();
-//                        break;
-                }
-
-            } else {
-                Snake snake = grid.getSnake();
-                Snake.Direction snakeDirection = snake.getSnakeDirection();
-
-                if (isKeyPressed()) {
-                    return;
-                }
-
-                switch (e.getCode()) {
-                    case UP:
-                        if (!isPaused()) {
-                            if (snakeDirection != Snake.Direction.DOWN && snakeDirection != Snake.Direction.UP)
-                                snake.setUp();
-                        }
-                        break;
-                    case DOWN:
-                        if (!isPaused()) {
-                            if (snakeDirection != Snake.Direction.UP && snakeDirection != Snake.Direction.DOWN)
-                                snake.setDown();
-                        }
-                        break;
-                    case LEFT:
-                        if (!isPaused()) {
-                            if (snakeDirection != Snake.Direction.RIGHT && snakeDirection != Snake.Direction.LEFT)
-                                snake.setLeft();
-                        }
-                        break;
-                    case RIGHT:
-                        if (!isPaused()) {
-                            if (snakeDirection != Snake.Direction.LEFT && snakeDirection != Snake.Direction.RIGHT)
-                                snake.setRight();
-                        }
-                        break;
-                    case ENTER:
-                        if (isPaused())
-                            startSoloGame();
-                        break;
-                    case Q:
-                        if (isPaused()) {
-                            isInMenu = true;
-                            Painter.paintMenu(context);
-                        }
-                        break;
-                    case ESCAPE:
-                        if (isPaused()) {
-                            primaryStage.close();
-                        }
-                        break;
-                }
-            }
-        });
 
         root.getChildren().add(canvas);
 
         Scene scene = new Scene(root, BORDER_COLOR);
+
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (isInMenu) {
+                    switch (event.getCode()) {
+                        case LEFT:
+                            startSoloGame();
+                            break;
+                        case RIGHT:
+                            startMultiGame();
+                            break;
+                    }
+
+                } else {
+                    Snake snake = grid.getPlayerOneSnake();
+                    Snake.Direction snakeDirection = snake.getSnakeDirection();
+
+                    Snake snake2 = grid.getPlayerTwoSnake();
+                    Snake.Direction snakeDirection2 = snake2.getSnakeDirection();
+
+                    if (isKeyPressed()) {
+                        return;
+                    }
+
+                    switch (event.getCode()) {
+                        case W:
+                            if (!isPaused()) {
+                                if (snakeDirection2 != Snake.Direction.DOWN && snakeDirection2 != Snake.Direction.UP)
+                                    snake2.setUp();
+                            }
+                            break;
+                        case S:
+                            if (!isPaused()) {
+                                if (snakeDirection2 != Snake.Direction.UP && snakeDirection2 != Snake.Direction.DOWN)
+                                    snake2.setDown();
+                            }
+                            break;
+                        case A:
+                            if (!isPaused()) {
+                                if (snakeDirection2 != Snake.Direction.RIGHT && snakeDirection2 != Snake.Direction.LEFT)
+                                    snake2.setLeft();
+                            }
+                            break;
+                        case D:
+                            if (!isPaused()) {
+                                if (snakeDirection2 != Snake.Direction.LEFT && snakeDirection2 != Snake.Direction.RIGHT)
+                                    snake2.setRight();
+                            }
+                            break;
+                        case UP:
+                            if (!isPaused()) {
+                                if (snakeDirection != Snake.Direction.DOWN && snakeDirection != Snake.Direction.UP)
+                                    snake.setUp();
+                            }
+                            break;
+                        case DOWN:
+                            if (!isPaused()) {
+                                if (snakeDirection != Snake.Direction.UP && snakeDirection != Snake.Direction.DOWN)
+                                    snake.setDown();
+                            }
+                            break;
+                        case LEFT:
+                            if (!isPaused()) {
+                                if (snakeDirection != Snake.Direction.RIGHT && snakeDirection != Snake.Direction.LEFT)
+                                    snake.setLeft();
+                            }
+                            break;
+                        case RIGHT:
+                            if (!isPaused()) {
+                                if (snakeDirection != Snake.Direction.LEFT && snakeDirection != Snake.Direction.RIGHT)
+                                    snake.setRight();
+                            }
+                            break;
+                        case ENTER:
+                            if (isPaused())
+                                startSoloGame();
+                            break;
+                        case Q:
+                            if (isPaused()) {
+                                isInMenu = true;
+                                Painter.paintMenu(context);
+                            }
+                            break;
+                        case ESCAPE:
+                            if (isPaused()) {
+                                primaryStage.close();
+                            }
+                            break;
+                    }
+                }
+            }
+        });
 
         // Paramètres de la fenêtre
         primaryStage.setResizable(false);
@@ -139,14 +173,15 @@ public class Main extends Application {
         grid = new Grid();
         paused = false;
         keyIsPressed = false;
+        Snake playerOneSnake = grid.getPlayerOneSnake();
 
-        Snake.SNAKE_COLOR = Snake.SnakeColor.randomColor();
+        playerOneSnake.SNAKE_COLOR = Snake.SnakeColor.randomColor();
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             grid.update();
             Painter.paintGame(grid, context);
 
-            if (grid.getSnake().isDead())
+            if (grid.getPlayerOneSnake().isDead())
                 pause();
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -156,12 +191,34 @@ public class Main extends Application {
         timeline.setRate(2);
     }
 
-//    /**
-//     * Lance une partie multijoueur
-//     */
-//    private void startMultiGame() {
-//
-//    }
+    /**
+     * Lance une partie multijoueur
+     */
+    private void startMultiGame() {
+        isInMenu = false;
+        grid = new Grid();
+        paused = false;
+        keyIsPressed = false;
+        isInMultiGame = true;
+        Snake playerOneSnake = grid.getPlayerOneSnake();
+        Snake playerTwoSnake = grid.getPlayerTwoSnake();
+
+        playerOneSnake.SNAKE_COLOR = Snake.SnakeColor.randomColor();
+        playerTwoSnake.SNAKE_COLOR = Snake.SnakeColor.randomColor();
+
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            grid.update();
+            Painter.paintGame(grid, context);
+
+            if (grid.getPlayerOneSnake().isDead() || grid.getPlayerTwoSnake().isDead())
+                pause();
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
+        timeline.setDelay(new Duration(10.0));
+        timeline.setRate(2);
+    }
 
     /**
      * Mets le jeu sur pause
