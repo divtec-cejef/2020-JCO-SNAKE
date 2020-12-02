@@ -1,5 +1,7 @@
 package snake;
 
+import javafx.stage.Stage;
+
 import java.util.*;
 
 // Importation des constantes
@@ -21,15 +23,27 @@ public class Snake {
 
     // Couleurs que le serpent peut avoir
     public enum SnakeColor {
-        GREEN,
-        RED,
-        BLUE,
-        YELLOW,
-        NONE;
+        GREEN ("Vert"),
+        RED ("Rouge"),
+        BLUE ("Bleu"),
+        YELLOW ("Jaune"),
+        NONE ("NONE");
 
+        // Nom en français de la couleur
+        private final String name;
+
+        // Liste de toutes les couleurs
         private static final List<SnakeColor> COLOR_POSSIBILITIES = Collections.unmodifiableList(Arrays.asList(values()));
         private static final int SIZE = COLOR_POSSIBILITIES.size();
         private static final Random RANDOM = new Random();
+
+        /**
+         * Construit une couleur avec un nom
+         * @param colorName Nom de la couleur
+         */
+        SnakeColor(String colorName) {
+            name = colorName;
+        }
 
         /**
          * @return une couleur aléatoire
@@ -41,17 +55,24 @@ public class Snake {
 
             return color;
         }
+
+        /**
+         * @return le nom d'une couleur
+         */
+        public String getName() {
+            return this.name;
+        }
     }
 
     // Couleur du serpent
-    public SnakeColor snakeColor = SnakeColor.randomColor();
+    public SnakeColor snakeColor;
 
     // Longueur du serpent
     private int length = INITIAL_SNAKE_LENGTH;
 
     /*
      * Direction du serpent
-     * On démarre sans direction pour pouvoir partir n'importe où
+     * On démarre sans direction précise pour pouvoir partir n'importe où
      */
     private Direction snakeDirection = Direction.NONE;
     // Grille du jeu
@@ -79,7 +100,7 @@ public class Snake {
      * Construit un nouveau serpent
      * @param grid Grille de jeu
      */
-    public Snake(Grid grid) {
+    public Snake(SnakeColor color, Grid grid) {
         dots = new LinkedList<>();
         isAlive = true;
         canDie = false;
@@ -88,6 +109,7 @@ public class Snake {
         yVelocity = 0;
         stepX = 0;
         stepY = 0;
+        this.snakeColor = color;
         createDots();
     }
 
@@ -155,10 +177,13 @@ public class Snake {
             for (int z = 0; z < dots.size(); z++) {
                 if (z == 0) {
                     dots.get(z).setDotType(Dot.DotType.TAIL);
+//                    dots.get(z).setSprite(getSnakeSprite(Dot.DotType.TAIL));
                 } else if (z == dots.size() - 1) {
                     dots.get(z).setDotType(Dot.DotType.HEAD);
+//                    dots.get(z).setSprite(getSnakeSprite(Dot.DotType.HEAD));
                 } else {
                     dots.get(z).setDotType(Dot.DotType.BODY);
+//                    dots.get(z).setSprite(getSnakeSprite(Dot.DotType.BODY));
                 }
             }
         } else {
@@ -339,5 +364,13 @@ public class Snake {
      */
     private SnakeDot createNewSnakeParts(Dot.DotType dotType, int x, int y) {
         return new SnakeDot(dotType, x, y, snakeColor, getSnakeSprite(dotType), INITIAL_SNAKE_DIRECTION);
+//        return new SnakeDot(dotType, x, y, snakeColor, getSnakeSprite(dotType), INITIAL_SNAKE_DIRECTION);
+    }
+
+    /**
+     * @return la couleur de ce serpent
+     */
+    public SnakeColor getSnakeColor() {
+        return snakeColor;
     }
 }

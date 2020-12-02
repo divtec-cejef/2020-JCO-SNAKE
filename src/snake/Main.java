@@ -39,12 +39,15 @@ public class Main extends Application {
     private GraphicsContext context;
     private boolean keyIsPressed;
 
+    Stage stageToClose;
+
     public static void main(String[] args) {
         Application.launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
+        stageToClose = primaryStage;
         StackPane root = new StackPane();
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         context = canvas.getGraphicsContext2D();
@@ -125,6 +128,21 @@ public class Main extends Application {
                         playerOneSnake.setRight();
                 }
                 break;
+            case ENTER:
+                if (isPaused())
+                    startSoloGame();
+                break;
+            case Q:
+                if (isPaused()) {
+                    isInMenu = true;
+                    Painter.paintMenu(context);
+                }
+                break;
+            case ESCAPE:
+                if (isPaused()) {
+                    stageToClose.close();
+                }
+                break;
         }
     }
 
@@ -180,11 +198,6 @@ public class Main extends Application {
      */
     private void startSoloGame() {
         initGame();
-        Snake playerOneSnake = grid.getPlayerOneSnake();
-
-        // Choisi une couleur aléatoire pour le serpent
-        playerOneSnake.snakeColor = Snake.SnakeColor.randomColor();
-
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             grid.update();
             Painter.paintGame(grid, context);
@@ -204,18 +217,6 @@ public class Main extends Application {
      */
     private void startMultiGame() {
         initGame();
-        Snake playerOneSnake = grid.getPlayerOneSnake();
-        Snake playerTwoSnake = grid.getPlayerTwoSnake();
-
-        // Donne une couleur aux serpents
-        playerOneSnake.snakeColor = Snake.SnakeColor.randomColor();
-
-        Snake.SnakeColor colorPlayerTwo = Snake.SnakeColor.randomColor();
-        while (playerOneSnake.snakeColor == colorPlayerTwo)
-            colorPlayerTwo = Snake.SnakeColor.randomColor();
-
-        playerTwoSnake.snakeColor = colorPlayerTwo;
-
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             grid.update();
             Painter.paintGame(grid, context);

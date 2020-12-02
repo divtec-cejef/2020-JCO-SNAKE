@@ -102,11 +102,13 @@ public class Painter {
         }
 
         // Dessine le score
+        gc.setTextAlign(TextAlignment.LEFT);
         if (Main.isInMultiGame) {
-            gc.fillText("Joueur 1 : " + playerOneSnake.getScore(), TILE_SIZE * 5.5f, TILE_SIZE * 1.5f);
-            gc.fillText("Joueur 2 : " + playerTwoSnake.getScore(), TILE_SIZE * 5.5f, TILE_SIZE * 3.5f);
+            gc.fillText("Serpent " + playerOneSnake.getSnakeColor().getName() +" : " + playerOneSnake.getScore(), TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
+            gc.fillText("Serpent " + playerTwoSnake.getSnakeColor().getName() +" : " + playerTwoSnake.getScore(), TILE_SIZE * 0.5f, TILE_SIZE * 3.5f);
         } else
-            gc.fillText("Score : " + playerOneSnake.getScore(), TILE_SIZE * 5, TILE_SIZE * 1.5f);
+            gc.fillText("Score : " + playerOneSnake.getScore(), TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
+        gc.setTextAlign(TextAlignment.CENTER);
     }
 
     /**
@@ -115,10 +117,10 @@ public class Painter {
      * @param gc  GraphicsContext
      */
     private static void paintDot(Dot dot, GraphicsContext gc) {
-//        gc.drawImage(getImages(dot, Snake.SNAKE_COLOR),
-//                dot.getX() * TILE_SIZE,
-//                dot.getY() * TILE_SIZE,
-//                TILE_SIZE, TILE_SIZE);
+        gc.drawImage(dot.getSprite(),
+                dot.getX() * TILE_SIZE,
+                dot.getY() * TILE_SIZE,
+                TILE_SIZE, TILE_SIZE);
 
     }
 
