@@ -21,11 +21,11 @@ public class Snake {
 
     // Couleurs que le serpent peut avoir
     public enum SnakeColor {
-        GREEN ("Vert"),
-        RED ("Rouge"),
-        BLUE ("Bleu"),
-        YELLOW ("Jaune"),
-        NONE ("NONE");
+        GREEN("Vert"),
+        RED("Rouge"),
+        BLUE("Bleu"),
+        YELLOW("Jaune"),
+        NONE("NONE");
 
         // Nom en français de la couleur
         private final String name;
@@ -37,6 +37,7 @@ public class Snake {
 
         /**
          * Construit une couleur avec un nom
+         *
          * @param colorName Nom de la couleur
          */
         SnakeColor(String colorName) {
@@ -96,6 +97,7 @@ public class Snake {
 
     /**
      * Construit un nouveau serpent
+     *
      * @param grid Grille de jeu
      */
     public Snake(SnakeColor color, Grid grid) {
@@ -132,6 +134,7 @@ public class Snake {
 
     /**
      * Est appelé après que le serpent ait mangé une pomme, augmente sa taille et sa vitesse et place une nouvelle pomme
+     *
      * @param dot Le point où était placée la nourriture que le serpent à mangé
      */
     private void growTo(SnakeDot dot) {
@@ -144,6 +147,7 @@ public class Snake {
 
     /**
      * Replace la tête du serpent et enlève son ancienne position
+     *
      * @param dot Le nouvel emplacement de la tête du serpent
      */
     private void shiftTo(SnakeDot dot) {
@@ -156,6 +160,7 @@ public class Snake {
 
     /**
      * Vérifie où placer un point sur la grille qui représente la tête
+     *
      * @param dot Le point vers lequel déplacer le serpent
      */
     private void checkAndAdd(SnakeDot dot) {
@@ -219,6 +224,7 @@ public class Snake {
 
     /**
      * Modifie la direction du serpent
+     *
      * @param newDirection Nouvelle direction du serpent
      */
     public void setSnakeDirection(Direction newDirection) {
@@ -239,7 +245,7 @@ public class Snake {
     public void move() {
         if (isMoving()) {
 //            if (!dots.contains(head.translate(stepX, stepY)))
-                shiftTo(head.translate(stepX, stepY));
+            shiftTo(head.translate(stepX, stepY));
 //            shiftTo(head.translate(head.getDotType(), xVelocity, yVelocity));
         }
     }
@@ -355,9 +361,10 @@ public class Snake {
 
     /**
      * Crée un nouveau morceau de corps de serpent
+     *
      * @param dotType le type de point de ce corps
-     * @param x sa position x
-     * @param y sa position y
+     * @param x       sa position x
+     * @param y       sa position y
      * @return ce point
      */
     private SnakeDot createNewSnakeParts(Dot.DotType dotType, int x, int y) {

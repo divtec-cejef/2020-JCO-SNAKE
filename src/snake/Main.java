@@ -99,6 +99,7 @@ public class Main extends Application {
 
     /**
      * Ecoute les contrôles pour le premier joueur
+     *
      * @param event Touche appuyée
      */
     private void playerOneKeyListener(KeyEvent event) {
@@ -108,7 +109,7 @@ public class Main extends Application {
         Snake playerOneSnake = grid.getPlayerOneSnake();
         Snake.Direction playerOneSnakeDirection = playerOneSnake.getSnakeDirection();
 
-        switch (event.getCode()){
+        switch (event.getCode()) {
             case UP:
                 if (!isPaused()) {
                     if (playerOneSnakeDirection != Snake.Direction.DOWN && playerOneSnakeDirection != Snake.Direction.UP)
@@ -135,7 +136,12 @@ public class Main extends Application {
                 break;
             case ENTER:
                 if (isPaused())
-                    startSoloGame();
+                    if (isInMultiGame)
+                        startMultiGame();
+                    else {
+                        isInMultiGame = false;
+                        startSoloGame();
+                    }
                 break;
             case Q:
                 if (isPaused()) {
@@ -153,6 +159,7 @@ public class Main extends Application {
 
     /**
      * Ecoute les contrôles pour le deuxième joueur
+     *
      * @param event Touche appuyée
      */
     private void playerTwoKeyListener(KeyEvent event) {
@@ -218,7 +225,7 @@ public class Main extends Application {
         timeline.play();
 
         timeline.setDelay(new Duration(10.0));
-        timeline.setRate(2);
+        timeline.setRate(20);
     }
 
     /**
@@ -237,7 +244,7 @@ public class Main extends Application {
         timeline.play();
 
         timeline.setDelay(new Duration(10.0));
-        timeline.setRate(2);
+        timeline.setRate(20);
     }
 
     /**

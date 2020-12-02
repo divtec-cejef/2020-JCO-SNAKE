@@ -62,6 +62,7 @@ public class Grid {
 
     /**
      * Aligne un point sur la grille
+     *
      * @param snakeDot Le point dont on veut corriger l'emplacement
      * @return Le point aligné correctement
      */

@@ -10,11 +10,12 @@ public class SnakeDot extends Dot {
     Snake.SnakeColor color;
 
     /**
-     * Contruit un point
+     * Contruit un point faisant partie du serpent
      *
      * @param dotType   Type du point
      * @param x         Emplacement X
      * @param y         Emplacement Y
+     * @param color     Couleur du point
      * @param sprite    Image du point
      * @param direction Direction du point
      */
@@ -53,7 +54,7 @@ public class SnakeDot extends Dot {
             default:
                 if (previousDot != null && previousDot.getPreviousDirection() != null)
                     this.setSprite(checkForCorner(PATH_TO_SNAKE_IMAGES, previousDot.getPreviousDirection()));
-                /* Provisoire */
+                    /* Provisoire */
                 else {
                     String orientation;
                     if (direction == Snake.Direction.LEFT || direction == Snake.Direction.RIGHT) {
@@ -78,6 +79,7 @@ public class SnakeDot extends Dot {
 
     /**
      * Défini l'image utilisé pour l'angle formé par le corps du serpent
+     *
      * @param imagesPath Chemin vers les images du corps du serpent
      * @return L'image correspondant aux paramètres fournis
      */
@@ -174,7 +176,7 @@ public class SnakeDot extends Dot {
 //            if (isValidImage && direction == previousDotDirection)
 //                return new Sprite(spritePath);
 //        }
-        
+
         String orientation;
         if (direction == Snake.Direction.LEFT || direction == Snake.Direction.RIGHT) {
             orientation = "horizontal";

@@ -17,6 +17,7 @@ public class Painter {
 
     /**
      * Initiallise la surface de jeu
+     *
      * @param gc GraphicsContext
      */
     private static void initGrid(GraphicsContext gc) {
@@ -32,6 +33,7 @@ public class Painter {
 
     /**
      * Affiche le menu de sélection de mode de jeu
+     *
      * @param gc GraphicsContext
      */
     public static void paintMenu(GraphicsContext gc) {
@@ -48,6 +50,7 @@ public class Painter {
 
     /**
      * Dessine sur la grille
+     *
      * @param grid grille sur laquelle on veut dessiner
      * @param gc   GraphicsContext
      */
@@ -90,29 +93,26 @@ public class Painter {
 //                paintDot(snakeDot, gc);
 //        }
 
-        // Dessine la tête du serpent d'une autre couleur lorsqu'il est mort
-        if (playerOneSnake.isDead()) {
-//            paintDeadSnakeHead(snake.getHead(), gc);
+        // Affiche un message lorsqu'un serpent est mort
+        if (playerOneSnake.isDead() || (Main.isInMultiGame && playerTwoSnake.isDead()))
             paintResetMessage(gc);
-        }
 
-        if (Main.isInMultiGame && playerTwoSnake.isDead()) {
-//            paintDeadSnakeHead(snake.getHead(), gc);
-            paintResetMessage(gc);
-        }
+        float playerOneScoreLocationX = TILE_SIZE * 0.5f;
+        float scoreLocationY = TILE_SIZE * 1.5f;
 
         // Dessine le score
         gc.setTextAlign(TextAlignment.LEFT);
         if (Main.isInMultiGame) {
-            gc.fillText("Serpent " + playerOneSnake.getSnakeColor().getName() +" : " + playerOneSnake.getScore(), TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
-            gc.fillText("Serpent " + playerTwoSnake.getSnakeColor().getName() +" : " + playerTwoSnake.getScore(), TILE_SIZE * 0.5f, TILE_SIZE * 3.5f);
+            gc.fillText("Serpent " + playerOneSnake.getSnakeColor().getName() + " : " + playerOneSnake.getScore(), playerOneScoreLocationX, scoreLocationY);
+            gc.setTextAlign(TextAlignment.RIGHT);
+            gc.fillText("Serpent " + playerTwoSnake.getSnakeColor().getName() + " : " + playerTwoSnake.getScore(), WIDTH - TILE_SIZE, scoreLocationY);
         } else
-            gc.fillText("Score : " + playerOneSnake.getScore(), TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
-        gc.setTextAlign(TextAlignment.CENTER);
+            gc.fillText("Score : " + playerOneSnake.getScore(), playerOneScoreLocationX, scoreLocationY);
     }
 
     /**
      * Dessine l'image d'un point sur la grille
+     *
      * @param dot Point à dessiner
      * @param gc  GraphicsContext
      */
@@ -135,8 +135,9 @@ public class Painter {
 
     /**
      * Change la couleur de la tête du serpent lorsqu'il est mort
-     * @param snakeHeadDot   Point correspondant à la tête du serpent
-     * @param gc             GraphicsContext
+     *
+     * @param snakeHeadDot Point correspondant à la tête du serpent
+     * @param gc           GraphicsContext
      */
     private static void paintDeadSnakeHead(SnakeDot snakeHeadDot, GraphicsContext gc) {
         Snake.SnakeColor deathColor = Snake.SnakeColor.RED;
@@ -153,6 +154,7 @@ public class Painter {
 
     /**
      * Affiche le message de fin de jeu
+     *
      * @param gc GraphicsContext
      */
     public static void paintResetMessage(GraphicsContext gc) {
@@ -164,6 +166,7 @@ public class Painter {
 
     /**
      * Récupère les images utilisées pour le jeu
+     *
      * @param dot       Point dont on veut l'image
      * @param bodyColor La couleur des parties du serpent
      * @return L'image correspondante aux paramètres fournis
@@ -195,7 +198,7 @@ public class Painter {
 //                if (isCorner(dotDirection))
 //                    return checkForCorner(PATH_TO_SNAKE_IMAGES, dotDirection);
 //                else
-                    return new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
+                return new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
         }
     }
 

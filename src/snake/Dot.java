@@ -33,10 +33,11 @@ public class Dot {
 
     /**
      * Contruit un point
-     * @param dotType Type du point
-     * @param x Emplacement X
-     * @param y Emplacement Y
-     * @param sprite Image du point
+     *
+     * @param dotType   Type du point
+     * @param x         Emplacement X
+     * @param y         Emplacement Y
+     * @param sprite    Image du point
      * @param direction Direction du point
      */
     Dot(DotType dotType, int x, int y, Sprite sprite, Snake.Direction direction) {
@@ -63,6 +64,7 @@ public class Dot {
 
     /**
      * Change la coordonnée x du point
+     *
      * @param x Nouvelle coordonnée x
      */
     public void setX(int x) {
@@ -71,6 +73,7 @@ public class Dot {
 
     /**
      * Change la coordonnée x du point
+     *
      * @param y Nouvelle coordonnée y
      */
     public void setY(int y) {
@@ -86,6 +89,7 @@ public class Dot {
 
     /**
      * Change le type du point
+     *
      * @param newDotType Le nouveau type du point
      */
     public void setDotType(DotType newDotType) {
@@ -128,6 +132,7 @@ public class Dot {
 
     /**
      * Modifie la direction du point
+     *
      * @param direction Nouvelle direction attribuée à ce point
      */
     public void setDirection(Snake.Direction direction) {
@@ -144,6 +149,7 @@ public class Dot {
 
     /**
      * Modifie le sprite de ce point
+     *
      * @param sprite Nouveau sprite du point
      */
     public void setSprite(Sprite sprite) {
