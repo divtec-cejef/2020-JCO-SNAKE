@@ -37,14 +37,32 @@ public class Grid {
         food = setNewFood();
     }
 
+//    /**
+//     * Aligne un point sur la grille
+//     * @param dot Le point dont on veut corriger l'emplacement
+//     * @return Le point aligné correctement
+//     */
+//    public Dot wrap(Dot dot) {
+//        int x = dot.getX();
+//        int y = dot.getY();
+//
+//        if (x >= rows) x = 0;
+//        if (y >= cols) y = 0;
+//        if (x < 0) x = rows - 1;
+//        if (y < 0) y = cols - 1;
+//
+//        // Recrée et retourne le point avec le bon alignement
+//        return new Dot(dot.getDotType(), x, y, dot.getSprite(), dot.getDirection());
+//    }
+
     /**
      * Aligne un point sur la grille
-     * @param dot Le point dont on veut corriger l'emplacement
+     * @param snakeDot Le point dont on veut corriger l'emplacement
      * @return Le point aligné correctement
      */
-    public Dot wrap(Dot dot) {
-        int x = dot.getX();
-        int y = dot.getY();
+    public SnakeDot wrap(SnakeDot snakeDot) {
+        int x = snakeDot.getX();
+        int y = snakeDot.getY();
 
         if (x >= rows) x = 0;
         if (y >= cols) y = 0;
@@ -52,25 +70,7 @@ public class Grid {
         if (y < 0) y = cols - 1;
 
         // Recrée et retourne le point avec le bon alignement
-        return new Dot(dot.getDotType(), x, y, dot.getSprite(), dot.getDirection());
-    }
-
-    /**
-     * Aligne un point sur la grille
-     * @param dot Le point dont on veut corriger l'emplacement
-     * @return Le point aligné correctement
-     */
-    public SnakeDot wrap(SnakeDot dot) {
-        int x = dot.getX();
-        int y = dot.getY();
-
-        if (x >= rows) x = 0;
-        if (y >= cols) y = 0;
-        if (x < 0) x = rows - 1;
-        if (y < 0) y = cols - 1;
-
-        // Recrée et retourne le point avec le bon alignement
-        return new SnakeDot(dot.getDotType(), x, y, dot.getColor(), dot.getSprite(), dot.getDirection());
+        return new SnakeDot(snakeDot.getDotType(), x, y, snakeDot.getColor(), snakeDot.getSprite(), snakeDot.getDirection());
     }
 
 //    /**
@@ -91,7 +91,7 @@ public class Grid {
         Food randomApple;
         do {
             randomApple = new Food(random.nextInt(rows), random.nextInt(cols));
-        } while (randomApple.equals(playerOneSnake.getHead()));
+        } while (randomApple.getDot().equals(playerOneSnake.getHead()));
 
         return randomApple;
     }
@@ -112,12 +112,14 @@ public class Grid {
             playerOneSnake.move();
         }
 
-        if (food.getDot().equals(playerTwoSnake.getHead())) {
-            playerTwoSnake.extend();
-            food = setNewFood();
+        if (Main.isInMultiGame) {
+            if (food.getDot().equals(playerTwoSnake.getHead())) {
+                playerTwoSnake.extend();
+                food = setNewFood();
 //            food.setDot(getRandomDot());
-        } else {
-            playerTwoSnake.move();
+            } else {
+                playerTwoSnake.move();
+            }
         }
     }
 
