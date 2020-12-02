@@ -53,7 +53,17 @@ public class SnakeDot extends Dot {
             default:
                 if (previousDot != null && previousDot.getPreviousDirection() != null)
                     this.setSprite(checkForCorner(PATH_TO_SNAKE_IMAGES, previousDot.getPreviousDirection()));
+                /* Provisoire */
+                else {
+                    String orientation;
+                    if (direction == Snake.Direction.LEFT || direction == Snake.Direction.RIGHT) {
+                        orientation = "horizontal";
+                    } else {
+                        orientation = "vertical";
+                    }
 
+                    this.setSprite(new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png"));
+                }
 //                String orientation;
 //                if (this.getDirection() == Snake.Direction.LEFT || this.getDirection() == Snake.Direction.RIGHT) {
 //                    orientation = "horizontal";
