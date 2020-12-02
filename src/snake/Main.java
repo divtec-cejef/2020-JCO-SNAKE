@@ -59,26 +59,26 @@ public class Main extends Application {
 
         Scene scene = new Scene(root, BORDER_COLOR);
 
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (isInMenu) {
-                    switch (event.getCode()) {
-                        case LEFT:
-                            startSoloGame();
-                            break;
-                        case RIGHT:
-                            isInMultiGame = true;
-                            startMultiGame();
-                            break;
-                    }
-
-                } else {
-                    playerOneKeyListener(event);
-
-                    if (isInMultiGame)
-                        playerTwoKeyListener(event);
+        scene.setOnKeyPressed(event -> {
+            if (isInMenu) {
+                switch (event.getCode()) {
+                    case LEFT:
+                        startSoloGame();
+                        break;
+                    case RIGHT:
+                        isInMultiGame = true;
+                        startMultiGame();
+                        break;
+                    case ESCAPE:
+                        stageToClose.close();
+                        break;
                 }
+
+            } else {
+                playerOneKeyListener(event);
+
+                if (isInMultiGame)
+                    playerTwoKeyListener(event);
             }
         });
 

@@ -39,6 +39,11 @@ public class Painter {
     public static void paintMenu(GraphicsContext gc) {
         initGrid(gc);
 
+        // Quitter le jeu
+        gc.setTextAlign(TextAlignment.LEFT);
+        gc.fillText("[ESC] Quitter le jeu", TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
+        gc.setTextAlign(TextAlignment.CENTER);
+
         // Sélection des modes de jeu
         gc.fillText("< Solo", WIDTH * 0.31f, HEIGHT * 0.6f);
         gc.fillText("Multi >", WIDTH * 0.65f, HEIGHT * 0.6f);
