@@ -39,6 +39,7 @@ public class Main extends Application {
     private GraphicsContext context;
     private boolean keyIsPressed;
 
+    // Utilisé pour la fermeture de la fenêtre
     Stage stageToClose;
 
     public static void main(String[] args) {
@@ -96,6 +97,10 @@ public class Main extends Application {
 
     }
 
+    /**
+     * Ecoute les contrôles pour le premier joueur
+     * @param event Touche appuyée
+     */
     private void playerOneKeyListener(KeyEvent event) {
         if (isKeyPressed())
             return;
@@ -146,6 +151,10 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Ecoute les contrôles pour le deuxième joueur
+     * @param event Touche appuyée
+     */
     private void playerTwoKeyListener(KeyEvent event) {
         if (isKeyPressed())
             return;
