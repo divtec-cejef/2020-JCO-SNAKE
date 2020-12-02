@@ -44,7 +44,7 @@ public class Snake {
     }
 
     // Couleur du serpent
-    public SnakeColor SNAKE_COLOR = SnakeColor.randomColor();
+    public SnakeColor snakeColor = SnakeColor.randomColor();
 
     // Longueur du serpent
     private int length = INITIAL_SNAKE_LENGTH;
@@ -310,7 +310,7 @@ public class Snake {
      */
     private Sprite getSnakeSprite(Dot.DotType bodyType) {
         // Le chemin vers les images du serpent
-        String PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + SNAKE_COLOR.toString() + "/";
+        String PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + snakeColor.toString() + "/";
 
         switch (bodyType) {
             case HEAD:
@@ -338,6 +338,6 @@ public class Snake {
      * @return ce point
      */
     private SnakeDot createNewSnakeParts(Dot.DotType dotType, int x, int y) {
-        return new SnakeDot(dotType, x, y, SNAKE_COLOR, getSnakeSprite(dotType), INITIAL_SNAKE_DIRECTION);
+        return new SnakeDot(dotType, x, y, snakeColor, getSnakeSprite(dotType), INITIAL_SNAKE_DIRECTION);
     }
 }

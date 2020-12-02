@@ -181,7 +181,7 @@ public class Main extends Application {
         Snake playerOneSnake = grid.getPlayerOneSnake();
 
         // Choisi une couleur aléatoire pour le serpent
-        playerOneSnake.SNAKE_COLOR = Snake.SnakeColor.randomColor();
+        playerOneSnake.snakeColor = Snake.SnakeColor.randomColor();
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             grid.update();
@@ -206,13 +206,13 @@ public class Main extends Application {
         Snake playerTwoSnake = grid.getPlayerTwoSnake();
 
         // Donne une couleur aux serpents
-        playerOneSnake.SNAKE_COLOR = Snake.SnakeColor.randomColor();
+        playerOneSnake.snakeColor = Snake.SnakeColor.randomColor();
 
         Snake.SnakeColor colorPlayerTwo = Snake.SnakeColor.randomColor();
-        while (playerOneSnake.SNAKE_COLOR == colorPlayerTwo)
+        while (playerOneSnake.snakeColor == colorPlayerTwo)
             colorPlayerTwo = Snake.SnakeColor.randomColor();
 
-        playerTwoSnake.SNAKE_COLOR = colorPlayerTwo;
+        playerTwoSnake.snakeColor = colorPlayerTwo;
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             grid.update();
