@@ -94,70 +94,72 @@ public class Main extends Application {
     }
 
     private void playerOneKeyListener(KeyEvent event) {
-        Snake snake = grid.getPlayerOneSnake();
-        Snake.Direction snakeDirection = snake.getSnakeDirection();
+        if (isKeyPressed())
+            return;
+
+        Snake playerOneSnake = grid.getPlayerOneSnake();
+        Snake.Direction playerOneSnakeDirection = playerOneSnake.getSnakeDirection();
 
         switch (event.getCode()){
             case UP:
                 if (!isPaused()) {
-                    if (snakeDirection != Snake.Direction.DOWN && snakeDirection != Snake.Direction.UP)
-                        snake.setUp();
-                }
-                break;
-            case DOWN:
-                if (!isPaused()) {
-                    if (snakeDirection != Snake.Direction.UP && snakeDirection != Snake.Direction.DOWN)
-                        snake.setDown();
+                    if (playerOneSnakeDirection != Snake.Direction.DOWN && playerOneSnakeDirection != Snake.Direction.UP)
+                        playerOneSnake.setUp();
                 }
                 break;
             case LEFT:
                 if (!isPaused()) {
-                    if (snakeDirection != Snake.Direction.RIGHT && snakeDirection != Snake.Direction.LEFT)
-                        snake.setLeft();
+                    if (playerOneSnakeDirection != Snake.Direction.RIGHT && playerOneSnakeDirection != Snake.Direction.LEFT)
+                        playerOneSnake.setLeft();
+                }
+                break;
+            case DOWN:
+                if (!isPaused()) {
+                    if (playerOneSnakeDirection != Snake.Direction.UP && playerOneSnakeDirection != Snake.Direction.DOWN)
+                        playerOneSnake.setDown();
                 }
                 break;
             case RIGHT:
                 if (!isPaused()) {
-                    if (snakeDirection != Snake.Direction.LEFT && snakeDirection != Snake.Direction.RIGHT)
-                        snake.setRight();
+                    if (playerOneSnakeDirection != Snake.Direction.LEFT && playerOneSnakeDirection != Snake.Direction.RIGHT)
+                        playerOneSnake.setRight();
                 }
                 break;
         }
     }
 
     private void playerTwoKeyListener(KeyEvent event) {
-        Snake snake2 = grid.getPlayerTwoSnake();
-        Snake.Direction snakeDirection2 = snake2.getSnakeDirection();
-
-        if (isKeyPressed()) {
+        if (isKeyPressed())
             return;
-        }
+
+        Snake playerTwoSnake = grid.getPlayerTwoSnake();
+        Snake.Direction playerTwoSnakeDirection = playerTwoSnake.getSnakeDirection();
 
         switch (event.getCode()) {
             case W:
                 if (!isPaused()) {
-                    if (snakeDirection2 != Snake.Direction.DOWN && snakeDirection2 != Snake.Direction.UP) {
-                        snake2.setUp();
+                    if (playerTwoSnakeDirection != Snake.Direction.DOWN && playerTwoSnakeDirection != Snake.Direction.UP) {
+                        playerTwoSnake.setUp();
                     }
 
                 }
                 break;
-            case S:
-                if (!isPaused()) {
-                    if (snakeDirection2 != Snake.Direction.UP && snakeDirection2 != Snake.Direction.DOWN)
-                        snake2.setDown();
-                }
-                break;
             case A:
                 if (!isPaused()) {
-                    if (snakeDirection2 != Snake.Direction.RIGHT && snakeDirection2 != Snake.Direction.LEFT)
-                        snake2.setLeft();
+                    if (playerTwoSnakeDirection != Snake.Direction.RIGHT && playerTwoSnakeDirection != Snake.Direction.LEFT)
+                        playerTwoSnake.setLeft();
+                }
+                break;
+            case S:
+                if (!isPaused()) {
+                    if (playerTwoSnakeDirection != Snake.Direction.UP && playerTwoSnakeDirection != Snake.Direction.DOWN)
+                        playerTwoSnake.setDown();
                 }
                 break;
             case D:
                 if (!isPaused()) {
-                    if (snakeDirection2 != Snake.Direction.LEFT && snakeDirection2 != Snake.Direction.RIGHT)
-                        snake2.setRight();
+                    if (playerTwoSnakeDirection != Snake.Direction.LEFT && playerTwoSnakeDirection != Snake.Direction.RIGHT)
+                        playerTwoSnake.setRight();
                 }
                 break;
         }
