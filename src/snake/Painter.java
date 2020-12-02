@@ -103,8 +103,8 @@ public class Painter {
 
         // Dessine le score
         if (Main.isInMultiGame) {
-            gc.fillText("Score Joueur 1 : " + playerOneSnake.getScore(), TILE_SIZE * 5, TILE_SIZE * 1.5f);
-            gc.fillText("Score Joueur 2 : " + playerTwoSnake.getScore(), TILE_SIZE * 5, TILE_SIZE * 3.2f);
+            gc.fillText("Joueur 1 : " + playerOneSnake.getScore(), TILE_SIZE * 5.5f, TILE_SIZE * 1.5f);
+            gc.fillText("Joueur 2 : " + playerTwoSnake.getScore(), TILE_SIZE * 5.5f, TILE_SIZE * 3.5f);
         } else
             gc.fillText("Score : " + playerOneSnake.getScore(), TILE_SIZE * 5, TILE_SIZE * 1.5f);
     }
