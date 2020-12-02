@@ -44,7 +44,7 @@ public class Constants {
     /**
      * Augmentation de la vitesse du serpent
      */
-    public static final int SNAKE_VELOCITY_INCREASE = 5;
+    public static final int SNAKE_VELOCITY_INCREASE = 2;
 
     /**
      * Longueur du serpent en début de partie

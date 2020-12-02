@@ -26,19 +26,18 @@ public class Grid {
         rows = WIDTH / TILE_SIZE;
         cols = HEIGHT / TILE_SIZE;
 
-        // Place le serpent sur la grille
+        // Place le serpent du joueur 1 sur la grille
         playerOneSnake = new Snake(Snake.SnakeColor.randomColor(), this);
 
+        // Place le serpent du joueur 2 sur la grille
         if (Main.isInMultiGame) {
             Snake.SnakeColor colorPlayerTwo = Snake.SnakeColor.randomColor();
             while (colorPlayerTwo.equals(playerOneSnake.snakeColor))
                 colorPlayerTwo = Snake.SnakeColor.randomColor();
             playerTwoSnake = new Snake(colorPlayerTwo, this);
-//            playerTwoSnake = new Snake(Snake.SnakeColor.randomColor(), this);
         }
 
         // Place la pomme à un endroit aléatoire
-//        food = new Food(getRandomDot());
         food = setNewFood();
     }
 
@@ -79,25 +78,16 @@ public class Grid {
         return new SnakeDot(snakeDot.getDotType(), x, y, snakeDot.getColor(), snakeDot.getSprite(), snakeDot.getDirection());
     }
 
-//    /**
-//     * @return un point tiré au hasard
-//     */
-//    private Dot getRandomDot() {
-//        Random random = new Random();
-//        Dot randomDot;
-//        do {
-//            randomDot = new Dot(Dot.DotType.FOOD, random.nextInt(rows), random.nextInt(cols), Food.getSprite(), Snake.Direction.NONE);
-//        } while (randomDot.equals(snake.getHead()));
-//
-//        return randomDot;
-//    }
-
+    /**
+     * Choisi l'emplacement d'une nouvelle nourriture
+     * @return la nourriture tirée au hasard
+     */
     private Food setNewFood() {
         Random random = new Random();
         Food randomApple;
         do
             randomApple = new Food(random.nextInt(rows), random.nextInt(cols));
-        while (randomApple.getDot().equals(playerOneSnake.getHead()));
+        while (randomApple.getDot().equals(playerOneSnake.getHead()) || (Main.isInMultiGame && randomApple.getDot().equals(playerTwoSnake.getHead())));
 
         return randomApple;
     }
@@ -109,11 +99,9 @@ public class Grid {
      * - Sinon : déplace le serpent sur la case suivante
      */
     public void update() {
-//        if (food.getDot().equals(snake.getHead())) {
         if (food.getDot().equals(playerOneSnake.getHead())) {
             playerOneSnake.extend();
             food = setNewFood();
-//            food.setDot(getRandomDot());
         } else {
             playerOneSnake.move();
         }
@@ -122,7 +110,6 @@ public class Grid {
             if (food.getDot().equals(playerTwoSnake.getHead())) {
                 playerTwoSnake.extend();
                 food = setNewFood();
-//            food.setDot(getRandomDot());
             } else {
                 playerTwoSnake.move();
             }
@@ -144,12 +131,15 @@ public class Grid {
     }
 
     /**
-     * @return le serpent
+     * @return le serpent du joueur 1
      */
     public Snake getPlayerOneSnake() {
         return playerOneSnake;
     }
 
+    /**
+     * @return le serpent du joueur 2
+     */
     public Snake getPlayerTwoSnake() {
         return playerTwoSnake;
     }

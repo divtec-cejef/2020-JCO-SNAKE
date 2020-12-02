@@ -133,7 +133,7 @@ public class Snake {
     }
 
     /**
-     * Est appelé après que le serpent ait mangé une pomme, augmente sa taille et sa vitesse et place une nouvelle pomme
+     * Est appelé après que le serpent ait mangé une pomme, augmente sa taille et sa vitesse
      *
      * @param dot Le point où était placée la nourriture que le serpent à mangé
      */
@@ -244,9 +244,10 @@ public class Snake {
      */
     public void move() {
         if (isMoving()) {
-//            if (!dots.contains(head.translate(stepX, stepY)))
             shiftTo(head.translate(stepX, stepY));
-//            shiftTo(head.translate(head.getDotType(), xVelocity, yVelocity));
+//            shiftTo(head.translate(velocity, velocity));
+//            shiftTo(head.translate(xVelocity, yVelocity));
+//            shiftTo(head.translate(head.getX() * velocity, (head.getY()) * velocity));
         }
     }
 
@@ -331,6 +332,21 @@ public class Snake {
             else
                 yVelocity = velocity;
         }
+//        velocity += SNAKE_VELOCITY_INCREASE;
+//
+//        if (xVelocity != 0) {
+//            if (xVelocity < 0)
+//                xVelocity = -velocity;
+//            else
+//                xVelocity = velocity;
+//        }
+//
+//        if (yVelocity != 0) {
+//            if (yVelocity < 0)
+//                yVelocity = -velocity;
+//            else
+//                yVelocity = velocity;
+//        }
     }
 
     /**
