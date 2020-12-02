@@ -27,16 +27,18 @@ public class Snake {
         YELLOW,
         NONE;
 
-        private static final List<SnakeColor> COLOR_POSSIBILITIES =
-                Collections.unmodifiableList(Arrays.asList(values()));
+        private static final List<SnakeColor> COLOR_POSSIBILITIES = Collections.unmodifiableList(Arrays.asList(values()));
         private static final int SIZE = COLOR_POSSIBILITIES.size();
         private static final Random RANDOM = new Random();
 
+        /**
+         * @return une couleur aléatoire
+         */
         public static SnakeColor randomColor() {
             SnakeColor color = COLOR_POSSIBILITIES.get(RANDOM.nextInt(SIZE));
-            while (color == NONE) {
+            while (color == NONE)
                 color = COLOR_POSSIBILITIES.get(RANDOM.nextInt(SIZE));
-            }
+
             return color;
         }
     }
