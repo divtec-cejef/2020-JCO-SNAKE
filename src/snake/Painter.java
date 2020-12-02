@@ -37,10 +37,13 @@ public class Painter {
     public static void paintMenu(GraphicsContext gc) {
         initGrid(gc);
 
+        // Sélection des modes de jeu
         gc.fillText("< Solo", WIDTH * 0.31f, HEIGHT * 0.6f);
         gc.fillText("Multi >", WIDTH * 0.65f, HEIGHT * 0.6f);
+
+        // Titre du jeu
         gc.setFont(Font.font("Consolas", 24));
-        gc.fillText("SNAKE ", WIDTH / 2.0f, HEIGHT * 0.4);
+        gc.fillText(GAME_NAME, WIDTH / 2.0f, HEIGHT * 0.4);
     }
 
     /**

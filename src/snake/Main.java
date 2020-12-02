@@ -22,8 +22,6 @@ import static snake.Constants.*;
  * Point d'entrée du jeu
  */
 public class Main extends Application {
-    // Nom du jeu
-    private final String GAME_NAME = "SNAKE";
     // Chemin vers l'icône du jeu
     private final String ICON_PATH = PATH_TO_IMAGES + "icon.png";
     // Couleur des contours de la fenêtre

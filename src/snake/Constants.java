@@ -55,4 +55,9 @@ public class Constants {
      * Direction initiale du serpent
      */
     public static final Snake.Direction INITIAL_SNAKE_DIRECTION = Snake.Direction.LEFT;
+
+    /**
+     * Nom du jeu
+     */
+    public static final String GAME_NAME = "SNAKE";
 }
