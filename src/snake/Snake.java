@@ -1,7 +1,5 @@
 package snake;
 
-import javafx.stage.Stage;
-
 import java.util.*;
 
 // Importation des constantes
