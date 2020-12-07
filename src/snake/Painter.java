@@ -45,18 +45,18 @@ public class Painter {
     public static void paintConfigMenu(List<Settings> gameSettings, GraphicsContext gc) {
         initGrid(gc);
 
-//        // Quitter le jeu
-//        gc.setTextAlign(TextAlignment.LEFT);
-//        gc.fillText("[ESC] Quitter le jeu", TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
-//        gc.setTextAlign(TextAlignment.CENTER);
-//
-//        // Sélection des modes de jeu
-//        gc.fillText("< Solo", WIDTH * 0.31f, HEIGHT * 0.6f);
-//        gc.fillText("Multi >", WIDTH * 0.65f, HEIGHT * 0.6f);
-//
-//        // Titre du jeu
-//        gc.setFont(Font.font("Consolas", 24));
-//        gc.fillText(GAME_NAME, WIDTH / 2.0f, HEIGHT * 0.4);
+        gc.setTextAlign(TextAlignment.LEFT);
+        int count = 0;
+        for (Settings setting: gameSettings) {
+            gc.fillText(setting.getSettingName(),TILE_SIZE * 2, TILE_SIZE * 10 + count);
+            gc.fillText(Boolean.toString(setting.isActivated()), WIDTH * 0.80f, TILE_SIZE * 10 + count);
+            count += 35;
+        }
+
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setFont(Font.font("Consolas", 24));
+        gc.fillText("Config", WIDTH / 2.0f, TILE_SIZE * 4);
+
     }
 
     /**
@@ -126,9 +126,9 @@ public class Painter {
         SnakeDot previousDot = null;
         for (SnakeDot dot : playerOneSnake.getDots()) {
             paintSnake(dot, previousDot, gc);
-//            if (dot.getDotType() == Dot.DotType.HEAD)
             previousDot = dot;
         }
+
 //        int count = 0;
 //        for (SnakeDot dot: playerOneSnake.getDots()) {
 //            if (dot.getDotType() == Dot.DotType.TAIL)

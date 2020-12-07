@@ -13,15 +13,14 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 
 // Importation des constantes
 import static snake.Constants.*;
 
 // Importation des enums
 import static snake.Snake.Direction;
-import static snake.Snake.SnakeColor;
 
 /**
  * Point d'entrée du jeu
@@ -62,6 +61,14 @@ public class Main extends Application {
         public void setActivated(boolean activated) {
             isActivated = activated;
         }
+
+        public void toggleOption() {
+            isActivated = !isActivated;
+        }
+
+        // Liste de toutes les couleurs
+        public static final List<Settings> SETTINGS_LIST = Collections.unmodifiableList(Arrays.asList(values()));
+
     }
 
     // Couleur des contours de la fenêtre
@@ -112,6 +119,10 @@ public class Main extends Application {
                     case ESCAPE:
                         stageToClose.close();
                         break;
+                    case SPACE:
+                        Settings.SETTINGS_LIST.get(0).toggleOption();
+                        Painter.paintConfigMenu(Settings.SETTINGS_LIST, canvas.getGraphicsContext2D());
+                        break;
                 }
             } else {
                 playerOneKeyListener(event);
@@ -130,11 +141,9 @@ public class Main extends Application {
         // Affiche la fenêtre
         primaryStage.show();
 
-        List<Settings> gameSettings = new ArrayList<>();
-
+        Painter.paintConfigMenu(Settings.SETTINGS_LIST, context);
         // Affiche le menu de sélection de mode de jeu
-//        Painter.paintConfigMenu(gameSettings, context);
-        Painter.paintMenu(context);
+//        Painter.paintMenu(context);
     }
 
     /**
