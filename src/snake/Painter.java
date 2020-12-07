@@ -71,9 +71,43 @@ public class Painter {
         SnakeDot previousDot = null;
         for (SnakeDot dot : playerOneSnake.getDots()) {
             paintSnake(dot, previousDot, gc);
-            if (dot.getDotType() == Dot.DotType.HEAD)
-                previousDot = dot;
+//            if (dot.getDotType() == Dot.DotType.HEAD)
+            previousDot = dot;
         }
+//        int count = 0;
+//        for (SnakeDot dot: playerOneSnake.getDots()) {
+//            if (dot.getDotType() == Dot.DotType.TAIL)
+//                count = 0;
+//
+//            if (dot.getDirection() == Snake.Direction.LEFT || dot.getDirection() == Snake.Direction.RIGHT){
+//                int un = 1;
+//                if (dot.getDirection() == Snake.Direction.RIGHT)
+//                    un *= -1;
+//
+//                if (count == 0) {
+//                    playerOneSnake.getDots().get(count).setX(playerOneSnake.getHead().getX() - un);
+//                } else {
+//                    playerOneSnake.getDots().get(count).setX(playerOneSnake.getDots().get(count - 1).getX() - un);
+//                }
+//            }
+//
+//            if (dot.getDirection() == Snake.Direction.UP || dot.getDirection() == Snake.Direction.DOWN){
+//                int un = 1;
+//                if (dot.getDirection() == Snake.Direction.DOWN)
+//                    un *= -1;
+//
+//                if (count == 0) {
+//                    playerOneSnake.getDots().get(count).setY(playerOneSnake.getHead().getY() - un);
+//                } else {
+//                    playerOneSnake.getDots().get(count).setY(playerOneSnake.getDots().get(count - 1).getY() - un);
+//                }
+//            }
+//            count++;
+//
+//            paintSnake(dot, previousDot, gc);
+//            if (dot.getDotType() == Dot.DotType.HEAD)
+//                previousDot = dot;
+//        }
 
         // Dessine le serpent du joueur 2
         if (Main.isInMultiGame) {
