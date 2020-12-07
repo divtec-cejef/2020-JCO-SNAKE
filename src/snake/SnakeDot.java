@@ -67,14 +67,6 @@ public class SnakeDot extends Dot {
 
                     this.setSprite(new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png"));
                 }
-//                String orientation;
-//                if (this.getDirection() == Snake.Direction.LEFT || this.getDirection() == Snake.Direction.RIGHT) {
-//                    orientation = "horizontal";
-//                } else {
-//                    orientation = "vertical";
-//                }
-//
-//                this.setSprite(new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png"));
                 break;
         }
     }

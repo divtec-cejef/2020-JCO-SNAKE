@@ -4,12 +4,10 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -23,8 +21,7 @@ import static snake.Constants.*;
  * Point d'entrée du jeu
  */
 public class Main extends Application {
-    // Chemin vers l'icône du jeu
-    private final String ICON_PATH = PATH_TO_IMAGES + "icon.png";
+
     // Couleur des contours de la fenêtre
     private final Color BORDER_COLOR = BACKGROUND_COLOR;
 
@@ -78,7 +75,6 @@ public class Main extends Application {
 
             } else {
                 playerOneKeyListener(event);
-
                 if (isInMultiGame)
                     playerTwoKeyListener(event);
             }
@@ -96,7 +92,6 @@ public class Main extends Application {
 
         // Affiche le menu de sélection de mode de jeu
         Painter.paintMenu(context);
-
     }
 
     /**
