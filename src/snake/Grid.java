@@ -16,7 +16,7 @@ public class Grid {
     private final int rows;
 
     private final Snake playerOneSnake;
-    private Snake playerTwoSnake = null;
+    private Snake playerTwoSnake;
     private Food food;
 
     /**
