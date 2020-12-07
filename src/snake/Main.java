@@ -13,14 +13,56 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 // Importation des constantes
 import static snake.Constants.*;
+
+// Importation des enums
+import static snake.Snake.Direction;
+import static snake.Snake.SnakeColor;
 
 /**
  * Point d'entrée du jeu
  */
 public class Main extends Application {
+
+    // Paramètres possibles pour le jeu
+    public enum Settings {
+        WALLS("Murs autour du plateau", false);
+
+        // Nom en français du paramètre
+        private final String settingName;
+
+        // Est-ce que le menu est activé
+        private boolean isActivated;
+
+        /**
+         * Construit un paramètre
+         *
+         * @param settingName Nom du paramètre
+         */
+        Settings(String settingName, boolean isActivated) {
+            this.settingName = settingName;
+            this.isActivated = isActivated;
+        }
+
+        /**
+         * @return le nom d'un paramètre
+         */
+        public String getSettingName() {
+            return this.settingName;
+        }
+
+        public boolean isActivated() {
+            return isActivated;
+        }
+
+        public void setActivated(boolean activated) {
+            isActivated = activated;
+        }
+    }
 
     // Couleur des contours de la fenêtre
     private final Color BORDER_COLOR = BACKGROUND_COLOR;
@@ -32,6 +74,7 @@ public class Main extends Application {
 
     private boolean isInMenu = true;
     public static boolean isInMultiGame;
+    public static boolean hasWalls = false;
 
     private Grid grid;
     private GraphicsContext context;
@@ -87,7 +130,10 @@ public class Main extends Application {
         // Affiche la fenêtre
         primaryStage.show();
 
+        List<Settings> gameSettings = new ArrayList<>();
+
         // Affiche le menu de sélection de mode de jeu
+//        Painter.paintConfigMenu(gameSettings, context);
         Painter.paintMenu(context);
     }
 
@@ -101,30 +147,30 @@ public class Main extends Application {
             return;
 
         Snake playerOneSnake = grid.getPlayerOneSnake();
-        Snake.Direction playerOneSnakeDirection = playerOneSnake.getSnakeDirection();
+        Direction playerOneSnakeDirection = playerOneSnake.getSnakeDirection();
 
         switch (event.getCode()) {
             case UP:
                 if (!isPaused()) {
-                    if (playerOneSnakeDirection != Snake.Direction.DOWN && playerOneSnakeDirection != Snake.Direction.UP)
+                    if (playerOneSnakeDirection != Direction.DOWN && playerOneSnakeDirection != Direction.UP)
                         playerOneSnake.setUp();
                 }
                 break;
             case LEFT:
                 if (!isPaused()) {
-                    if (playerOneSnakeDirection != Snake.Direction.RIGHT && playerOneSnakeDirection != Snake.Direction.LEFT)
+                    if (playerOneSnakeDirection != Direction.RIGHT && playerOneSnakeDirection != Direction.LEFT)
                         playerOneSnake.setLeft();
                 }
                 break;
             case DOWN:
                 if (!isPaused()) {
-                    if (playerOneSnakeDirection != Snake.Direction.UP && playerOneSnakeDirection != Snake.Direction.DOWN)
+                    if (playerOneSnakeDirection != Direction.UP && playerOneSnakeDirection != Direction.DOWN)
                         playerOneSnake.setDown();
                 }
                 break;
             case RIGHT:
                 if (!isPaused()) {
-                    if (playerOneSnakeDirection != Snake.Direction.LEFT && playerOneSnakeDirection != Snake.Direction.RIGHT)
+                    if (playerOneSnakeDirection != Direction.LEFT && playerOneSnakeDirection != Direction.RIGHT)
                         playerOneSnake.setRight();
                 }
                 break;
@@ -159,12 +205,12 @@ public class Main extends Application {
             return;
 
         Snake playerTwoSnake = grid.getPlayerTwoSnake();
-        Snake.Direction playerTwoSnakeDirection = playerTwoSnake.getSnakeDirection();
+        Direction playerTwoSnakeDirection = playerTwoSnake.getSnakeDirection();
 
         switch (event.getCode()) {
             case W:
                 if (!isPaused()) {
-                    if (playerTwoSnakeDirection != Snake.Direction.DOWN && playerTwoSnakeDirection != Snake.Direction.UP) {
+                    if (playerTwoSnakeDirection != Direction.DOWN && playerTwoSnakeDirection != Direction.UP) {
                         playerTwoSnake.setUp();
                     }
 
@@ -172,19 +218,19 @@ public class Main extends Application {
                 break;
             case A:
                 if (!isPaused()) {
-                    if (playerTwoSnakeDirection != Snake.Direction.RIGHT && playerTwoSnakeDirection != Snake.Direction.LEFT)
+                    if (playerTwoSnakeDirection != Direction.RIGHT && playerTwoSnakeDirection != Direction.LEFT)
                         playerTwoSnake.setLeft();
                 }
                 break;
             case S:
                 if (!isPaused()) {
-                    if (playerTwoSnakeDirection != Snake.Direction.UP && playerTwoSnakeDirection != Snake.Direction.DOWN)
+                    if (playerTwoSnakeDirection != Direction.UP && playerTwoSnakeDirection != Direction.DOWN)
                         playerTwoSnake.setDown();
                 }
                 break;
             case D:
                 if (!isPaused()) {
-                    if (playerTwoSnakeDirection != Snake.Direction.LEFT && playerTwoSnakeDirection != Snake.Direction.RIGHT)
+                    if (playerTwoSnakeDirection != Direction.LEFT && playerTwoSnakeDirection != Direction.RIGHT)
                         playerTwoSnake.setRight();
                 }
                 break;

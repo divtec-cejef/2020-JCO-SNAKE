@@ -51,10 +51,17 @@ public class Grid {
         int x = snakeDot.getX();
         int y = snakeDot.getY();
 
-        if (x >= rows) x = 0;
-        if (y >= cols) y = 0;
-        if (x < 0) x = rows - 1;
-        if (y < 0) y = cols - 1;
+        if (Main.hasWalls) {
+            if (x >= rows) x = rows;
+            if (y >= cols) y = cols;
+            if (x < 0) x = 0;
+            if (y < 0) y = 0;
+        } else {
+            if (x >= rows) x = 0;
+            if (y >= cols) y = 0;
+            if (x < 0) x = rows - 1;
+            if (y < 0) y = cols - 1;
+        }
 
         // Recrée et retourne le point avec le bon alignement
         return new SnakeDot(snakeDot.getDotType(), x, y, snakeDot.getColor(), snakeDot.getSprite(), snakeDot.getDirection());

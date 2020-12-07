@@ -3,9 +3,15 @@ package snake;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import java.util.*;
 
 // Importation des constantes
 import static snake.Constants.*;
+
+// Importation des enums
+import static snake.Main.Settings;
+import static snake.Snake.Direction;
+import static snake.Snake.SnakeColor;
 
 /**
  * Dessine des éléments sur la grille
@@ -29,6 +35,28 @@ public class Painter {
         gc.setFill(TEXT_COLOR);
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setFont(Font.font("Consolas", 16));
+    }
+
+    /**
+     * Affiche le menu des paramètres
+     *
+     * @param gc GraphicsContext
+     */
+    public static void paintConfigMenu(List<Settings> gameSettings, GraphicsContext gc) {
+        initGrid(gc);
+
+//        // Quitter le jeu
+//        gc.setTextAlign(TextAlignment.LEFT);
+//        gc.fillText("[ESC] Quitter le jeu", TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
+//        gc.setTextAlign(TextAlignment.CENTER);
+//
+//        // Sélection des modes de jeu
+//        gc.fillText("< Solo", WIDTH * 0.31f, HEIGHT * 0.6f);
+//        gc.fillText("Multi >", WIDTH * 0.65f, HEIGHT * 0.6f);
+//
+//        // Titre du jeu
+//        gc.setFont(Font.font("Consolas", 24));
+//        gc.fillText(GAME_NAME, WIDTH / 2.0f, HEIGHT * 0.4);
     }
 
     /**
@@ -59,7 +87,7 @@ public class Painter {
      * @param gc GraphicsContext
      */
     public static void paintGameOverMenu(GraphicsContext gc, Snake deadSnake) {
-        Snake.SnakeColor deadSnakeColor = deadSnake.getSnakeColor();
+        SnakeColor deadSnakeColor = deadSnake.getSnakeColor();
 
         String deathText = "Vous êtes mort. Votre score est de " + deadSnake.getScore();
         if (Main.isInMultiGame)
@@ -106,9 +134,9 @@ public class Painter {
 //            if (dot.getDotType() == Dot.DotType.TAIL)
 //                count = 0;
 //
-//            if (dot.getDirection() == Snake.Direction.LEFT || dot.getDirection() == Snake.Direction.RIGHT){
+//            if (dot.getDirection() == Direction.LEFT || dot.getDirection() == Direction.RIGHT){
 //                int un = 1;
-//                if (dot.getDirection() == Snake.Direction.RIGHT)
+//                if (dot.getDirection() == Direction.RIGHT)
 //                    un *= -1;
 //
 //                if (count == 0) {
@@ -118,9 +146,9 @@ public class Painter {
 //                }
 //            }
 //
-//            if (dot.getDirection() == Snake.Direction.UP || dot.getDirection() == Snake.Direction.DOWN){
+//            if (dot.getDirection() == Direction.UP || dot.getDirection() == Direction.DOWN){
 //                int un = 1;
-//                if (dot.getDirection() == Snake.Direction.DOWN)
+//                if (dot.getDirection() == Direction.DOWN)
 //                    un *= -1;
 //
 //                if (count == 0) {
@@ -202,10 +230,10 @@ public class Painter {
      * @param gc           GraphicsContext
      */
     private static void paintDeadSnakeHead(SnakeDot snakeHeadDot, GraphicsContext gc) {
-        Snake.SnakeColor deathColor = Snake.SnakeColor.RED;
+        SnakeColor deathColor = SnakeColor.RED;
 
-        if (snakeHeadDot.getColor() == Snake.SnakeColor.RED)
-            deathColor = Snake.SnakeColor.BLUE;
+        if (snakeHeadDot.getColor() == SnakeColor.RED)
+            deathColor = SnakeColor.BLUE;
 
         gc.drawImage(getImages(snakeHeadDot, deathColor),
                 snakeHeadDot.getX() * TILE_SIZE,
@@ -220,9 +248,9 @@ public class Painter {
      * @param bodyColor La couleur des parties du serpent
      * @return L'image correspondante aux paramètres fournis
      */
-    private static Sprite getImages(Dot dot, Snake.SnakeColor bodyColor) {
+    private static Sprite getImages(Dot dot, SnakeColor bodyColor) {
         Dot.DotType dotType = dot.getDotType();
-        Snake.Direction dotDirection = dot.getDirection();
+        Direction dotDirection = dot.getDirection();
 
         if (dotType == Dot.DotType.FOOD)
             return new Sprite(PATH_TO_IMAGES + "apple.png");
@@ -238,7 +266,7 @@ public class Painter {
             case BODY:
             default:
                 String orientation;
-                if (dotDirection == Snake.Direction.LEFT || dotDirection == Snake.Direction.RIGHT)
+                if (dotDirection == Direction.LEFT || dotDirection == Direction.RIGHT)
                     orientation = "horizontal";
                 else
                     orientation = "vertical";

@@ -93,7 +93,7 @@ public class Snake {
     private int stepY;
 
     private boolean isAlive;
-    private boolean canDie;
+    public boolean canDie;
 
     /**
      * Construit un nouveau serpent
@@ -103,7 +103,7 @@ public class Snake {
     public Snake(SnakeColor color, Grid grid) {
         dots = new LinkedList<>();
         isAlive = true;
-        canDie = false;
+        canDie = Main.hasWalls;
         this.grid = grid;
         xVelocity = 0;
         yVelocity = 0;
