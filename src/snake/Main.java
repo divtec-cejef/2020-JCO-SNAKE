@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -155,6 +156,9 @@ public class Main extends Application {
                     stageToClose.close();
                 }
                 break;
+            case P:
+                paused = !isPaused();
+                break;
         }
     }
 
@@ -216,16 +220,19 @@ public class Main extends Application {
     private void startSoloGame() {
         initGame();
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            grid.update();
-            Painter.paintGame(grid, context);
+            if (!isPaused()) {
+                grid.update();
+                Painter.paintGame(grid, context);
 
-            if (grid.getPlayerOneSnake().isDead())
-                pause();
+                if (grid.getPlayerOneSnake().isDead())
+                    pause();
+            } else
+                Painter.paintPause(context);
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        timeline.setRate(20);
+        timeline.setRate(10);
     }
 
     /**
@@ -234,16 +241,19 @@ public class Main extends Application {
     private void startMultiGame() {
         initGame();
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            grid.update();
-            Painter.paintGame(grid, context);
+            if (!isPaused()) {
+                grid.update();
+                Painter.paintGame(grid, context);
 
-            if (grid.getPlayerOneSnake().isDead() || grid.getPlayerTwoSnake().isDead())
-                pause();
+                if (grid.getPlayerOneSnake().isDead() || grid.getPlayerTwoSnake().isDead())
+                    pause();
+            } else
+                Painter.paintPause(context);
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        timeline.setRate(20);
+        timeline.setRate(10);
     }
 
     /**

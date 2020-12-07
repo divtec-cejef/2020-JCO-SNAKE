@@ -54,6 +54,33 @@ public class Painter {
     }
 
     /**
+     * Affiche le message de fin de jeu
+     *
+     * @param gc GraphicsContext
+     */
+    public static void paintGameOverMenu(GraphicsContext gc, Snake deadSnake) {
+        Snake.SnakeColor deadSnakeColor = deadSnake.getSnakeColor();
+
+        String deathText = "Vous êtes mort. Votre score est de " + deadSnake.getScore();
+        if (Main.isInMultiGame)
+            deathText = "Le serpent " + deadSnakeColor.getName() + " est mort";
+
+        gc.fillText(deathText, WIDTH / 2.0f, HEIGHT * 0.42f);
+        gc.fillText("Appuyez sur [ENTER] pour recommencer.", WIDTH / 2.0f, HEIGHT * 0.5f);
+        gc.fillText("[Q] pour changer de mode de jeu.", WIDTH / 2.0f, HEIGHT * 0.54f);
+        gc.fillText("[ESC] pour quitter.", WIDTH / 2.0f, HEIGHT * 0.58f);
+    }
+
+    /**
+     * Affiche le message de pause
+     * @param gc GraphicsContext
+     */
+    public static void paintPause(GraphicsContext gc) {
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText("PAUSE", WIDTH / 2.0f, HEIGHT * 0.5f);
+    }
+
+    /**
      * Dessine sur la grille
      *
      * @param grid grille sur laquelle on veut dessiner
@@ -122,15 +149,11 @@ public class Painter {
         }
 
         // Affiche un message lorsqu'un serpent est mort
-        if (!Main.isInMultiGame && playerOneSnake.isDead())
-            paintResetMessage(gc, Snake.SnakeColor.NONE);
+        if (playerOneSnake.isDead())
+            paintGameOverMenu(gc, playerOneSnake);
 
-        if (Main.isInMultiGame) {
-            if (playerOneSnake.isDead())
-                paintResetMessage(gc, playerOneSnake.getSnakeColor());
-            if (playerTwoSnake.isDead())
-                paintResetMessage(gc, playerTwoSnake.getSnakeColor());
-        }
+        if (Main.isInMultiGame && playerTwoSnake.isDead())
+            paintGameOverMenu(gc, playerTwoSnake);
 
         float playerOneScoreLocationX = TILE_SIZE * 0.5f;
         float scoreLocationY = TILE_SIZE * 1.5f;
@@ -192,22 +215,6 @@ public class Painter {
     }
 
     /**
-     * Affiche le message de fin de jeu
-     *
-     * @param gc GraphicsContext
-     */
-    public static void paintResetMessage(GraphicsContext gc, Snake.SnakeColor deadSnakeColor) {
-        String deathText = "Vous êtes mort.";
-        if (deadSnakeColor != Snake.SnakeColor.NONE)
-            deathText = "Le serpent " + deadSnakeColor.getName() + " est mort";
-
-        gc.fillText(deathText, WIDTH / 2.0f, HEIGHT * 0.42f);
-        gc.fillText("Appuyez sur [ENTER] pour recommencer.", WIDTH / 2.0f, HEIGHT * 0.5f);
-        gc.fillText("[Q] pour changer de mode de jeu.", WIDTH / 2.0f, HEIGHT * 0.54f);
-        gc.fillText("[ESC] pour quitter.", WIDTH / 2.0f, HEIGHT * 0.58f);
-    }
-
-    /**
      * Récupère les images utilisées pour le jeu
      *
      * @param dot       Point dont on veut l'image
@@ -240,4 +247,5 @@ public class Painter {
                 return new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
         }
     }
+
 }
