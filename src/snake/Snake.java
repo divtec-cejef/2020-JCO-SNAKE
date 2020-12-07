@@ -180,13 +180,10 @@ public class Snake {
             for (int z = 0; z < dots.size(); z++) {
                 if (z == 0) {
                     dots.get(z).setDotType(Dot.DotType.TAIL);
-//                    dots.get(z).setSprite(getSnakeSprite(Dot.DotType.TAIL));
                 } else if (z == dots.size() - 1) {
                     dots.get(z).setDotType(Dot.DotType.HEAD);
-//                    dots.get(z).setSprite(getSnakeSprite(Dot.DotType.HEAD));
                 } else {
                     dots.get(z).setDotType(Dot.DotType.BODY);
-//                    dots.get(z).setSprite(getSnakeSprite(Dot.DotType.BODY));
                 }
             }
         } else {
