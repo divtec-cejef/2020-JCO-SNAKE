@@ -86,7 +86,7 @@ public class Snake {
     private int score;
 
     // Vitesse du serpent
-    private int velocity = INITIAL_SNAKE_VELOCITY;
+    public int velocity = INITIAL_SNAKE_VELOCITY;
     private int xVelocity;
     private int yVelocity;
     private int stepX;
@@ -128,7 +128,7 @@ public class Snake {
                 dots.add(tail);
             } else
                 // Crée un corps entre deux
-                dots.add(createNewSnakeParts(Dot.DotType.BODY, grid.getRows() / 2, grid.getCols() / 2));
+                dots.add(z, createNewSnakeParts(Dot.DotType.BODY, grid.getRows() / 2, grid.getCols() / 2));
         }
     }
 
@@ -245,9 +245,6 @@ public class Snake {
     public void move() {
         if (isMoving()) {
             shiftTo(head.translate(stepX, stepY));
-//            shiftTo(head.translate(velocity, velocity));
-//            shiftTo(head.translate(xVelocity, yVelocity));
-//            shiftTo(head.translate(head.getX() * velocity, (head.getY()) * velocity));
         }
     }
 
@@ -257,8 +254,6 @@ public class Snake {
     public void extend() {
         if (isMoving()) {
             growTo(head.translate(stepX, stepY));
-//            growTo(head.translate(head.getDotType(), stepX, stepY, head.getDirection()));
-//            growTo(head.translate(head.getDotType(), xVelocity, yVelocity));
         }
     }
 
@@ -332,21 +327,6 @@ public class Snake {
             else
                 yVelocity = velocity;
         }
-//        velocity += SNAKE_VELOCITY_INCREASE;
-//
-//        if (xVelocity != 0) {
-//            if (xVelocity < 0)
-//                xVelocity = -velocity;
-//            else
-//                xVelocity = velocity;
-//        }
-//
-//        if (yVelocity != 0) {
-//            if (yVelocity < 0)
-//                yVelocity = -velocity;
-//            else
-//                yVelocity = velocity;
-//        }
     }
 
     /**
