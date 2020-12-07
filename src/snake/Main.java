@@ -31,7 +31,7 @@ public class Main extends Application {
     private boolean paused;
 
     private boolean isInMenu = true;
-    public static boolean isInMultiGame = false;
+    public static boolean isInMultiGame;
 
     private Grid grid;
     private GraphicsContext context;
@@ -61,12 +61,10 @@ public class Main extends Application {
             if (isInMenu) {
                 switch (event.getCode()) {
                     case LEFT:
-                        isInMultiGame = false;
-                        startSoloGame();
+                        startGame(false);
                         break;
                     case RIGHT:
-                        isInMultiGame = true;
-                        startMultiGame();
+                        startGame(true);
                         break;
                     case ESCAPE:
                         stageToClose.close();
@@ -133,12 +131,7 @@ public class Main extends Application {
                 break;
             case ENTER:
                 if (isPaused())
-                    if (isInMultiGame)
-                        startMultiGame();
-                    else {
-                        isInMultiGame = false;
-                        startSoloGame();
-                    }
+                    startGame(isInMultiGame);
                 break;
             case Q:
                 if (isPaused()) {
@@ -210,37 +203,19 @@ public class Main extends Application {
     }
 
     /**
-     * Lance une partie solo
+     * Lance une partie
+     * @param isMultiGame {@code true} Si la partie est en multijoueur
      */
-    private void startSoloGame() {
+    private void startGame(boolean isMultiGame) {
+        isInMultiGame = isMultiGame;
+
         initGame();
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if (!isPaused()) {
                 grid.update();
                 Painter.paintGame(grid, context);
 
-                if (grid.getPlayerOneSnake().isDead())
-                    pause();
-            } else
-                Painter.paintPause(context);
-        }));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
-
-        timeline.setRate(10);
-    }
-
-    /**
-     * Lance une partie multijoueur
-     */
-    private void startMultiGame() {
-        initGame();
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            if (!isPaused()) {
-                grid.update();
-                Painter.paintGame(grid, context);
-
-                if (grid.getPlayerOneSnake().isDead() || grid.getPlayerTwoSnake().isDead())
+                if (grid.getPlayerOneSnake().isDead() || (isMultiGame && grid.getPlayerTwoSnake().isDead()))
                     pause();
             } else
                 Painter.paintPause(context);
