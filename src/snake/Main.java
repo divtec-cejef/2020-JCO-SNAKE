@@ -63,6 +63,7 @@ public class Main extends Application {
             if (isInMenu) {
                 switch (event.getCode()) {
                     case LEFT:
+                        isInMultiGame = false;
                         startSoloGame();
                         break;
                     case RIGHT:
@@ -224,7 +225,6 @@ public class Main extends Application {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        timeline.setDelay(new Duration(10.0));
         timeline.setRate(20);
     }
 
@@ -243,7 +243,6 @@ public class Main extends Application {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        timeline.setDelay(new Duration(10.0));
         timeline.setRate(20);
     }
 
