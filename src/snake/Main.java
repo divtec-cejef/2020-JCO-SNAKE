@@ -70,7 +70,6 @@ public class Main extends Application {
                         stageToClose.close();
                         break;
                 }
-
             } else {
                 playerOneKeyListener(event);
                 if (isInMultiGame)
@@ -223,7 +222,7 @@ public class Main extends Application {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        timeline.setRate(10);
+        timeline.setRate(FPS);
     }
 
     /**

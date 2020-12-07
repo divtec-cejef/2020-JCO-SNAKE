@@ -12,6 +12,11 @@ public class Constants {
     public static final String GAME_NAME = "SNAKE";
 
     /**
+     * Vitesse du jeu
+     */
+    public static final int FPS = 10;
+
+    /**
      * CHEMINS
      */
 
