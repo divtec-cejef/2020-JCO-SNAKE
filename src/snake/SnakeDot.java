@@ -31,10 +31,12 @@ public class SnakeDot extends Dot {
         return new SnakeDot(this.getDotType(), this.getX() + dx, this.getY() + dy, this.color, this.getSprite(), this.getDirection());
     }
 
+    /**
+     * @return La couleur du point
+     */
     public Snake.SnakeColor getColor() {
         return color;
     }
-
 
     /**
      * Modifie le sprite du serpent
