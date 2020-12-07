@@ -155,10 +155,9 @@ public class Painter {
         if (Main.isInMultiGame && playerTwoSnake.isDead())
             paintGameOverMenu(gc, playerTwoSnake);
 
+        // Dessine le score
         float playerOneScoreLocationX = TILE_SIZE * 0.5f;
         float scoreLocationY = TILE_SIZE * 1.5f;
-
-        // Dessine le score
         gc.setTextAlign(TextAlignment.LEFT);
         if (Main.isInMultiGame) {
             gc.fillText("Serpent " + playerOneSnake.getSnakeColor().getName() + " : " + playerOneSnake.getScore(), playerOneScoreLocationX, scoreLocationY);
