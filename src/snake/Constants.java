@@ -27,6 +27,7 @@ public class Constants {
     // Chemin vers l'icône du jeu
     public static final String ICON_PATH = PATH_TO_IMAGES + "icon.png";
 
+
     /**
      * COMMANDES
      */
