@@ -15,6 +15,10 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 // Importation des constantes
@@ -148,10 +152,22 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image(ICON_PATH));
 
         // Affiche la fenêtre
-        primaryStage.show();
+//        primaryStage.show();
 
         // Affiche le menu de sélection de mode de jeu
-        Painter.paintMenu(context);
+//        Painter.paintMenu(context);
+
+        for (Settings setting: Settings.SETTINGS_LIST) {
+            writeInSettingsFile(setting.toString(), Boolean.toString(setting.isActivated()));
+        }
+    }
+
+    public void writeInSettingsFile(String settingsName, String settingValue) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(SETTINGS_PATH, true))) {
+            bw.write(settingsName + "=" + settingValue + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

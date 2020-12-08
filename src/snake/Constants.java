@@ -21,6 +21,12 @@ public class Constants {
      * CHEMINS
      */
 
+    // Chemin vers les fichiers de config
+    public static final String PATH_TO_CONFIG = "./src/config/";
+
+    // Chemin vers les fichiers de config
+    public static final String SETTINGS_PATH = PATH_TO_CONFIG + "settings.config";
+
     // Chemin vers les images dans l'arborescence de fichiers
     public static final String PATH_TO_IMAGES = "/images/";
 
