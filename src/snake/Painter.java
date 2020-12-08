@@ -69,13 +69,13 @@ public class Painter {
 
         // Quitter le jeu
         gc.setTextAlign(TextAlignment.LEFT);
-        gc.fillText("[ESC] Quitter le jeu", TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
+        gc.fillText("[" + CLOSE_GAME_KEY.getName() + "] Quitter le jeu", TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
         gc.setTextAlign(TextAlignment.CENTER);
 
         // Sélection des modes de jeu
-        gc.fillText("< Solo", WIDTH * 0.31f, HEIGHT * 0.6f);
-        gc.fillText("Multi >", WIDTH * 0.65f, HEIGHT * 0.6f);
-        gc.fillText("Config\nv", WIDTH * 0.5f, HEIGHT * 0.68f);
+        gc.fillText("[<] Solo", WIDTH * 0.31f, HEIGHT * 0.6f);
+        gc.fillText("Multi [>]", WIDTH * 0.65f, HEIGHT * 0.6f);
+        gc.fillText("Config\n[v]", WIDTH * 0.5f, HEIGHT * 0.68f);
 
         // Titre du jeu
         gc.setFont(Font.font("Consolas", 24));
@@ -95,9 +95,9 @@ public class Painter {
             deathText = "Le serpent " + deadSnakeColor.getName() + " est mort";
 
         gc.fillText(deathText, WIDTH / 2.0f, HEIGHT * 0.42f);
-        gc.fillText("Appuyez sur [ENTER] pour recommencer.", WIDTH / 2.0f, HEIGHT * 0.5f);
-        gc.fillText("[Q] pour changer de mode de jeu.", WIDTH / 2.0f, HEIGHT * 0.54f);
-        gc.fillText("[ESC] pour quitter.", WIDTH / 2.0f, HEIGHT * 0.58f);
+        gc.fillText("Appuyez sur [" + RESTART_KEY.getName() + "] pour recommencer.", WIDTH / 2.0f, HEIGHT * 0.5f);
+        gc.fillText("[" + CHANGE_GAME_MODE_KEY.getName() + "] pour changer de mode de jeu.", WIDTH / 2.0f, HEIGHT * 0.54f);
+        gc.fillText("[" + CLOSE_GAME_KEY.getName() + "] pour quitter.", WIDTH / 2.0f, HEIGHT * 0.58f);
     }
 
     /**

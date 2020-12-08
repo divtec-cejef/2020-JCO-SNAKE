@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -29,7 +30,8 @@ public class Main extends Application {
 
     // Paramètres possibles pour le jeu
     public enum Settings {
-        WALLS("Murs autour du plateau", false);
+        WALLS("Murs autour du plateau", false),
+        TEST("Valeur de test", false);
 
         // Nom en français du paramètre
         private final String settingName;
@@ -83,7 +85,6 @@ public class Main extends Application {
 
     private boolean isInMenu = true;
     public static boolean isInMultiGame;
-//    public static boolean hasWalls = true;
 
     private Grid grid;
     private GraphicsContext context;
@@ -104,6 +105,7 @@ public class Main extends Application {
         context = canvas.getGraphicsContext2D();
 
         canvas.setFocusTraversable(true);
+        canvas.setCursor(Cursor.NONE);
 
         root.getChildren().add(canvas);
 
@@ -120,20 +122,28 @@ public class Main extends Application {
                     case RIGHT:
                         startGame(true);
                         break;
+                    // Paramètres du jeu
                     case DOWN:
                         Painter.paintConfigMenu(Settings.SETTINGS_LIST, context);
                         break;
+                    // Retour vers le menu
                     case BACK_SPACE:
                         Painter.paintMenu(context);
                         break;
-                    case ESCAPE:
-                        stageToClose.close();
-                        break;
-                    case SPACE:
-                        Settings.SETTINGS_LIST.get(0).toggleOption();
-                        Painter.paintConfigMenu(Settings.SETTINGS_LIST, canvas.getGraphicsContext2D());
-                        break;
                 }
+
+                if (event.getCode() == TOGGLE_OPTION_KEY) {
+                    Settings.SETTINGS_LIST.get(0).toggleOption();
+                    Painter.paintConfigMenu(Settings.SETTINGS_LIST, canvas.getGraphicsContext2D());
+                }
+
+                if (event.getCode() == NEXT_OPTION_KEY) {
+                    System.out.println("Option suivante");
+                }
+
+                if (event.getCode() == CLOSE_GAME_KEY)
+                    stageToClose.close();
+
             } else {
                 playerOneKeyListener(event);
                 if (isInMultiGame)
@@ -151,7 +161,6 @@ public class Main extends Application {
         // Affiche la fenêtre
         primaryStage.show();
 
-//        Painter.paintConfigMenu(Settings.SETTINGS_LIST, context);
         // Affiche le menu de sélection de mode de jeu
         Painter.paintMenu(context);
     }
@@ -193,25 +202,23 @@ public class Main extends Application {
                         playerOneSnake.setRight();
                 }
                 break;
-            case ENTER:
-                if (isPaused())
-                    startGame(isInMultiGame);
-                break;
-            case Q:
-                if (isPaused()) {
-                    isInMenu = true;
-                    Painter.paintMenu(context);
-                }
-                break;
-            case ESCAPE:
-                if (isPaused()) {
-                    stageToClose.close();
-                }
-                break;
             case P:
                 paused = !isPaused();
                 break;
         }
+        if (event.getCode() == RESTART_KEY)
+            if (isPaused())
+                startGame(isInMultiGame);
+        if (event.getCode() == CHANGE_GAME_MODE_KEY)
+            if (isPaused()) {
+                isInMenu = true;
+                Painter.paintMenu(context);
+            }
+
+        if (event.getCode() == CLOSE_GAME_KEY)
+            if (isPaused()) {
+                stageToClose.close();
+            }
     }
 
     /**

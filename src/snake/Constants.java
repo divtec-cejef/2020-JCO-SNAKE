@@ -1,5 +1,6 @@
 package snake;
 
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 /**
@@ -25,6 +26,26 @@ public class Constants {
 
     // Chemin vers l'icône du jeu
     public static final String ICON_PATH = PATH_TO_IMAGES + "icon.png";
+
+    /**
+     * COMMANDES
+     */
+
+    // Touche de fermeture de la fenêtre
+    public static final KeyCode CLOSE_GAME_KEY = KeyCode.Q;
+
+    // Touche de redémarrage du jeu
+    public static final KeyCode RESTART_KEY = KeyCode.ENTER;
+
+    // Touche de changement de mode de jeu
+    public static final KeyCode CHANGE_GAME_MODE_KEY = KeyCode.C;
+
+    // Touche de sélection d'option
+    public static final KeyCode TOGGLE_OPTION_KEY = KeyCode.SPACE;
+
+    // Touche de séléection de l'option suivante
+    public static final KeyCode NEXT_OPTION_KEY = KeyCode.TAB;
+
 
     /**
      * GRILLE
