@@ -127,14 +127,12 @@ public class SnakeDot extends Dot {
 
         if (!isValidImage) {
             String orientation;
-            if (this.direction == Snake.Direction.LEFT || this.direction == Snake.Direction.RIGHT) {
+            if (this.direction == Snake.Direction.LEFT || this.direction == Snake.Direction.RIGHT)
                 orientation = "horizontal";
-            } else {
+            else
                 orientation = "vertical";
 
-
-                return new Sprite(imagesPath + "body_" + orientation + ".png");
-            }
+            return new Sprite(imagesPath + "body_" + orientation + ".png");
         }
 
         return new Sprite(imagesPath + imageName);
