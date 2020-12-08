@@ -4,7 +4,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
-import java.util.*;
 
 // Importation des constantes
 import static snake.Constants.*;
@@ -45,7 +44,7 @@ public class Painter {
      *
      * @param gc GraphicsContext
      */
-    private static void paintConfigMenu(List<Settings> gameSettings, GraphicsContext gc) {
+    private static void paintConfigMenu(GraphicsContext gc) {
         initGrid(gc);
 
         // Affichage des options
@@ -53,7 +52,7 @@ public class Painter {
         gc.fillText("[" + GO_BACK_KEY.getName() + "] Revenir au menu", TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
 
         int count = 0;
-        for (Settings setting: gameSettings) {
+        for (Settings setting: Settings.SETTINGS_LIST) {
             gc.fillText(setting.getSettingName(),TILE_SIZE * 2, TILE_SIZE * 10 + separation * count);
             gc.fillText(Boolean.toString(setting.isActivated()), WIDTH * 0.80f, TILE_SIZE * 10 + separation * count);
             count++;
@@ -73,7 +72,7 @@ public class Painter {
      */
     public static void selectOption(int selectedOption, GraphicsContext gc) {
         // Dessine le menu
-        paintConfigMenu(Settings.SETTINGS_LIST, gc);
+        paintConfigMenu(gc);
 
         gc.setTextAlign(TextAlignment.LEFT);
         Settings option = Settings.SETTINGS_LIST.get(selectedOption);
