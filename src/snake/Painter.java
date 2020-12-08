@@ -2,6 +2,7 @@ package snake;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import java.util.*;
 
@@ -20,6 +21,8 @@ public class Painter {
 
     private static Snake playerOneSnake;
     private static Snake playerTwoSnake;
+
+    private static final int separation = 35;
 
     /**
      * Initiallise la surface de jeu
@@ -42,21 +45,51 @@ public class Painter {
      *
      * @param gc GraphicsContext
      */
-    public static void paintConfigMenu(List<Settings> gameSettings, GraphicsContext gc) {
+    private static void paintConfigMenu(List<Settings> gameSettings, GraphicsContext gc) {
         initGrid(gc);
 
+        // Affichage des options
         gc.setTextAlign(TextAlignment.LEFT);
+        gc.fillText("[" + GO_BACK_KEY.getName() + "] Revenir au menu", TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
+
         int count = 0;
         for (Settings setting: gameSettings) {
-            gc.fillText(setting.getSettingName(),TILE_SIZE * 2, TILE_SIZE * 10 + count);
-            gc.fillText(Boolean.toString(setting.isActivated()), WIDTH * 0.80f, TILE_SIZE * 10 + count);
-            count += 35;
+            gc.fillText(setting.getSettingName(),TILE_SIZE * 2, TILE_SIZE * 10 + separation * count);
+            gc.fillText(Boolean.toString(setting.isActivated()), WIDTH * 0.80f, TILE_SIZE * 10 + separation * count);
+            count++;
         }
 
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setFont(Font.font("Consolas", 24));
         gc.fillText("Config", WIDTH / 2.0f, TILE_SIZE * 4);
 
+    }
+
+    /**
+     * Surligne une option du menu
+     *
+     * @param selectedOption Option seléctionnée
+     * @param gc             GraphicsContext
+     */
+    public static void selectOption(int selectedOption, GraphicsContext gc) {
+        // Dessine le menu
+        paintConfigMenu(Settings.SETTINGS_LIST, gc);
+
+        gc.setTextAlign(TextAlignment.LEFT);
+        Settings option = Settings.SETTINGS_LIST.get(selectedOption);
+
+        // Dessine le nom de l'option
+        gc.setFont(Font.font("Consolas", FontWeight.BOLD, 16));
+        gc.setFill(HIGHLIGHTED_TEXT_COLOR);
+        gc.fillText(option.getSettingName(),TILE_SIZE * 2, TILE_SIZE * 10 + separation * selectedOption);
+
+        // Dessine la valeur du de l'option
+        gc.setFont(Font.font("Consolas", 16));
+        if (Settings.SETTINGS_LIST.get(selectedOption).isActivated())
+            gc.setFill(HIGHLIGHTED_TRUE_TEXT_COLOR);
+        else
+            gc.setFill(HIGHLIGHTED_FALSE_TEXT_COLOR);
+        gc.fillText(Boolean.toString(option.isActivated()), WIDTH * 0.80f, TILE_SIZE * 10 + separation * selectedOption);
     }
 
     /**

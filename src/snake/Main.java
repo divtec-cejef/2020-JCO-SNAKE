@@ -9,12 +9,12 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.util.*;
 
 // Importation des constantes
@@ -28,10 +28,11 @@ import static snake.Snake.Direction;
  */
 public class Main extends Application {
 
-    // Paramètres possibles pour le jeu
+    /**
+     * Paramètres possibles pour le jeu
+     */
     public enum Settings {
-        WALLS("Murs autour du plateau", false),
-        TEST("Valeur de test", false);
+        WALLS("Murs autour du plateau", false);
 
         // Nom en français du paramètre
         private final String settingName;
@@ -84,11 +85,16 @@ public class Main extends Application {
     private boolean paused;
 
     private boolean isInMenu = true;
+    private boolean isInSettingsMenu = false;
     public static boolean isInMultiGame;
 
     private Grid grid;
     private GraphicsContext context;
     private boolean keyIsPressed;
+
+    private int selectedOption = 0;
+
+    boolean isShiftKeyPressed = false;
 
     // Utilisé pour la fermeture de la fenêtre
     Stage stageToClose;
@@ -111,35 +117,18 @@ public class Main extends Application {
 
         Scene scene = new Scene(root, BORDER_COLOR);
 
+        scene.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.SHIFT) {
+                isShiftKeyPressed = false;
+            }
+        });
+
         scene.setOnKeyPressed(event -> {
             if (isInMenu) {
-                switch (event.getCode()) {
-                    // Partie solo
-                    case LEFT:
-                        startGame(false);
-                        break;
-                    // Partie multi
-                    case RIGHT:
-                        startGame(true);
-                        break;
-                    // Paramètres du jeu
-                    case DOWN:
-                        Painter.paintConfigMenu(Settings.SETTINGS_LIST, context);
-                        break;
-                    // Retour vers le menu
-                    case BACK_SPACE:
-                        Painter.paintMenu(context);
-                        break;
-                }
+                menuListener(event);
 
-                if (event.getCode() == TOGGLE_OPTION_KEY) {
-                    Settings.SETTINGS_LIST.get(0).toggleOption();
-                    Painter.paintConfigMenu(Settings.SETTINGS_LIST, canvas.getGraphicsContext2D());
-                }
-
-                if (event.getCode() == NEXT_OPTION_KEY) {
-                    System.out.println("Option suivante");
-                }
+                if (isInSettingsMenu)
+                    settingsMenuListener(event);
 
                 if (event.getCode() == CLOSE_GAME_KEY)
                     stageToClose.close();
@@ -163,6 +152,74 @@ public class Main extends Application {
 
         // Affiche le menu de sélection de mode de jeu
         Painter.paintMenu(context);
+    }
+
+    /**
+     * Ecoute les contrôles dans le menu
+     *
+     * @param event Touche appuyée
+     */
+    private void menuListener(KeyEvent event) {
+        switch (event.getCode()) {
+            // Partie solo
+            case LEFT:
+                if (!isInSettingsMenu)
+                    startGame(false);
+                break;
+            // Partie multi
+            case RIGHT:
+                if (!isInSettingsMenu)
+                    startGame(true);
+                break;
+            // Paramètres du jeu
+            case DOWN:
+                if (!isInSettingsMenu) {
+                    selectedOption = 0;
+                    Painter.selectOption(selectedOption, context);
+                    isInSettingsMenu = true;
+                }
+                break;
+        }
+    }
+
+    /**
+     * Ecoute les contrôles dans le menu de paramètres
+     *
+     * @param event Touche appuyée
+     */
+    private void settingsMenuListener(KeyEvent event) {
+        if (event.getCode() == TOGGLE_OPTION_KEY) {
+            Settings.SETTINGS_LIST.get(selectedOption).toggleOption();
+            Painter.selectOption(selectedOption, context);
+        }
+
+        if (event.getCode() == SELECT_OPTION_KEY) {
+            if (isShiftKeyPressed){
+                if (selectedOption <= 0)
+                    selectedOption = Settings.SETTINGS_LIST.size() - 1;
+                else
+                    selectedOption--;
+            } else {
+                if (selectedOption >= Settings.SETTINGS_LIST.size() - 1)
+                    selectedOption = 0;
+                else
+                    selectedOption++;
+            }
+            Painter.selectOption(selectedOption, context);
+        }
+
+        if (event.getCode() == KeyCode.SHIFT) {
+            isShiftKeyPressed = true;
+        }
+
+        // Retour vers le menu
+        if (event.getCode() == GO_BACK_KEY) {
+            if (isInSettingsMenu) {
+                Painter.paintMenu(context);
+                isInSettingsMenu = false;
+            }
+        }
+
     }
 
     /**
@@ -239,7 +296,6 @@ public class Main extends Application {
                     if (playerTwoSnakeDirection != Direction.DOWN && playerTwoSnakeDirection != Direction.UP) {
                         playerTwoSnake.setUp();
                     }
-
                 }
                 break;
             case A:
@@ -275,19 +331,21 @@ public class Main extends Application {
 
     /**
      * Lance une partie
+     *
      * @param isMultiGame {@code true} Si la partie est en multijoueur
      */
     private void startGame(boolean isMultiGame) {
         isInMultiGame = isMultiGame;
 
         initGame();
+
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if (!isPaused()) {
                 grid.update();
                 Painter.paintGame(grid, context);
 
                 if (grid.getPlayerOneSnake().isDead() || (isMultiGame && grid.getPlayerTwoSnake().isDead()))
-                    pause();
+                    stopGame();
             } else
                 Painter.paintPause(context);
         }));
@@ -298,11 +356,11 @@ public class Main extends Application {
     }
 
     /**
-     * Mets le jeu sur pause
+     * Stop le jeu
      */
-    public void pause() {
+    public void stopGame() {
         paused = true;
-        timeline.pause();
+        timeline.stop();
     }
 
     /**

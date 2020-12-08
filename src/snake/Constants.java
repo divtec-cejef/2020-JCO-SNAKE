@@ -43,8 +43,10 @@ public class Constants {
     // Touche de sélection d'option
     public static final KeyCode TOGGLE_OPTION_KEY = KeyCode.SPACE;
 
-    // Touche de séléection de l'option suivante
-    public static final KeyCode NEXT_OPTION_KEY = KeyCode.TAB;
+    // Touche de séléction de l'option suivante
+    public static final KeyCode SELECT_OPTION_KEY = KeyCode.TAB;
+
+    public static final KeyCode GO_BACK_KEY = KeyCode.ESCAPE;
 
 
     /**
@@ -65,6 +67,15 @@ public class Constants {
 
     // Couleur des textes
     public static final Color TEXT_COLOR = Color.BEIGE;
+
+    // Couleur des textes faux
+    public static final Color HIGHLIGHTED_TEXT_COLOR = Color.AZURE;
+
+    // Couleur des textes faux
+    public static final Color HIGHLIGHTED_FALSE_TEXT_COLOR = Color.RED;
+
+    // Couleur des textes vrai
+    public static final Color HIGHLIGHTED_TRUE_TEXT_COLOR = Color.GREEN;
 
 
     /**
