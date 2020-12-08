@@ -4,6 +4,7 @@ import java.util.*;
 
 // Importation des constantes
 import static snake.Constants.*;
+import static snake.Main.Settings;
 
 /**
  * Classe qui représente un serpent
@@ -103,7 +104,7 @@ public class Snake {
     public Snake(SnakeColor color, Grid grid) {
         dots = new LinkedList<>();
         isAlive = true;
-        canDie = Main.hasWalls;
+        canDie = Settings.SETTINGS_LIST.get(0).isActivated();
         this.grid = grid;
         xVelocity = 0;
         yVelocity = 0;

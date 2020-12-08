@@ -54,19 +54,21 @@ public class Main extends Application {
             return this.settingName;
         }
 
+        /**
+         * @return l'activation d'un paramètre
+         */
         public boolean isActivated() {
             return isActivated;
         }
 
-        public void setActivated(boolean activated) {
-            isActivated = activated;
-        }
-
+        /**
+         * Inverse l'activation d'un paramètre
+         */
         public void toggleOption() {
             isActivated = !isActivated;
         }
 
-        // Liste de toutes les couleurs
+        // Liste de tous les paramètres
         public static final List<Settings> SETTINGS_LIST = Collections.unmodifiableList(Arrays.asList(values()));
 
     }
@@ -81,7 +83,7 @@ public class Main extends Application {
 
     private boolean isInMenu = true;
     public static boolean isInMultiGame;
-    public static boolean hasWalls = false;
+//    public static boolean hasWalls = true;
 
     private Grid grid;
     private GraphicsContext context;
@@ -110,11 +112,19 @@ public class Main extends Application {
         scene.setOnKeyPressed(event -> {
             if (isInMenu) {
                 switch (event.getCode()) {
+                    // Partie solo
                     case LEFT:
                         startGame(false);
                         break;
+                    // Partie multi
                     case RIGHT:
                         startGame(true);
+                        break;
+                    case DOWN:
+                        Painter.paintConfigMenu(Settings.SETTINGS_LIST, context);
+                        break;
+                    case BACK_SPACE:
+                        Painter.paintMenu(context);
                         break;
                     case ESCAPE:
                         stageToClose.close();
@@ -141,9 +151,9 @@ public class Main extends Application {
         // Affiche la fenêtre
         primaryStage.show();
 
-        Painter.paintConfigMenu(Settings.SETTINGS_LIST, context);
+//        Painter.paintConfigMenu(Settings.SETTINGS_LIST, context);
         // Affiche le menu de sélection de mode de jeu
-//        Painter.paintMenu(context);
+        Painter.paintMenu(context);
     }
 
     /**

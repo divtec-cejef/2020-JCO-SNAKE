@@ -4,6 +4,7 @@ import java.util.Random;
 
 // Importation des constantes
 import static snake.Constants.*;
+import static snake.Main.Settings;
 
 /**
  * Représente une grille
@@ -51,7 +52,7 @@ public class Grid {
         int x = snakeDot.getX();
         int y = snakeDot.getY();
 
-        if (Main.hasWalls) {
+        if (Settings.SETTINGS_LIST.get(0).isActivated()) {
             if (x >= rows) x = rows;
             if (y >= cols) y = cols;
             if (x < 0) x = 0;

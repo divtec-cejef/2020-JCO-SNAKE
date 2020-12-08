@@ -75,6 +75,7 @@ public class Painter {
         // Sélection des modes de jeu
         gc.fillText("< Solo", WIDTH * 0.31f, HEIGHT * 0.6f);
         gc.fillText("Multi >", WIDTH * 0.65f, HEIGHT * 0.6f);
+        gc.fillText("Config\nv", WIDTH * 0.5f, HEIGHT * 0.68f);
 
         // Titre du jeu
         gc.setFont(Font.font("Consolas", 24));
