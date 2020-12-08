@@ -90,7 +90,6 @@ public class Main extends Application {
 
     private Grid grid;
     private GraphicsContext context;
-    private boolean keyIsPressed;
 
     private int selectedOption = 0;
 
@@ -228,8 +227,6 @@ public class Main extends Application {
      * @param event Touche appuyée
      */
     private void playerOneKeyListener(KeyEvent event) {
-        if (isKeyPressed())
-            return;
 
         Snake playerOneSnake = grid.getPlayerOneSnake();
         Direction playerOneSnakeDirection = playerOneSnake.getSnakeDirection();
@@ -284,9 +281,6 @@ public class Main extends Application {
      * @param event Touche appuyée
      */
     private void playerTwoKeyListener(KeyEvent event) {
-        if (isKeyPressed())
-            return;
-
         Snake playerTwoSnake = grid.getPlayerTwoSnake();
         Direction playerTwoSnakeDirection = playerTwoSnake.getSnakeDirection();
 
@@ -326,7 +320,6 @@ public class Main extends Application {
         isInMenu = false;
         grid = new Grid();
         paused = false;
-        keyIsPressed = false;
     }
 
     /**
@@ -368,12 +361,5 @@ public class Main extends Application {
      */
     public boolean isPaused() {
         return paused;
-    }
-
-    /**
-     * @return si une touche est pressée
-     */
-    public boolean isKeyPressed() {
-        return keyIsPressed;
     }
 }
