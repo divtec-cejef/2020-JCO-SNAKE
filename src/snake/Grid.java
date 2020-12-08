@@ -4,6 +4,8 @@ import java.util.Random;
 
 // Importation des constantes
 import static snake.Constants.*;
+
+// Importation des enums
 import static snake.Main.Settings;
 
 /**
