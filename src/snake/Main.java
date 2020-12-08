@@ -91,6 +91,7 @@ public class Main extends Application {
     private Grid grid;
     private GraphicsContext context;
 
+    // Option seléctionnée dans le menu de paramètres
     private int selectedOption = 0;
 
     boolean isShiftKeyPressed = false;
