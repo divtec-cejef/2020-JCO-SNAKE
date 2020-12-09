@@ -72,28 +72,9 @@ public class Main extends Application {
 
         Scene scene = new Scene(root, BORDER_COLOR);
 
-        scene.setOnKeyReleased(event -> {
-            if (event.getCode() == KeyCode.SHIFT) {
-                isShiftKeyPressed = false;
-            }
-        });
+        scene.setOnKeyReleased(this::onKeyReleasedListener);
 
-        scene.setOnKeyPressed(event -> {
-            if (isInMenu) {
-                menuListener(event);
-
-                if (isInSettingsMenu)
-                    settingsMenuListener(event);
-
-                if (event.getCode() == CLOSE_GAME_KEY)
-                    stageToClose.close();
-
-            } else {
-                playerOneKeyListener(event);
-                if (isInMultiGame)
-                    playerTwoKeyListener(event);
-            }
-        });
+        scene.setOnKeyPressed(this::onKeyPressedListener);
 
         // Paramètres de la fenêtre
         primaryStage.setResizable(false);
@@ -112,14 +93,38 @@ public class Main extends Application {
         Painter.paintMenu(context);
     }
 
+    private void onKeyReleasedListener(KeyEvent event) {
+        if (event.getCode() == KeyCode.SHIFT) {
+            isShiftKeyPressed = false;
+        }
+    }
+
+    private void onKeyPressedListener(KeyEvent event) {
+        KeyCode keyCode = event.getCode();
+        if (isInMenu) {
+            menuListener(keyCode);
+
+            if (isInSettingsMenu)
+                settingsMenuListener(keyCode);
+
+            if (keyCode == CLOSE_GAME_KEY)
+                stageToClose.close();
+
+        } else {
+            playerOneKeyListener(keyCode);
+            if (isInMultiGame)
+                playerTwoKeyListener(keyCode);
+        }
+    }
+
     /**
      * Ecoute les contrôles dans le menu
      *
-     * @param event Touche appuyée
+     * @param keyCode Touche appuyée
      */
-    private void menuListener(KeyEvent event) {
+    private void menuListener(KeyCode keyCode) {
         if (!isInSettingsMenu) {
-            switch (event.getCode()) {
+            switch (keyCode) {
                 // Partie solo
                 case LEFT:
                     startGame(false);
@@ -131,7 +136,7 @@ public class Main extends Application {
             }
 
             // Paramètres du jeu
-            if (event.getCode() == CONFIG_GAME_KEY) {
+            if (keyCode == CONFIG_GAME_KEY) {
                 selectedOption = 0;
                 Painter.selectOption(selectedOption, context);
                 isInSettingsMenu = true;
@@ -142,10 +147,10 @@ public class Main extends Application {
     /**
      * Ecoute les contrôles dans le menu de paramètres
      *
-     * @param event Touche appuyée
+     * @param keyCode Touche appuyée
      */
-    private void settingsMenuListener(KeyEvent event) {
-        switch (event.getCode()) {
+    private void settingsMenuListener(KeyCode keyCode) {
+        switch (keyCode) {
             case DOWN:
                 if (selectedOption >= Settings.getSettingsList().size() - 1)
                     selectedOption = 0;
@@ -160,11 +165,11 @@ public class Main extends Application {
                 break;
         }
 
-        if (event.getCode() == TOGGLE_OPTION_KEY) {
+        if (keyCode == TOGGLE_OPTION_KEY) {
             Settings.getFromSettingsList(selectedOption).toggleOption();
         }
 
-        if (event.getCode() == SELECT_OPTION_KEY) {
+        if (keyCode == SELECT_OPTION_KEY) {
             if (isShiftKeyPressed){
                 if (selectedOption <= 0)
                     selectedOption = Settings.getSettingsList().size() - 1;
@@ -179,18 +184,18 @@ public class Main extends Application {
         }
 
         // sauvegarde de la configuration
-        if (event.getCode() == SAVE_CONFIG_KEY) {
+        if (keyCode == SAVE_CONFIG_KEY) {
             settings.writeAllInFile();
         }
 
-        if (event.getCode() == KeyCode.SHIFT) {
+        if (keyCode == KeyCode.SHIFT) {
             isShiftKeyPressed = true;
         }
 
         Painter.selectOption(selectedOption, context);
 
         // Retour vers le menu
-        if (event.getCode() == GO_BACK_KEY) {
+        if (keyCode == GO_BACK_KEY) {
             if (isInSettingsMenu) {
                 isInSettingsMenu = false;
                 selectedOption = 0;
@@ -203,14 +208,13 @@ public class Main extends Application {
     /**
      * Ecoute les contrôles pour le premier joueur
      *
-     * @param event Touche appuyée
+     * @param keyCode Touche appuyée
      */
-    private void playerOneKeyListener(KeyEvent event) {
-
+    private void playerOneKeyListener(KeyCode keyCode) {
         Snake playerOneSnake = grid.getPlayerOneSnake();
         Direction playerOneSnakeDirection = playerOneSnake.getSnakeDirection();
 
-        switch (event.getCode()) {
+        switch (keyCode) {
             case UP:
                 if (!isPaused()) {
                     if (playerOneSnakeDirection != Direction.DOWN && playerOneSnakeDirection != Direction.UP)
@@ -240,16 +244,16 @@ public class Main extends Application {
                 break;
         }
 
-        if (event.getCode() == RESTART_KEY)
+        if (keyCode == RESTART_KEY)
             if (isPaused())
                 startGame(isInMultiGame);
-        if (event.getCode() == CHANGE_GAME_MODE_KEY)
+        if (keyCode == CHANGE_GAME_MODE_KEY)
             if (isPaused()) {
                 isInMenu = true;
                 Painter.paintMenu(context);
             }
 
-        if (event.getCode() == CLOSE_GAME_KEY)
+        if (keyCode == CLOSE_GAME_KEY)
             if (isPaused()) {
                 stageToClose.close();
             }
@@ -258,13 +262,13 @@ public class Main extends Application {
     /**
      * Ecoute les contrôles pour le deuxième joueur
      *
-     * @param event Touche appuyée
+     * @param keyCode Touche appuyée
      */
-    private void playerTwoKeyListener(KeyEvent event) {
+    private void playerTwoKeyListener(KeyCode keyCode) {
         Snake playerTwoSnake = grid.getPlayerTwoSnake();
         Direction playerTwoSnakeDirection = playerTwoSnake.getSnakeDirection();
 
-        switch (event.getCode()) {
+        switch (keyCode) {
             case W:
                 if (!isPaused()) {
                     if (playerTwoSnakeDirection != Direction.DOWN && playerTwoSnakeDirection != Direction.UP) {
