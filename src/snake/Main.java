@@ -16,80 +16,17 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
-
 // Importation des constantes
 import static snake.Constants.*;
 
 // Importation des enums
 import static snake.Snake.Direction;
+import static snake.GameSettings.Settings;
 
 /**
  * Point d'entrée du jeu
  */
 public class Main extends Application {
-
-    /**
-     * Paramètres possibles pour le jeu
-     */
-    public enum Settings {
-        WALLS("Murs autour du plateau", false);
-
-        // Nom en français du paramètre
-        private final String settingName;
-
-        // Est-ce que le menu est activé
-        private boolean isActivated;
-
-        /**
-         * Construit un paramètre
-         *
-         * @param settingName Nom du paramètre
-         */
-        Settings(String settingName, boolean isActivated) {
-            this.settingName = settingName;
-            this.isActivated = isActivated;
-        }
-
-        /**
-         * @return le nom d'un paramètre
-         */
-        public String getSettingName() {
-            return this.settingName;
-        }
-
-        /**
-         * @return l'activation d'un paramètre
-         */
-        public boolean isActivated() {
-            return isActivated;
-        }
-
-        /**
-         * Modifie l'activation d'une option
-         * @param activated Nouvelle option du paramètre
-         */
-        public void setActivated(boolean activated) {
-            isActivated = activated;
-        }
-
-        /**
-         * Inverse l'activation d'un paramètre
-         */
-        public void toggleOption() {
-            isActivated = !isActivated;
-        }
-
-        // Liste de tous les paramètres
-        public static final List<Settings> SETTINGS_LIST = Collections.unmodifiableList(Arrays.asList(values()));
-
-    }
 
     // Couleur des contours de la fenêtre
     private final Color BORDER_COLOR = BACKGROUND_COLOR;
@@ -105,6 +42,8 @@ public class Main extends Application {
 
     private Grid grid;
     private GraphicsContext context;
+
+    GameSettings settings;
 
     // Option seléctionnée dans le menu de paramètres
     private int selectedOption = 0;
@@ -124,6 +63,7 @@ public class Main extends Application {
         StackPane root = new StackPane();
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         context = canvas.getGraphicsContext2D();
+        settings = new GameSettings();
 
         canvas.setFocusTraversable(true);
         canvas.setCursor(Cursor.NONE);
@@ -163,7 +103,7 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image(ICON_PATH));
 
         // Récupère les paramètres depuis le fichier "settings.config"
-        getSettingsFromFile();
+        settings.getFromFile();
 
         // Affiche la fenêtre
         primaryStage.show();
@@ -173,85 +113,28 @@ public class Main extends Application {
     }
 
     /**
-     * Ecrit un paramètre dans le fichier de configuration
-     * @param settingsName Nom du paramètre
-     * @param settingValue Valeur de ce paramètre
-     */
-    public void writeSettingInFile(String settingsName, String settingValue) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(SETTINGS_PATH, true))) {
-            bw.write(settingsName + "=" + settingValue + "\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Ecrit tous les paramètres du jeu dans le fichier de configuration
-     */
-    public void writeAllSettingsInFile() {
-        File settingsFile = new File(SETTINGS_PATH);
-        if (settingsFile.delete()) {
-            for (Settings setting : Settings.SETTINGS_LIST) {
-                writeSettingInFile(setting.toString(), Boolean.toString(setting.isActivated()));
-            }
-        }
-    }
-
-    /**
-     * Lis le contenu du fichier de configuration
-     * @return le contenu de ce fichier
-     * @throws IOException IOException
-     */
-    public List<String> readSettingsFromFile() throws IOException {
-        return Files.readAllLines(Paths.get(SETTINGS_PATH));
-    }
-
-    /**
-     * Inscrit les valeurs du fichier dans la liste de paramètres du jeu
-     */
-    public void getSettingsFromFile() {
-        try {
-            List<String> settingsList = readSettingsFromFile();
-            for (int i = 0; i < settingsList.size(); i++) {
-                // On découpe la ligne
-                String[] segments = settingsList.get(i).split("=");
-                // On récupère la dernière partie
-                String document = segments[segments.length - 1];
-                // On converti la valeur en booléen
-                boolean settingsValue = Boolean.parseBoolean(document);
-                // On assigne le booleéen à l'option correspondante
-                Settings.SETTINGS_LIST.get(i).setActivated(settingsValue);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Ecoute les contrôles dans le menu
      *
      * @param event Touche appuyée
      */
     private void menuListener(KeyEvent event) {
-        switch (event.getCode()) {
-            // Partie solo
-            case LEFT:
-                if (!isInSettingsMenu)
+        if (!isInSettingsMenu) {
+            switch (event.getCode()) {
+                // Partie solo
+                case LEFT:
                     startGame(false);
-                break;
-            // Partie multi
-            case RIGHT:
-                if (!isInSettingsMenu)
-                    startGame(true);
-                break;
-            // Paramètres du jeu
-            case DOWN:
-                if (!isInSettingsMenu) {
+                    break;
+                // Partie multi
+                case RIGHT:
+                        startGame(true);
+                    break;
+                // Paramètres du jeu
+                case DOWN:
                     selectedOption = 0;
                     Painter.selectOption(selectedOption, context);
                     isInSettingsMenu = true;
-                }
-                break;
+                    break;
+            }
         }
     }
 
@@ -263,31 +146,31 @@ public class Main extends Application {
     private void settingsMenuListener(KeyEvent event) {
         switch (event.getCode()) {
             case DOWN:
-                if (selectedOption >= Settings.SETTINGS_LIST.size() - 1)
+                if (selectedOption >= Settings.getSettingsList().size() - 1)
                     selectedOption = 0;
                 else
                     selectedOption++;
                 break;
             case UP:
                 if (selectedOption <= 0)
-                    selectedOption = Settings.SETTINGS_LIST.size() - 1;
+                    selectedOption = Settings.getSettingsList().size() - 1;
                 else
                     selectedOption--;
                 break;
         }
 
         if (event.getCode() == TOGGLE_OPTION_KEY) {
-            Settings.SETTINGS_LIST.get(selectedOption).toggleOption();
+            Settings.getFromSettingsList(selectedOption).toggleOption();
         }
 
         if (event.getCode() == SELECT_OPTION_KEY) {
             if (isShiftKeyPressed){
                 if (selectedOption <= 0)
-                    selectedOption = Settings.SETTINGS_LIST.size() - 1;
+                    selectedOption = Settings.getSettingsList().size() - 1;
                 else
                     selectedOption--;
             } else {
-                if (selectedOption >= Settings.SETTINGS_LIST.size() - 1)
+                if (selectedOption >= Settings.getSettingsList().size() - 1)
                     selectedOption = 0;
                 else
                     selectedOption++;
@@ -298,16 +181,17 @@ public class Main extends Application {
             isShiftKeyPressed = true;
         }
 
+        Painter.selectOption(selectedOption, context);
+
         // Retour vers le menu
         if (event.getCode() == GO_BACK_KEY) {
             if (isInSettingsMenu) {
-                writeAllSettingsInFile();
+                settings.writeAllInFile();
                 Painter.paintMenu(context);
                 isInSettingsMenu = false;
             }
         }
 
-        Painter.selectOption(selectedOption, context);
     }
 
     /**

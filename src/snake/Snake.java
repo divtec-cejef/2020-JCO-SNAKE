@@ -6,7 +6,7 @@ import java.util.*;
 import static snake.Constants.*;
 
 // Importation des enums
-import static snake.Main.Settings;
+import static snake.GameSettings.Settings;
 
 /**
  * Classe qui représente un serpent
@@ -106,7 +106,7 @@ public class Snake {
     public Snake(SnakeColor color, Grid grid) {
         dots = new LinkedList<>();
         isAlive = true;
-        canDie = Settings.SETTINGS_LIST.get(0).isActivated();
+        canDie = Settings.getFromSettingsList(0).isActivated();
         this.grid = grid;
         xVelocity = 0;
         yVelocity = 0;

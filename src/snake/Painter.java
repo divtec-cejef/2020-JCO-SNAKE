@@ -9,7 +9,7 @@ import javafx.scene.text.TextAlignment;
 import static snake.Constants.*;
 
 // Importation des enums
-import static snake.Main.Settings;
+import static snake.GameSettings.Settings;
 import static snake.Snake.Direction;
 import static snake.Snake.SnakeColor;
 
@@ -52,7 +52,7 @@ public class Painter {
         gc.fillText("[" + GO_BACK_KEY.getName() + "] Revenir au menu", TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
 
         int count = 0;
-        for (Settings setting: Settings.SETTINGS_LIST) {
+        for (Settings setting: Settings.getSettingsList()) {
             gc.fillText(setting.getSettingName(),TILE_SIZE * 2, TILE_SIZE * 10 + separation * count);
             gc.fillText(Boolean.toString(setting.isActivated()), WIDTH * 0.80f, TILE_SIZE * 10 + separation * count);
             count++;
@@ -75,7 +75,7 @@ public class Painter {
         paintConfigMenu(gc);
 
         gc.setTextAlign(TextAlignment.LEFT);
-        Settings option = Settings.SETTINGS_LIST.get(selectedOption);
+        Settings option = Settings.getFromSettingsList(selectedOption);
 
         // Dessine le nom de l'option
         gc.setFont(Font.font("Consolas", FontWeight.BOLD, 16));
@@ -84,7 +84,7 @@ public class Painter {
 
         // Dessine la valeur du de l'option
         gc.setFont(Font.font("Consolas", 16));
-        if (Settings.SETTINGS_LIST.get(selectedOption).isActivated())
+        if (Settings.getFromSettingsList(selectedOption).isActivated())
             gc.setFill(HIGHLIGHTED_TRUE_TEXT_COLOR);
         else
             gc.setFill(HIGHLIGHTED_FALSE_TEXT_COLOR);

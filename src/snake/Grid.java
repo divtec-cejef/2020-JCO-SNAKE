@@ -6,7 +6,7 @@ import java.util.Random;
 import static snake.Constants.*;
 
 // Importation des enums
-import static snake.Main.Settings;
+import static snake.GameSettings.Settings;
 
 /**
  * Représente une grille
@@ -54,7 +54,7 @@ public class Grid {
         int x = snakeDot.getX();
         int y = snakeDot.getY();
 
-        if (Settings.SETTINGS_LIST.get(0).isActivated()) {
+        if (Settings.getSettingsList().get(0).isActivated()) {
             if (x >= rows) x = rows;
             if (y >= cols) y = cols;
             if (x < 0) x = 0;
