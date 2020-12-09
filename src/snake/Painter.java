@@ -49,18 +49,24 @@ public class Painter {
 
         // Affichage des options
         gc.setTextAlign(TextAlignment.LEFT);
-        gc.fillText("[" + GO_BACK_KEY.getName() + "] Revenir au menu", TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
+        gc.fillText("[" + GO_BACK_KEY.getName() + "] Retour", TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
+
 
         int count = 0;
+        int yLocation = TILE_SIZE * 11;
         for (Settings setting: Settings.getSettingsList()) {
-            gc.fillText(setting.getSettingName(),TILE_SIZE * 2, TILE_SIZE * 10 + separation * count);
-            gc.fillText(Boolean.toString(setting.isActivated()), WIDTH * 0.80f, TILE_SIZE * 10 + separation * count);
+            gc.fillText(setting.getSettingName(),TILE_SIZE * 2, yLocation);
+            gc.fillText(Boolean.toString(setting.isActivated()), WIDTH * 0.80f, yLocation);
             count++;
+            yLocation = TILE_SIZE * 11 + separation * count;
         }
+
+        gc.setTextAlign(TextAlignment.RIGHT);
+        gc.fillText("[" + SAVE_CONFIG_KEY.getName() + "] Sauvegarder", WIDTH - TILE_SIZE, TILE_SIZE * 1.5f);
 
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setFont(Font.font("Consolas", 24));
-        gc.fillText("Config", WIDTH / 2.0f, TILE_SIZE * 4);
+        gc.fillText("Config", WIDTH / 2.0f, TILE_SIZE * 6);
 
     }
 
@@ -77,10 +83,11 @@ public class Painter {
         gc.setTextAlign(TextAlignment.LEFT);
         Settings option = Settings.getFromSettingsList(selectedOption);
 
+        int yLocation = TILE_SIZE * 11 + separation * selectedOption;
         // Dessine le nom de l'option
         gc.setFont(Font.font("Consolas", FontWeight.BOLD, 16));
         gc.setFill(HIGHLIGHTED_TEXT_COLOR);
-        gc.fillText(option.getSettingName(),TILE_SIZE * 2, TILE_SIZE * 10 + separation * selectedOption);
+        gc.fillText(option.getSettingName(),TILE_SIZE * 2, yLocation);
 
         // Dessine la valeur du de l'option
         gc.setFont(Font.font("Consolas", 16));
@@ -88,7 +95,7 @@ public class Painter {
             gc.setFill(HIGHLIGHTED_TRUE_TEXT_COLOR);
         else
             gc.setFill(HIGHLIGHTED_FALSE_TEXT_COLOR);
-        gc.fillText(Boolean.toString(option.isActivated()), WIDTH * 0.80f, TILE_SIZE * 10 + separation * selectedOption);
+        gc.fillText(Boolean.toString(option.isActivated()), WIDTH * 0.80f, yLocation);
     }
 
     /**
@@ -106,8 +113,12 @@ public class Painter {
 
         // Sélection des modes de jeu
         gc.fillText("[<] Solo", WIDTH * 0.31f, HEIGHT * 0.58f);
-        gc.fillText("Multi [>]", WIDTH * 0.65f, HEIGHT * 0.58f);
-        gc.fillText("[" + CONFIG_GAME_KEY.getName() + "] Config", WIDTH * 0.5f, HEIGHT * 0.7f);
+
+        gc.setTextAlign(TextAlignment.RIGHT);
+        gc.fillText("Multi [>]", WIDTH * 0.76f, HEIGHT * 0.58f);
+
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText("Config\n[" + CONFIG_GAME_KEY.getName() + "]", WIDTH * 0.5f, HEIGHT * 0.75f);
 
         // Titre du jeu
         gc.setFont(Font.font("Consolas", 24));
@@ -122,7 +133,7 @@ public class Painter {
     public static void paintGameOverMenu(GraphicsContext gc, Snake deadSnake) {
         SnakeColor deadSnakeColor = deadSnake.getSnakeColor();
 
-        String deathText = "Vous êtes mort. Votre score est de " + deadSnake.getScore();
+        String deathText = "Votre score est de " + deadSnake.getScore();
         if (Main.isInMultiGame)
             deathText = "Le serpent " + deadSnakeColor.getName() + " est mort";
 
@@ -206,6 +217,15 @@ public class Painter {
                 paintSnake(dot, previousDot2, gc);
                 if (dot.getDotType() == Dot.DotType.HEAD)
                     previousDot2 = dot;
+            }
+        }
+
+        if (!playerOneSnake.isMoving() && !Main.isInMultiGame || (!playerOneSnake.isMoving() && Main.isInMultiGame && !playerTwoSnake.isMoving())) {
+            if (Main.isInMultiGame) {
+                gc.fillText("Not Moving", 50, 50);
+            }
+            else {
+                gc.fillText("^\n|\nAller en haut", WIDTH * 0.5f, HEIGHT * 0.7f);
             }
         }
 

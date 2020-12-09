@@ -50,6 +50,8 @@ public class Constants {
     // Touche de modification des paramètres du jeu
     public static final KeyCode CONFIG_GAME_KEY = KeyCode.C;
 
+    public static final KeyCode SAVE_CONFIG_KEY = KeyCode.S;
+
     // Touche de sélection d'option
     public static final KeyCode TOGGLE_OPTION_KEY = KeyCode.SPACE;
 

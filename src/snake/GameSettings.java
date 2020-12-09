@@ -117,16 +117,17 @@ public class GameSettings {
         return Files.readAllLines(Paths.get(SETTINGS_PATH));
     }
 
-    int settingsIndex = 0;
     /**
      * Inscrit les valeurs du fichier dans la liste de paramètres du jeu
      */
     public void getFromFile() {
         try {
             List<String> settingsList = readFromFile();
-            settingsList.forEach(n -> {
+
+            int settingsIndex = 0;
+            for (String setting: settingsList) {
                 // On découpe la ligne au niveau du "="
-                String[] segments = n.split("=");
+                String[] segments = setting.split("=");
 
                 // On récupère le nom de l'option
                 String optionName = segments[0];
@@ -134,12 +135,9 @@ public class GameSettings {
                 Settings settingsName = null;
                 try {
                     settingsName = Settings.valueOf(optionName);
-                } catch (Exception ignored) {
-
-                }
+                } catch (Exception ignored) {}
 
                 if (settingsName != null) {
-
                     // On récupère la dernière partie
                     String optionValue = segments[segments.length - 1];
                     // On converti la valeur en booléen
@@ -152,7 +150,7 @@ public class GameSettings {
                 }
 
                 settingsIndex++;
-            });
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

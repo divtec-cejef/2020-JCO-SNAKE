@@ -178,6 +178,11 @@ public class Main extends Application {
             }
         }
 
+        // sauvegarde de la configuration
+        if (event.getCode() == SAVE_CONFIG_KEY) {
+            settings.writeAllInFile();
+        }
+
         if (event.getCode() == KeyCode.SHIFT) {
             isShiftKeyPressed = true;
         }
@@ -187,9 +192,9 @@ public class Main extends Application {
         // Retour vers le menu
         if (event.getCode() == GO_BACK_KEY) {
             if (isInSettingsMenu) {
-                settings.writeAllInFile();
-                Painter.paintMenu(context);
                 isInSettingsMenu = false;
+                selectedOption = 0;
+                Painter.paintMenu(context);
             }
         }
 

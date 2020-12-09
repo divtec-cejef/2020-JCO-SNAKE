@@ -235,7 +235,7 @@ public class Snake {
     /**
      * @return {@code true} si le serpent se déplace
      */
-    private boolean isMoving() {
+    public boolean isMoving() {
         return !(xVelocity == 0 & yVelocity == 0);
     }
 
