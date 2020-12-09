@@ -239,6 +239,7 @@ public class Main extends Application {
                 paused = !isPaused();
                 break;
         }
+
         if (event.getCode() == RESTART_KEY)
             if (isPaused())
                 startGame(isInMultiGame);

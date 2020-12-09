@@ -6,9 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 // Importation des constantes
 import static snake.Constants.*;
@@ -101,6 +99,11 @@ public class GameSettings {
      */
     public void writeAllInFile() {
         File settingsFile = new File(SETTINGS_PATH);
+        try {
+            settingsFile.createNewFile();
+        } catch (IOException exception){
+            System.out.println(exception.getMessage());
+        }
         if (settingsFile.delete()) {
             for (Settings setting : Settings.SETTINGS_LIST) {
                 writeInFile(setting.toString(), Boolean.toString(setting.isActivated()));
@@ -114,7 +117,14 @@ public class GameSettings {
      * @throws IOException IOException
      */
     public List<String> readFromFile() throws IOException {
-        return Files.readAllLines(Paths.get(SETTINGS_PATH));
+        try {
+            return Files.readAllLines(Paths.get(SETTINGS_PATH));
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            List<String> liste = new ArrayList<>();
+            liste.add("");
+            return liste;
+        }
     }
 
     /**
