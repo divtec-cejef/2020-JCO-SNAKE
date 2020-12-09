@@ -17,8 +17,11 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 // Importation des constantes
@@ -66,6 +69,14 @@ public class Main extends Application {
          */
         public boolean isActivated() {
             return isActivated;
+        }
+
+        /**
+         * Modifie l'activation d'une option
+         * @param activated Nouvelle option du paramètre
+         */
+        public void setActivated(boolean activated) {
+            isActivated = activated;
         }
 
         /**
@@ -151,20 +162,66 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(ICON_PATH));
 
+        // Récupère les paramètres depuis le fichier "settings.config"
+        getSettingsFromFile();
+
         // Affiche la fenêtre
-//        primaryStage.show();
+        primaryStage.show();
 
         // Affiche le menu de sélection de mode de jeu
-//        Painter.paintMenu(context);
+        Painter.paintMenu(context);
+    }
 
-        for (Settings setting: Settings.SETTINGS_LIST) {
-            writeInSettingsFile(setting.toString(), Boolean.toString(setting.isActivated()));
+    /**
+     * Ecrit un paramètre dans le fichier de configuration
+     * @param settingsName Nom du paramètre
+     * @param settingValue Valeur de ce paramètre
+     */
+    public void writeSettingInFile(String settingsName, String settingValue) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(SETTINGS_PATH, true))) {
+            bw.write(settingsName + "=" + settingValue + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void writeInSettingsFile(String settingsName, String settingValue) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(SETTINGS_PATH, true))) {
-            bw.write(settingsName + "=" + settingValue + "\n");
+    /**
+     * Ecrit tous les paramètres du jeu dans le fichier de configuration
+     */
+    public void writeAllSettingsInFile() {
+        File settingsFile = new File(SETTINGS_PATH);
+        if (settingsFile.delete()) {
+            for (Settings setting : Settings.SETTINGS_LIST) {
+                writeSettingInFile(setting.toString(), Boolean.toString(setting.isActivated()));
+            }
+        }
+    }
+
+    /**
+     * Lis le contenu du fichier de configuration
+     * @return le contenu de ce fichier
+     * @throws IOException IOException
+     */
+    public List<String> readSettingsFromFile() throws IOException {
+        return Files.readAllLines(Paths.get(SETTINGS_PATH));
+    }
+
+    /**
+     * Inscrit les valeurs du fichier dans la liste de paramètres du jeu
+     */
+    public void getSettingsFromFile() {
+        try {
+            List<String> settingsList = readSettingsFromFile();
+            for (int i = 0; i < settingsList.size(); i++) {
+                // On découpe la ligne
+                String[] segments = settingsList.get(i).split("=");
+                // On récupère la dernière partie
+                String document = segments[segments.length - 1];
+                // On converti la valeur en booléen
+                boolean settingsValue = Boolean.parseBoolean(document);
+                // On assigne le booleéen à l'option correspondante
+                Settings.SETTINGS_LIST.get(i).setActivated(settingsValue);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -204,9 +261,23 @@ public class Main extends Application {
      * @param event Touche appuyée
      */
     private void settingsMenuListener(KeyEvent event) {
+        switch (event.getCode()) {
+            case DOWN:
+                if (selectedOption >= Settings.SETTINGS_LIST.size() - 1)
+                    selectedOption = 0;
+                else
+                    selectedOption++;
+                break;
+            case UP:
+                if (selectedOption <= 0)
+                    selectedOption = Settings.SETTINGS_LIST.size() - 1;
+                else
+                    selectedOption--;
+                break;
+        }
+
         if (event.getCode() == TOGGLE_OPTION_KEY) {
             Settings.SETTINGS_LIST.get(selectedOption).toggleOption();
-            Painter.selectOption(selectedOption, context);
         }
 
         if (event.getCode() == SELECT_OPTION_KEY) {
@@ -221,7 +292,6 @@ public class Main extends Application {
                 else
                     selectedOption++;
             }
-            Painter.selectOption(selectedOption, context);
         }
 
         if (event.getCode() == KeyCode.SHIFT) {
@@ -231,11 +301,13 @@ public class Main extends Application {
         // Retour vers le menu
         if (event.getCode() == GO_BACK_KEY) {
             if (isInSettingsMenu) {
+                writeAllSettingsInFile();
                 Painter.paintMenu(context);
                 isInSettingsMenu = false;
             }
         }
 
+        Painter.selectOption(selectedOption, context);
     }
 
     /**
