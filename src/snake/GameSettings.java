@@ -16,10 +16,16 @@ import static snake.Constants.*;
  */
 public class GameSettings {
     /**
-     * Paramètres possibles pour le jeu
+     * Paramètres du jeu
      */
     public enum Settings {
         WALLS("Murs autour du plateau", false);
+        /*
+        Options à rajouter :
+         - couleur serpent
+         - vitesse
+         - longueur
+        */
 
         // Nom en français du paramètre
         private final String settingName;
