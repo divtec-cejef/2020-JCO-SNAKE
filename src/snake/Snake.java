@@ -106,7 +106,7 @@ public class Snake {
     public Snake(SnakeColor color, Grid grid) {
         dots = new LinkedList<>();
         isAlive = true;
-        canDie = Settings.getFromSettingsList(0).isActivated();
+        canDie = Settings.WALLS.isActivated();
         this.grid = grid;
         xVelocity = 0;
         yVelocity = 0;
@@ -141,6 +141,9 @@ public class Snake {
      * @param dot Le point où était placée la nourriture que le serpent à mangé
      */
     private void growTo(SnakeDot dot) {
+        if (Settings.SNAKE_RAINBOW_SHEDDING.isActivated())
+            setRandomColor(snakeColor);
+
         length++;
         canDie = true;
         increaseVelocity();
@@ -365,7 +368,6 @@ public class Snake {
      */
     private SnakeDot createNewSnakeParts(Dot.DotType dotType, int x, int y) {
         return new SnakeDot(dotType, x, y, snakeColor, getSnakeSprite(dotType), INITIAL_SNAKE_DIRECTION);
-//        return new SnakeDot(dotType, x, y, snakeColor, getSnakeSprite(dotType), INITIAL_SNAKE_DIRECTION);
     }
 
     /**
@@ -373,5 +375,27 @@ public class Snake {
      */
     public SnakeColor getSnakeColor() {
         return snakeColor;
+    }
+
+    /**
+     * Modifie la couleur du serpent
+     * @param snakeColor Nouvelle couleur du serpent
+     */
+    public void setSnakeColor(SnakeColor snakeColor) {
+        this.snakeColor = snakeColor;
+
+        for (SnakeDot dot:dots) {
+            dot.setColor(snakeColor);
+        }
+    }
+
+    private void setRandomColor(SnakeColor snakeColor) {
+        SnakeColor newColor = SnakeColor.randomColor();
+        while (newColor == snakeColor)
+            newColor = SnakeColor.randomColor();
+
+        for (SnakeDot dot: dots) {
+            dot.setColor(newColor);
+        }
     }
 }

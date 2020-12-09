@@ -19,9 +19,11 @@ public class GameSettings {
      * Paramètres du jeu
      */
     public enum Settings {
-        WALLS("Murs autour du plateau", false);
+        WALLS("Murs autour du plateau", false),
+        SNAKE_RAINBOW_SHEDDING("Mue colorée", false);
         /*
         Options à rajouter :
+         - Modification de la couleur après chaque pomme
          - couleur serpent
          - vitesse
          - longueur
@@ -85,6 +87,11 @@ public class GameSettings {
         public static Settings getFromSettingsList(int index) {
             return SETTINGS_LIST.get(index);
         }
+
+        public static int getSettingsCount() {
+            return SETTINGS_LIST.size();
+        }
+
     }
 
     /**

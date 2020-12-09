@@ -54,7 +54,7 @@ public class Grid {
         int x = snakeDot.getX();
         int y = snakeDot.getY();
 
-        if (Settings.getSettingsList().get(0).isActivated()) {
+        if (Settings.WALLS.isActivated()) {
             if (x >= rows) x = rows;
             if (y >= cols) y = cols;
             if (x < 0) x = 0;

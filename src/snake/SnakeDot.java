@@ -9,6 +9,9 @@ public class SnakeDot extends Dot {
     Snake.Direction direction;
     Snake.SnakeColor color;
 
+    // Le chemin vers les images du serpent
+    String PATH_TO_SNAKE_IMAGES;
+
     /**
      * Contruit un point faisant partie du serpent
      *
@@ -24,6 +27,8 @@ public class SnakeDot extends Dot {
         this.dotType = dotType;
         this.direction = direction;
         this.color = color;
+
+        PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + color.toString() + "/";
     }
 
     @Override
@@ -40,11 +45,10 @@ public class SnakeDot extends Dot {
 
     /**
      * Modifie le sprite du serpent
+     *
+     * @param previousDot Point précédent ce point
      */
     public void setSnakeSprite(SnakeDot previousDot) {
-        // Le chemin vers les images du serpent
-        String PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + color.toString() + "/";
-
         switch (this.getDotType()) {
             case HEAD:
                 this.setSprite(new Sprite(PATH_TO_SNAKE_IMAGES + "head_" + direction.toString().toLowerCase() + ".png"));
@@ -77,7 +81,6 @@ public class SnakeDot extends Dot {
      * @return L'image correspondant aux paramètres fournis
      */
     public Sprite checkForCorner(String imagesPath, Snake.Direction previousDirection) {
-//        System.out.println("checkForCorner()");
         boolean isValidImage = true;
 
         String upOrDown = "";
@@ -137,5 +140,10 @@ public class SnakeDot extends Dot {
 
         return new Sprite(imagesPath + imageName);
 
+    }
+
+    public void setColor(Snake.SnakeColor color) {
+        this.color = color;
+        PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + color.toString() + "/";
     }
 }

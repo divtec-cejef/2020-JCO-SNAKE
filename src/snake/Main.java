@@ -152,14 +152,14 @@ public class Main extends Application {
     private void settingsMenuListener(KeyCode keyCode) {
         switch (keyCode) {
             case DOWN:
-                if (selectedOption >= Settings.getSettingsList().size() - 1)
+                if (selectedOption >= Settings.getSettingsCount() - 1)
                     selectedOption = 0;
                 else
                     selectedOption++;
                 break;
             case UP:
                 if (selectedOption <= 0)
-                    selectedOption = Settings.getSettingsList().size() - 1;
+                    selectedOption = Settings.getSettingsCount() - 1;
                 else
                     selectedOption--;
                 break;
@@ -172,11 +172,11 @@ public class Main extends Application {
         if (keyCode == SELECT_OPTION_KEY) {
             if (isShiftKeyPressed){
                 if (selectedOption <= 0)
-                    selectedOption = Settings.getSettingsList().size() - 1;
+                    selectedOption = Settings.getSettingsCount() - 1;
                 else
                     selectedOption--;
             } else {
-                if (selectedOption >= Settings.getSettingsList().size() - 1)
+                if (selectedOption >= Settings.getSettingsCount() - 1)
                     selectedOption = 0;
                 else
                     selectedOption++;
