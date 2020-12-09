@@ -47,6 +47,9 @@ public class Constants {
     // Touche de changement de mode de jeu
     public static final KeyCode CHANGE_GAME_MODE_KEY = KeyCode.C;
 
+    // Touche de modification des paramètres du jeu
+    public static final KeyCode CONFIG_GAME_KEY = KeyCode.C;
+
     // Touche de sélection d'option
     public static final KeyCode TOGGLE_OPTION_KEY = KeyCode.SPACE;
 

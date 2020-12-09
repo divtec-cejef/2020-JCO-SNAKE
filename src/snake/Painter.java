@@ -105,9 +105,9 @@ public class Painter {
         gc.setTextAlign(TextAlignment.CENTER);
 
         // Sélection des modes de jeu
-        gc.fillText("[<] Solo", WIDTH * 0.31f, HEIGHT * 0.6f);
-        gc.fillText("Multi [>]", WIDTH * 0.65f, HEIGHT * 0.6f);
-        gc.fillText("Config\n[v]", WIDTH * 0.5f, HEIGHT * 0.68f);
+        gc.fillText("[<] Solo", WIDTH * 0.31f, HEIGHT * 0.58f);
+        gc.fillText("Multi [>]", WIDTH * 0.65f, HEIGHT * 0.58f);
+        gc.fillText("[" + CONFIG_GAME_KEY.getName() + "] Config", WIDTH * 0.5f, HEIGHT * 0.7f);
 
         // Titre du jeu
         gc.setFont(Font.font("Consolas", 24));

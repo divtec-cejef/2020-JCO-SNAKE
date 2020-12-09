@@ -128,12 +128,13 @@ public class Main extends Application {
                 case RIGHT:
                         startGame(true);
                     break;
-                // Paramètres du jeu
-                case DOWN:
-                    selectedOption = 0;
-                    Painter.selectOption(selectedOption, context);
-                    isInSettingsMenu = true;
-                    break;
+            }
+
+            // Paramètres du jeu
+            if (event.getCode() == CONFIG_GAME_KEY) {
+                selectedOption = 0;
+                Painter.selectOption(selectedOption, context);
+                isInSettingsMenu = true;
             }
         }
     }
