@@ -51,7 +51,6 @@ public class Painter {
         gc.setTextAlign(TextAlignment.LEFT);
         gc.fillText("[" + GO_BACK_KEY.getName() + "] Retour", TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
 
-
         int count = 0;
         int yLocation = TILE_SIZE * 11;
         for (Settings setting: Settings.getSettingsList()) {
@@ -65,6 +64,8 @@ public class Painter {
         gc.fillText("[" + SAVE_CONFIG_KEY.getName() + "] Sauvegarder", WIDTH - TILE_SIZE, TILE_SIZE * 1.5f);
 
         gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText("[" + TOGGLE_OPTION_KEY.getName() + "] Modifier l'option", WIDTH * 0.5f, HEIGHT - TILE_SIZE);
+
         gc.setFont(Font.font("Consolas", 24));
         gc.fillText("Config", WIDTH / 2.0f, TILE_SIZE * 6);
 
