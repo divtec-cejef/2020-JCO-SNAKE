@@ -218,25 +218,25 @@ public class Main extends Application {
             case UP:
                 if (!isPaused()) {
                     if (playerOneSnakeDirection != Direction.DOWN && playerOneSnakeDirection != Direction.UP)
-                        playerOneSnake.setUp();
+                        playerOneSnake.changeDirection(Direction.UP);
                 }
                 break;
             case LEFT:
                 if (!isPaused()) {
                     if (playerOneSnakeDirection != Direction.RIGHT && playerOneSnakeDirection != Direction.LEFT)
-                        playerOneSnake.setLeft();
+                        playerOneSnake.changeDirection(Direction.LEFT);
                 }
                 break;
             case DOWN:
                 if (!isPaused()) {
                     if (playerOneSnakeDirection != Direction.UP && playerOneSnakeDirection != Direction.DOWN)
-                        playerOneSnake.setDown();
+                        playerOneSnake.changeDirection(Direction.DOWN);
                 }
                 break;
             case RIGHT:
                 if (!isPaused()) {
                     if (playerOneSnakeDirection != Direction.LEFT && playerOneSnakeDirection != Direction.RIGHT)
-                        playerOneSnake.setRight();
+                        playerOneSnake.changeDirection(Direction.RIGHT);
                 }
                 break;
             case P:
@@ -272,26 +272,26 @@ public class Main extends Application {
             case W:
                 if (!isPaused()) {
                     if (playerTwoSnakeDirection != Direction.DOWN && playerTwoSnakeDirection != Direction.UP) {
-                        playerTwoSnake.setUp();
+                        playerTwoSnake.changeDirection(Direction.UP);
                     }
                 }
                 break;
             case A:
                 if (!isPaused()) {
                     if (playerTwoSnakeDirection != Direction.RIGHT && playerTwoSnakeDirection != Direction.LEFT)
-                        playerTwoSnake.setLeft();
+                        playerTwoSnake.changeDirection(Direction.LEFT);
                 }
                 break;
             case S:
                 if (!isPaused()) {
                     if (playerTwoSnakeDirection != Direction.UP && playerTwoSnakeDirection != Direction.DOWN)
-                        playerTwoSnake.setDown();
+                        playerTwoSnake.changeDirection(Direction.DOWN);
                 }
                 break;
             case D:
                 if (!isPaused()) {
                     if (playerTwoSnakeDirection != Direction.LEFT && playerTwoSnakeDirection != Direction.RIGHT)
-                        playerTwoSnake.setRight();
+                        playerTwoSnake.changeDirection(Direction.RIGHT);
                 }
                 break;
         }

@@ -20,10 +20,10 @@ public class GameSettings {
      */
     public enum Settings {
         WALLS("Murs autour du plateau", false),
-        SNAKE_RAINBOW_SHEDDING("Mue colorée", false);
+        SNAKE_RAINBOW_SHEDDING("Mue colorée", false),
+        RANDOM_COLOR_AFTER_FOOD("Changement de couleur après une pomme", false); // TODO
         /*
-        Options à rajouter :
-         - Modification de la couleur après chaque pomme
+        Options à rajouter (non booléen) :
          - couleur serpent
          - vitesse
          - longueur

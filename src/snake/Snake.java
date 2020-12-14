@@ -78,9 +78,9 @@ public class Snake {
      */
     private Direction snakeDirection = Direction.NONE;
     // Grille du jeu
-    private Grid grid;
+    private final Grid grid;
     // Liste des points du serpent
-    private List<SnakeDot> dots;
+    private final List<SnakeDot> dots;
     // Tête du serpent
     private SnakeDot head;
     // Queue du serpent
@@ -268,69 +268,50 @@ public class Snake {
     }
 
     /**
-     * Déplace le serpent vers le haut
+     * Change la direction du serpent
+     * @param newDirection nouvelle direction du serpent
      */
-    public void setUp() {
-        xVelocity = 0;
-        yVelocity = -velocity;
-        stepX = 0;
-        stepY = -1;
-        setSnakeDirection(Direction.UP);
-    }
-
-    /**
-     * Déplace le serpent vers le bas
-     */
-    public void setDown() {
-        xVelocity = 0;
-        yVelocity = velocity;
-        stepX = 0;
-        stepY = 1;
-        setSnakeDirection(Direction.DOWN);
-    }
-
-    /**
-     * Déplace le serpent vers la gauche
-     */
-    public void setLeft() {
-        xVelocity = -velocity;
-        yVelocity = 0;
-        stepX = -1;
-        stepY = 0;
-        setSnakeDirection(Direction.LEFT);
-    }
-
-    /**
-     * Déplace le serpent vers la droite
-     */
-    public void setRight() {
-        xVelocity = velocity;
-        yVelocity = 0;
-        stepX = 1;
-        stepY = 0;
-        setSnakeDirection(Direction.RIGHT);
-    }
-
-    /**
-     * Augmente la vitesse du serpent
-     */
-    public void increaseVelocity() {
-        velocity += SNAKE_VELOCITY_INCREASE;
-
-        if (xVelocity != 0) {
-            if (xVelocity < 0)
-                xVelocity = -velocity;
-            else
-                xVelocity = velocity;
-        }
-
-        if (yVelocity != 0) {
-            if (yVelocity < 0)
-                yVelocity = -velocity;
-            else
-                yVelocity = velocity;
+    public void changeDirection(Direction newDirection) {
+        setSnakeDirection(newDirection);
+        switch (newDirection) {
+            case RIGHT:
+                stepX = 1;
+                stepY = 0;
+                break;
+            case LEFT:
+                stepX = -1;
+                stepY = 0;
+                break;
+            case UP:
+                stepX = 0;
+                stepY = -1;
+                break;
+            case DOWN:
+                stepX = 0;
+                stepY = 1;
+                break;
         }
     }
+//    /**
+//     * Augmente la vitesse du serpent
+//     */
+//    public void increaseVelocity() {
+//        velocity += SNAKE_VELOCITY_INCREASE;
+//
+//        if (xVelocity != 0) {
+//            if (xVelocity < 0)
+//                xVelocity = -velocity;
+//            else
+//                xVelocity = velocity;
+//        }
+//
+//        if (yVelocity != 0) {
+//            if (yVelocity < 0)
+//                yVelocity = -velocity;
+//            else
+//                yVelocity = velocity;
+//        }
+//    }
 
     /**
      * @param bodyType type du point dont on veut le sprite
@@ -377,17 +358,17 @@ public class Snake {
         return snakeColor;
     }
 
-    /**
-     * Modifie la couleur du serpent
-     * @param snakeColor Nouvelle couleur du serpent
-     */
-    public void setSnakeColor(SnakeColor snakeColor) {
-        this.snakeColor = snakeColor;
-
-        for (SnakeDot dot:dots) {
-            dot.setColor(snakeColor);
-        }
-    }
+//    /**
+//     * Modifie la couleur du serpent
+//     * @param snakeColor Nouvelle couleur du serpent
+//     */
+//    public void setSnakeColor(SnakeColor snakeColor) {
+//        this.snakeColor = snakeColor;
+//
+//        for (SnakeDot dot:dots) {
+//            dot.setColor(snakeColor);
+//        }
+//    }
 
     private void setRandomColor(SnakeColor snakeColor) {
         SnakeColor newColor = SnakeColor.randomColor();
