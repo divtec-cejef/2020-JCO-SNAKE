@@ -18,8 +18,10 @@ public class Grid {
     // Le nombre de lignes de la grille
     private final int rows;
 
+    // Serpents
     private final Snake playerOneSnake;
     private Snake playerTwoSnake;
+
     private Food food;
 
     /**
@@ -55,11 +57,13 @@ public class Grid {
         int y = snakeDot.getY();
 
         if (Settings.WALLS.isActivated()) {
+            // Le serpent mourra
             if (x >= rows) x = rows;
             if (y >= cols) y = cols;
             if (x < 0) x = 0;
             if (y < 0) y = 0;
         } else {
+            // Le serpent va se téléporter à l'opposé
             if (x >= rows) x = 0;
             if (y >= cols) y = 0;
             if (x < 0) x = rows - 1;
@@ -94,19 +98,19 @@ public class Grid {
         if (food.getDot().equals(playerOneSnake.getHead())) {
             playerOneSnake.extend();
             food = setNewFood();
-        } else {
+        } else
             playerOneSnake.move();
-        }
 
         if (Main.isInMultiGame) {
             if (food.getDot().equals(playerTwoSnake.getHead())) {
                 playerTwoSnake.extend();
                 food = setNewFood();
-            } else {
+            } else
                 playerTwoSnake.move();
-            }
         }
     }
+
+    // ******************************  GETTER  ****************************** //
 
     /**
      * @return Les colonnes de la grille

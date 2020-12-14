@@ -10,7 +10,6 @@ import static snake.Constants.*;
 
 // Importation des enums
 import static snake.GameSettings.Settings;
-import static snake.Snake.Direction;
 import static snake.Snake.SnakeColor;
 
 /**
@@ -18,9 +17,15 @@ import static snake.Snake.SnakeColor;
  */
 public class Painter {
 
+    // Serpents
     private static Snake playerOneSnake;
     private static Snake playerTwoSnake;
 
+    // Points précédents
+    private static SnakeDot playerOnePreviousDot = null;
+    private static SnakeDot playerTwoPreviousDot = null;
+
+    // Séparation entre les lignes
     private static final int separation = 35;
 
     /**
@@ -47,10 +52,11 @@ public class Painter {
     private static void paintConfigMenu(GraphicsContext gc) {
         initGrid(gc);
 
-        // Affichage des options
+        // Retour au menu
         gc.setTextAlign(TextAlignment.LEFT);
         gc.fillText("[" + GO_BACK_KEY.getName() + "] Retour", TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
 
+        // Affichage des options
         int count = 0;
         int yLocation = TILE_SIZE * 11;
         for (Settings setting: Settings.getSettingsList()) {
@@ -60,12 +66,15 @@ public class Painter {
             yLocation = TILE_SIZE * 11 + separation * count;
         }
 
+        // Sauvegarder les paramètres
         gc.setTextAlign(TextAlignment.RIGHT);
         gc.fillText("[" + SAVE_CONFIG_KEY.getName() + "] Sauvegarder", WIDTH - TILE_SIZE, TILE_SIZE * 1.5f);
 
+        // Modifier un paramètre
         gc.setTextAlign(TextAlignment.CENTER);
         gc.fillText("[" + TOGGLE_OPTION_KEY.getName() + "] Modifier l'option", WIDTH * 0.5f, HEIGHT - TILE_SIZE);
 
+        // Titre de la page
         gc.setFont(Font.font("Consolas", 24));
         gc.fillText("Config", WIDTH / 2.0f, TILE_SIZE * 6);
 
@@ -81,21 +90,24 @@ public class Painter {
         // Dessine le menu
         paintConfigMenu(gc);
 
+        // Option seléctionnée
         gc.setTextAlign(TextAlignment.LEFT);
         Settings option = Settings.getFromSettingsList(selectedOption);
 
+        // Emplacement de l'option
         int yLocation = TILE_SIZE * 11 + separation * selectedOption;
+
         // Dessine le nom de l'option
         gc.setFont(Font.font("Consolas", FontWeight.BOLD, 16));
         gc.setFill(HIGHLIGHTED_TEXT_COLOR);
         gc.fillText(option.getSettingName(),TILE_SIZE * 2, yLocation);
 
-        // Dessine la valeur du de l'option
+        // Dessine la valeur de l'option
         gc.setFont(Font.font("Consolas", 16));
         if (Settings.getFromSettingsList(selectedOption).isActivated())
-            gc.setFill(HIGHLIGHTED_TRUE_TEXT_COLOR);
+            gc.setFill(HIGHLIGHTED_TRUE_TEXT_COLOR);  // Couleur si l'option est activée
         else
-            gc.setFill(HIGHLIGHTED_FALSE_TEXT_COLOR);
+            gc.setFill(HIGHLIGHTED_FALSE_TEXT_COLOR); // Couleur si l'option est désactivée
         gc.fillText(Boolean.toString(option.isActivated()), WIDTH * 0.80f, yLocation);
     }
 
@@ -134,11 +146,15 @@ public class Painter {
     public static void paintGameOverMenu(GraphicsContext gc, Snake deadSnake) {
         SnakeColor deadSnakeColor = deadSnake.getSnakeColor();
 
+        // Choix du message de fin
         String deathText = "Votre score est de " + deadSnake.getScore();
         if (Main.isInMultiGame)
             deathText = "Le serpent " + deadSnakeColor.getName() + " est mort";
 
+        // On dessine le message dans la fenêtre
         gc.fillText(deathText, WIDTH / 2.0f, HEIGHT * 0.42f);
+
+        // On affiche les commandes
         gc.fillText("Appuyez sur [" + RESTART_KEY.getName() + "] pour recommencer.", WIDTH / 2.0f, HEIGHT * 0.5f);
         gc.fillText("[" + CHANGE_GAME_MODE_KEY.getName() + "] pour changer de mode de jeu.", WIDTH / 2.0f, HEIGHT * 0.54f);
         gc.fillText("[" + CLOSE_GAME_KEY.getName() + "] pour quitter.", WIDTH / 2.0f, HEIGHT * 0.58f);
@@ -162,6 +178,7 @@ public class Painter {
      * @param gc   GraphicsContext
      */
     public static void paintGame(Grid grid, GraphicsContext gc) {
+        // On enlève tout ce qu'il y avait avant
         initGrid(gc);
 
         // Dessine la nourriture du serpent
@@ -170,10 +187,10 @@ public class Painter {
         // Dessine le serpent du joueur 1
         playerOneSnake = grid.getPlayerOneSnake();
 
-        SnakeDot previousDot = null;
+        // On dessin le premier serpent
         for (SnakeDot dot : playerOneSnake.getDots()) {
-            paintSnake(dot, previousDot, gc);
-            previousDot = dot;
+            paintSnake(dot, playerOnePreviousDot, gc);
+            playerOnePreviousDot = dot;
         }
 
 //        int count = 0;
@@ -206,28 +223,27 @@ public class Painter {
 //            }
 //            count++;
 //
-//            paintSnake(dot, previousDot, gc);
+//            paintSnake(dot, playerOnePreviousDot, gc);
 //            if (dot.getDotType() == Dot.DotType.HEAD)
-//                previousDot = dot;
+//                playerOnePreviousDot = dot;
 //        }
 
         // Dessine le serpent du joueur 2
         if (Main.isInMultiGame) {
+            // On dessine le deuxième serpent
             playerTwoSnake = grid.getPlayerTwoSnake();
 
-            SnakeDot previousDot2 = null;
             for (SnakeDot dot : playerTwoSnake.getDots()) {
-                paintSnake(dot, previousDot2, gc);
-                if (dot.getDotType() == Dot.DotType.HEAD)
-                    previousDot2 = dot;
+                paintSnake(dot, playerTwoPreviousDot, gc);
+                playerTwoPreviousDot = dot;
             }
         }
 
-        if (!playerOneSnake.isMoving() && !Main.isInMultiGame || (!playerOneSnake.isMoving() && Main.isInMultiGame && !playerTwoSnake.isMoving())) {
+        // Avant que la partie ne commence, on affiche les commandes
+        if (!playerOneSnake.isMoving() && !Main.isInMultiGame || (!playerOneSnake.isMoving() && Main.isInMultiGame && !playerTwoSnake.isMoving()))
             paintCommands(gc);
-        }
 
-        // Affiche un message lorsqu'un serpent est mort
+        // Affiche un message lorsqu'un des serpents est mort
         if (playerOneSnake.isDead())
             paintGameOverMenu(gc, playerOneSnake);
 
@@ -235,15 +251,7 @@ public class Painter {
             paintGameOverMenu(gc, playerTwoSnake);
 
         // Dessine le score
-        float playerOneScoreLocationX = TILE_SIZE * 0.5f;
-        float scoreLocationY = TILE_SIZE * 1.5f;
-        gc.setTextAlign(TextAlignment.LEFT);
-        if (Main.isInMultiGame) {
-            gc.fillText("Serpent " + playerOneSnake.getSnakeColor().getName() + " : " + playerOneSnake.getScore(), playerOneScoreLocationX, scoreLocationY);
-            gc.setTextAlign(TextAlignment.RIGHT);
-            gc.fillText("Serpent " + playerTwoSnake.getSnakeColor().getName() + " : " + playerTwoSnake.getScore(), WIDTH - TILE_SIZE, scoreLocationY);
-        } else
-            gc.fillText("Score : " + playerOneSnake.getScore(), playerOneScoreLocationX, scoreLocationY);
+        paintScore(gc);
     }
 
     /**
@@ -294,7 +302,6 @@ public class Painter {
         float rightYPosition = HEIGHT * 0.75f;
 
         if (Main.isInMultiGame) {
-            gc.fillText("Not Moving", 50, 50);
             // Joueur 2
             difference = WIDTH * 0.25f;
 

@@ -89,9 +89,11 @@ public class Snake {
     private int score;
 
     // Vitesse du serpent
-    public int velocity = INITIAL_SNAKE_VELOCITY;
-    private int xVelocity;
-    private int yVelocity;
+//    public int velocity = INITIAL_SNAKE_VELOCITY;
+//    private int xVelocity;
+//    private int yVelocity;
+    private int speed;
+
     private int stepX;
     private int stepY;
 
@@ -108,8 +110,8 @@ public class Snake {
         isAlive = true;
         canDie = Settings.WALLS.isActivated();
         this.grid = grid;
-        xVelocity = 0;
-        yVelocity = 0;
+//        xVelocity = 0;
+//        yVelocity = 0;
         stepX = 0;
         stepY = 0;
         this.snakeColor = color;
@@ -146,7 +148,7 @@ public class Snake {
 
         length++;
         canDie = true;
-        increaseVelocity();
+//        increaseVelocity();
         checkAndAdd(dot);
         checkDotList();
     }
@@ -198,13 +200,6 @@ public class Snake {
     }
 
     /**
-     * @return Tous les points sur lesquels se trouve le serpent
-     */
-    public List<SnakeDot> getDots() {
-        return dots;
-    }
-
-    /**
      * @return {@code true} si le serpent s'est mangé lui-même
      */
     public boolean isDead() {
@@ -212,34 +207,10 @@ public class Snake {
     }
 
     /**
-     * @return Le point correspondant à la tête du serpent
-     */
-    public SnakeDot getHead() {
-        return head;
-    }
-
-    /**
-     * @return La direction du serpent
-     */
-    public Direction getSnakeDirection() {
-        return snakeDirection;
-    }
-
-    /**
-     * Modifie la direction du serpent
-     *
-     * @param newDirection Nouvelle direction du serpent
-     */
-    public void setSnakeDirection(Direction newDirection) {
-        snakeDirection = newDirection;
-        head.setDirection(newDirection);
-    }
-
-    /**
      * @return {@code true} si le serpent se déplace
      */
     public boolean isMoving() {
-        return !(xVelocity == 0 & yVelocity == 0);
+        return !(stepX == 0 & stepY == 0);
     }
 
     /**
@@ -261,17 +232,12 @@ public class Snake {
     }
 
     /**
-     * @return le score associé à ce serpent
-     */
-    public int getScore() {
-        return score;
-    }
-
-    /**
      * Change la direction du serpent
      * @param newDirection nouvelle direction du serpent
      */
     public void changeDirection(Direction newDirection) {
+        if (!Main.gameHasStarted)
+            Main.gameHasStarted = true;
         setSnakeDirection(newDirection);
         switch (newDirection) {
             case RIGHT:
@@ -323,9 +289,8 @@ public class Snake {
 
         switch (bodyType) {
             case HEAD:
-                return new Sprite(PATH_TO_SNAKE_IMAGES + "head_" + INITIAL_SNAKE_DIRECTION.toString().toLowerCase() + ".png");
             case TAIL:
-                return new Sprite(PATH_TO_SNAKE_IMAGES + "tail_" + INITIAL_SNAKE_DIRECTION.toString().toLowerCase() + ".png");
+                return new Sprite(PATH_TO_SNAKE_IMAGES + bodyType.toString().toLowerCase() + "_" + INITIAL_SNAKE_DIRECTION.toString().toLowerCase() + ".png");
             case BODY:
             default:
                 String orientation;
@@ -351,13 +316,6 @@ public class Snake {
         return new SnakeDot(dotType, x, y, snakeColor, getSnakeSprite(dotType), INITIAL_SNAKE_DIRECTION);
     }
 
-    /**
-     * @return la couleur de ce serpent
-     */
-    public SnakeColor getSnakeColor() {
-        return snakeColor;
-    }
-
 //    /**
 //     * Modifie la couleur du serpent
 //     * @param snakeColor Nouvelle couleur du serpent
@@ -379,4 +337,53 @@ public class Snake {
             dot.setColor(newColor);
         }
     }
+
+    // ******************************  GETTER  ****************************** //
+
+    /**
+     * @return Tous les points sur lesquels se trouve le serpent
+     */
+    public List<SnakeDot> getDots() {
+        return dots;
+    }
+
+    /**
+     * @return Le point correspondant à la tête du serpent
+     */
+    public SnakeDot getHead() {
+        return head;
+    }
+
+    /**
+     * @return La direction du serpent
+     */
+    public Direction getSnakeDirection() {
+        return snakeDirection;
+    }
+
+    /**
+     * Modifie la direction du serpent
+     *
+     * @param newDirection Nouvelle direction du serpent
+     */
+    public void setSnakeDirection(Direction newDirection) {
+        snakeDirection = newDirection;
+        head.setDirection(newDirection);
+    }
+
+    /**
+     * @return le score associé à ce serpent
+     */
+    public int getScore() {
+        return score;
+    }
+
+    /**
+     * @return la couleur de ce serpent
+     */
+    public SnakeColor getSnakeColor() {
+        return snakeColor;
+    }
+
+
 }

@@ -5,7 +5,6 @@ import static snake.Constants.*;
 
 public class SnakeDot extends Dot {
 
-    DotType dotType;
     Snake.Direction direction;
     Snake.SnakeColor color;
 
@@ -24,23 +23,20 @@ public class SnakeDot extends Dot {
      */
     public SnakeDot(DotType dotType, int x, int y, Snake.SnakeColor color, Sprite sprite, Snake.Direction direction) {
         super(dotType, x, y, sprite, direction);
-        this.dotType = dotType;
         this.direction = direction;
         this.color = color;
 
         PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + color.toString() + "/";
     }
 
+    /**
+     * @param dx différence de coordonnée X
+     * @param dy différence de coordonnée Y
+     * @return un point avec les nouvelles coordonnées
+     */
     @Override
     public SnakeDot translate(int dx, int dy) {
         return new SnakeDot(this.getDotType(), this.getX() + dx, this.getY() + dy, this.color, this.getSprite(), this.getDirection());
-    }
-
-    /**
-     * @return La couleur du point
-     */
-    public Snake.SnakeColor getColor() {
-        return color;
     }
 
     /**
@@ -49,12 +45,11 @@ public class SnakeDot extends Dot {
      * @param previousDot Point précédent ce point
      */
     public void setSnakeSprite(SnakeDot previousDot) {
-        switch (this.getDotType()) {
+        DotType bodyType = this.getDotType();
+        switch (bodyType) {
             case HEAD:
-                this.setSprite(new Sprite(PATH_TO_SNAKE_IMAGES + "head_" + direction.toString().toLowerCase() + ".png"));
-                break;
             case TAIL:
-                this.setSprite(new Sprite(PATH_TO_SNAKE_IMAGES + "tail_" + direction.toString().toLowerCase() + ".png"));
+                this.setSprite(new Sprite(PATH_TO_SNAKE_IMAGES + bodyType.toString().toLowerCase() + "_" + direction.toString().toLowerCase() + ".png"));
                 break;
             case BODY:
             default:
@@ -142,8 +137,26 @@ public class SnakeDot extends Dot {
 
     }
 
+
+    // ******************************  GETTER  ****************************** //
+
+    /**
+     * @return La couleur du point
+     */
+    public Snake.SnakeColor getColor() {
+        return color;
+    }
+
+
+    // ******************************  SETTER  ****************************** //
+
+    /**
+     * Change la couleur de ce point
+     * @param color Nouvelle couleur
+     */
     public void setColor(Snake.SnakeColor color) {
         this.color = color;
         PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + color.toString() + "/";
     }
+
 }

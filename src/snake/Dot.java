@@ -1,7 +1,7 @@
 package snake;
 
 // Importation des constantes
-import static snake.Constants.*;
+//import static snake.Constants.*;
 
 /**
  * Représente un point
@@ -49,6 +49,28 @@ public class Dot {
     }
 
     /**
+     * @param dx différence de coordonnée X
+     * @param dy différence de coordonnée Y
+     * @return un point avec les nouvelles coordonnées
+     */
+    public Dot translate(int dx, int dy) {
+        return new Dot(dotType, x + dx, y + dy, sprite, direction);
+    }
+
+    /**
+     * @param other Le point qui va être comparé
+     * @return {@code true} si l'autre Object est une instance de Dot et à les mêmes coordonnées
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Dot)) return false;
+        Dot dot = (Dot) other;
+        return x == dot.x && y == dot.y;
+    }
+
+    // ******************************  GETTER  ****************************** //
+
+    /**
      * @return Coordonnée X du point
      */
     public int getX() {
@@ -61,6 +83,44 @@ public class Dot {
     public int getY() {
         return y;
     }
+
+    /**
+     * @return Le type du point
+     */
+    public DotType getDotType() {
+        return dotType;
+    }
+
+    /**
+     * @return la direction attribuée à ce point
+     */
+    public Snake.Direction getDirection() {
+        return direction;
+    }
+
+    /**
+     * @return la précédente direction de ce point
+     */
+    public Snake.Direction getPreviousDirection() {
+        return previousDirection;
+    }
+
+    /**
+     * @return Le point actuel
+     */
+    public Dot getDot() {
+        return this;
+    }
+
+    /**
+     * @return le sprite de ce point
+     */
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+
+    // ******************************  SETTER  ****************************** //
 
     /**
      * Change la coordonnée x du point
@@ -81,53 +141,12 @@ public class Dot {
     }
 
     /**
-     * @return Le type du point
-     */
-    public DotType getDotType() {
-        return dotType;
-    }
-
-    /**
      * Change le type du point
      *
      * @param newDotType Le nouveau type du point
      */
     public void setDotType(DotType newDotType) {
         this.dotType = newDotType;
-    }
-
-    /**
-     * @param dx différence de coordonnée X
-     * @param dy différence de coordonnée Y
-     * @return un point avec les nouvelles coordonnées
-     */
-    public Dot translate(int dx, int dy) {
-        return new Dot(dotType, x + dx, y + dy, sprite, direction);
-    }
-
-    /**
-     * @param other Le point qui va être comparé
-     * @return {@code true} si l'autre Object est une instance de Dot et à les mêmes coordonnées
-     */
-    @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof Dot)) return false;
-        Dot dot = (Dot) other;
-        return x == dot.x && y == dot.y;
-    }
-
-    /**
-     * @return la direction attribuée à ce point
-     */
-    public Snake.Direction getDirection() {
-        return direction;
-    }
-
-    /**
-     * @return la précédente direction de ce point
-     */
-    public Snake.Direction getPreviousDirection() {
-        return previousDirection;
     }
 
     /**
@@ -141,13 +160,6 @@ public class Dot {
     }
 
     /**
-     * @return le sprite de ce point
-     */
-    public Sprite getSprite() {
-        return sprite;
-    }
-
-    /**
      * Modifie le sprite de ce point
      *
      * @param sprite Nouveau sprite du point
@@ -155,9 +167,4 @@ public class Dot {
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
-
-    public Dot getDot() {
-        return this;
-    }
-
 }

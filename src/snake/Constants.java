@@ -7,19 +7,13 @@ import javafx.scene.paint.Color;
  * Constantes du programme
  */
 public class Constants {
-    /**
-     * Nom du jeu
-     */
+    // Nom du jeu
     public static final String GAME_NAME = "SNAKE";
 
-    /**
-     * Vitesse du jeu
-     */
-    public static final int FPS = 10;
+    // Vitesse du jeu
+    public static final int FPS = 15;
 
-    /**
-     * CHEMINS
-     */
+    // ******************************  CHEMINS  ****************************** //
 
     // Chemin vers les fichiers de config
     public static final String PATH_TO_CONFIG = "./src/config/";
@@ -34,9 +28,7 @@ public class Constants {
     public static final String ICON_PATH = PATH_TO_IMAGES + "icon.png";
 
 
-    /**
-     * COMMANDES
-     */
+    // ******************************  COMMANDES  ****************************** //
 
     // Touche de fermeture de la fenêtre
     public static final KeyCode CLOSE_GAME_KEY = KeyCode.Q;
@@ -61,9 +53,7 @@ public class Constants {
     public static final KeyCode GO_BACK_KEY = KeyCode.ESCAPE;
 
 
-    /**
-     * GRILLE
-     */
+    // ******************************  GRILLE  ****************************** //
 
     // Largeur de la fenêtre
     public static final int WIDTH = 500;
@@ -90,9 +80,7 @@ public class Constants {
     public static final Color HIGHLIGHTED_TRUE_TEXT_COLOR = Color.GREEN;
 
 
-    /**
-     * SERPENT
-     */
+    // ******************************  GRILLE  ****************************** //
 
      // Vitesse de base du serpent
     public static final int INITIAL_SNAKE_VELOCITY = 1;
