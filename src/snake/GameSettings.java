@@ -84,12 +84,26 @@ public class GameSettings {
             return SETTINGS_LIST;
         }
 
+        /**
+         * @param index Index de l'élèment à récupérer
+         * @return un élément de la liste de paramètres
+         */
         public static Settings getFromSettingsList(int index) {
             return SETTINGS_LIST.get(index);
         }
 
+        /**
+         * @return le nombre d'éléments de la liste de paramètres
+         */
         public static int getSettingsCount() {
             return SETTINGS_LIST.size();
+        }
+
+        /**
+         * @return l'index du dernier élément de la liste
+         */
+        public static int getLastSettingsIndex() {
+            return SETTINGS_LIST.size() - 1;
         }
 
     }
@@ -167,11 +181,9 @@ public class GameSettings {
                     boolean settingsValue = Boolean.parseBoolean(optionValue);
 
                     // On modifie l'option dans le jeu
-                    if (settingsIndex < Settings.SETTINGS_LIST.size()) {
-                        Settings.SETTINGS_LIST.get(Settings.SETTINGS_LIST.indexOf(settingsName)).setActivated(settingsValue);
-                    }
+                    if (settingsIndex < Settings.getSettingsCount())
+                        Settings.getFromSettingsList(Settings.SETTINGS_LIST.indexOf(settingsName)).setActivated(settingsValue);
                 }
-
                 settingsIndex++;
             }
         } catch (IOException e) {
