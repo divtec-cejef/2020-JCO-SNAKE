@@ -152,14 +152,14 @@ public class Main extends Application {
     private void settingsMenuListener(KeyCode keyCode) {
         switch (keyCode) {
             case DOWN:
-                if (selectedOption >= Settings.getSettingsCount() - 1)
+                if (selectedOption >= Settings.getLastSettingsIndex())
                     selectedOption = 0;
                 else
                     selectedOption++;
                 break;
             case UP:
                 if (selectedOption <= 0)
-                    selectedOption = Settings.getSettingsCount() - 1;
+                    selectedOption = Settings.getLastSettingsIndex();
                 else
                     selectedOption--;
                 break;
@@ -172,18 +172,18 @@ public class Main extends Application {
         if (keyCode == SELECT_OPTION_KEY) {
             if (isShiftKeyPressed){
                 if (selectedOption <= 0)
-                    selectedOption = Settings.getSettingsCount() - 1;
+                    selectedOption = Settings.getLastSettingsIndex();
                 else
                     selectedOption--;
             } else {
-                if (selectedOption >= Settings.getSettingsCount() - 1)
+                if (selectedOption >= Settings.getLastSettingsIndex())
                     selectedOption = 0;
                 else
                     selectedOption++;
             }
         }
 
-        // sauvegarde de la configuration
+        // Sauvegarde de la configuration
         if (keyCode == SAVE_CONFIG_KEY) {
             settings.writeAllInFile();
         }
@@ -216,28 +216,24 @@ public class Main extends Application {
 
         switch (keyCode) {
             case UP:
-                if (!isPaused()) {
+                if (!isPaused())
                     if (playerOneSnakeDirection != Direction.DOWN && playerOneSnakeDirection != Direction.UP)
                         playerOneSnake.changeDirection(Direction.UP);
-                }
                 break;
             case LEFT:
-                if (!isPaused()) {
+                if (!isPaused())
                     if (playerOneSnakeDirection != Direction.RIGHT && playerOneSnakeDirection != Direction.LEFT)
                         playerOneSnake.changeDirection(Direction.LEFT);
-                }
                 break;
             case DOWN:
-                if (!isPaused()) {
+                if (!isPaused())
                     if (playerOneSnakeDirection != Direction.UP && playerOneSnakeDirection != Direction.DOWN)
                         playerOneSnake.changeDirection(Direction.DOWN);
-                }
                 break;
             case RIGHT:
-                if (!isPaused()) {
+                if (!isPaused())
                     if (playerOneSnakeDirection != Direction.LEFT && playerOneSnakeDirection != Direction.RIGHT)
                         playerOneSnake.changeDirection(Direction.RIGHT);
-                }
                 break;
             case P:
                 paused = !isPaused();
@@ -270,29 +266,24 @@ public class Main extends Application {
 
         switch (keyCode) {
             case W:
-                if (!isPaused()) {
-                    if (playerTwoSnakeDirection != Direction.DOWN && playerTwoSnakeDirection != Direction.UP) {
+                if (!isPaused())
+                    if (playerTwoSnakeDirection != Direction.DOWN && playerTwoSnakeDirection != Direction.UP)
                         playerTwoSnake.changeDirection(Direction.UP);
-                    }
-                }
                 break;
             case A:
-                if (!isPaused()) {
+                if (!isPaused())
                     if (playerTwoSnakeDirection != Direction.RIGHT && playerTwoSnakeDirection != Direction.LEFT)
                         playerTwoSnake.changeDirection(Direction.LEFT);
-                }
                 break;
             case S:
-                if (!isPaused()) {
+                if (!isPaused())
                     if (playerTwoSnakeDirection != Direction.UP && playerTwoSnakeDirection != Direction.DOWN)
                         playerTwoSnake.changeDirection(Direction.DOWN);
-                }
                 break;
             case D:
-                if (!isPaused()) {
+                if (!isPaused())
                     if (playerTwoSnakeDirection != Direction.LEFT && playerTwoSnakeDirection != Direction.RIGHT)
                         playerTwoSnake.changeDirection(Direction.RIGHT);
-                }
                 break;
         }
     }
