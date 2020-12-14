@@ -222,12 +222,47 @@ public class Painter {
         }
 
         if (!playerOneSnake.isMoving() && !Main.isInMultiGame || (!playerOneSnake.isMoving() && Main.isInMultiGame && !playerTwoSnake.isMoving())) {
+            float difference = 0;
+
+            float upXPosition = WIDTH * 0.5f + difference;
+            float leftXPosition = WIDTH * 0.36f + difference;
+            float downXPosition = WIDTH * 0.5f + difference;
+            float rightXPosition = WIDTH * 0.65f + difference;
+
+            float upYPosition = HEIGHT * 0.7f;
+            float leftYPosition = HEIGHT * 0.75f;
+            float downYPosition = HEIGHT * 0.8f;
+            float rightYPosition = HEIGHT * 0.75f;
+
             if (Main.isInMultiGame) {
                 gc.fillText("Not Moving", 50, 50);
+                // Joueur 2
+                difference = WIDTH * 0.25f;
+
+                upXPosition = WIDTH * 0.5f + difference;
+                leftXPosition = WIDTH * 0.36f + difference;
+                downXPosition = WIDTH * 0.5f + difference;
+                rightXPosition = WIDTH * 0.65f + difference;
+
+                gc.fillText("[W]\nHaut", upXPosition, upYPosition);
+                gc.fillText("[A]\nGauche", leftXPosition, leftYPosition);
+                gc.fillText("[S]\nBas", downXPosition, downYPosition);
+                gc.fillText("[D]\nDroite", rightXPosition, rightYPosition);
+
+                // Joueur 1
+                difference = - (WIDTH * 0.25f);
+
+                upXPosition = WIDTH * 0.5f + difference;
+                leftXPosition = WIDTH * 0.36f + difference;
+                downXPosition = WIDTH * 0.5f + difference;
+                rightXPosition = WIDTH * 0.65f + difference;
             }
-            else {
-                gc.fillText("^\n|\nAller en haut", WIDTH * 0.5f, HEIGHT * 0.7f);
-            }
+
+            // Joueur 1
+            gc.fillText("[^]\nHaut", upXPosition, upYPosition);
+            gc.fillText("[<]\nGauche", leftXPosition, leftYPosition);
+            gc.fillText("[v]\nBas", downXPosition, downYPosition);
+            gc.fillText("[>]\nDroite", rightXPosition, rightYPosition);
         }
 
         // Affiche un message lorsqu'un serpent est mort
