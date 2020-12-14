@@ -21,7 +21,7 @@ public class GameSettings {
     public enum Settings {
         WALLS("Murs autour du plateau", false),
         SNAKE_RAINBOW_SHEDDING("Mue colorée", false),
-        RANDOM_COLOR_AFTER_FOOD("Changement de couleur après une pomme", false); // TODO
+        RANDOM_COLOR_AFTER_FOOD("TODO Changement de couleur après une pomme", false); // TODO
         /*
         Options à rajouter (non booléen) :
          - couleur serpent
@@ -32,7 +32,7 @@ public class GameSettings {
         // Nom en français du paramètre
         private final String settingName;
 
-        // Est-ce que le menu est activé
+        // Est-ce que l'option est activée
         private boolean isActivated;
 
         /**
@@ -63,7 +63,7 @@ public class GameSettings {
          * Modifie l'activation d'une option
          * @param activated Nouvelle option du paramètre
          */
-        public void setActivated(boolean activated) {
+        private void setActivated(boolean activated) {
             isActivated = activated;
         }
 
@@ -73,6 +73,7 @@ public class GameSettings {
         public void toggleOption() {
             isActivated = !isActivated;
         }
+
 
         // Liste de tous les paramètres
         private static final List<Settings> SETTINGS_LIST = Collections.unmodifiableList(Arrays.asList(values()));
@@ -105,7 +106,6 @@ public class GameSettings {
         public static int getLastSettingsIndex() {
             return SETTINGS_LIST.size() - 1;
         }
-
     }
 
     /**
@@ -131,10 +131,12 @@ public class GameSettings {
         } catch (IOException exception){
             System.out.println(exception.getMessage());
         }
+
+        // On supprime le contenu de l'ancien fichier
         if (settingsFile.delete()) {
-            for (Settings setting : Settings.SETTINGS_LIST) {
+            // On écrit le nouveau contenu
+            for (Settings setting : Settings.SETTINGS_LIST)
                 writeInFile(setting.toString(), Boolean.toString(setting.isActivated()));
-            }
         }
     }
 
@@ -155,7 +157,7 @@ public class GameSettings {
     }
 
     /**
-     * Inscrit les valeurs du fichier dans la liste de paramètres du jeu
+     * Récupère les valeurs du fichier et le inscrits dans la liste de paramètres du jeu
      */
     public void getFromFile() {
         try {
@@ -168,6 +170,7 @@ public class GameSettings {
 
                 // On récupère le nom de l'option
                 String optionName = segments[0];
+
                 // On converti l'option en type option
                 Settings settingsName = null;
                 try {
@@ -175,8 +178,9 @@ public class GameSettings {
                 } catch (Exception ignored) {}
 
                 if (settingsName != null) {
-                    // On récupère la dernière partie
+                    // On récupère la valeur de l'option
                     String optionValue = segments[segments.length - 1];
+
                     // On converti la valeur en booléen
                     boolean settingsValue = Boolean.parseBoolean(optionValue);
 
@@ -190,5 +194,4 @@ public class GameSettings {
             e.printStackTrace();
         }
     }
-
 }

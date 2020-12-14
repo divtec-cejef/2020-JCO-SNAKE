@@ -188,13 +188,17 @@ public class Main extends Application {
         // Sauvegarde de la configuration
         if (keyCode == SAVE_CONFIG_KEY) {
             settings.writeAllInFile();
+            // Retour au menu
+            if (isInSettingsMenu) {
+                isInSettingsMenu = false;
+                selectedOption = 0;
+                Painter.paintMenu(context);
+            }
         }
 
         if (keyCode == KeyCode.SHIFT) {
             isShiftKeyPressed = true;
         }
-
-        Painter.selectOption(selectedOption, context);
 
         // Retour vers le menu
         if (keyCode == GO_BACK_KEY) {
@@ -204,6 +208,9 @@ public class Main extends Application {
                 Painter.paintMenu(context);
             }
         }
+
+        if (isInSettingsMenu)
+            Painter.selectOption(selectedOption, context);
     }
 
     /**

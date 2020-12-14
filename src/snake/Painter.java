@@ -68,7 +68,7 @@ public class Painter {
 
         // Sauvegarder les paramètres
         gc.setTextAlign(TextAlignment.RIGHT);
-        gc.fillText("[" + SAVE_CONFIG_KEY.getName() + "] Sauvegarder", WIDTH - TILE_SIZE, TILE_SIZE * 1.5f);
+        gc.fillText("[" + SAVE_CONFIG_KEY.getName() + "] Sauvegarder et quitter", WIDTH, TILE_SIZE * 1.5f);
 
         // Modifier un paramètre
         gc.setTextAlign(TextAlignment.CENTER);
