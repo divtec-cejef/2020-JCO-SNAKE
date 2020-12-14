@@ -40,6 +40,8 @@ public class Main extends Application {
     private boolean isInSettingsMenu = false;
     public static boolean isInMultiGame;
 
+    public static boolean gameHasStarted = false;
+
     private Grid grid;
     private GraphicsContext context;
 
@@ -236,7 +238,8 @@ public class Main extends Application {
                         playerOneSnake.changeDirection(Direction.RIGHT);
                 break;
             case P:
-                paused = !isPaused();
+                if (gameHasStarted)
+                    paused = !isPaused();
                 break;
         }
 

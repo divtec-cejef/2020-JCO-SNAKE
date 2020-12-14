@@ -151,6 +151,8 @@ public class Painter {
     public static void paintPause(GraphicsContext gc) {
         gc.setTextAlign(TextAlignment.CENTER);
         gc.fillText("PAUSE", WIDTH / 2.0f, HEIGHT * 0.5f);
+
+        paintCommands(gc);
     }
 
     /**
@@ -222,47 +224,7 @@ public class Painter {
         }
 
         if (!playerOneSnake.isMoving() && !Main.isInMultiGame || (!playerOneSnake.isMoving() && Main.isInMultiGame && !playerTwoSnake.isMoving())) {
-            float difference = 0;
-
-            float upXPosition = WIDTH * 0.5f + difference;
-            float leftXPosition = WIDTH * 0.36f + difference;
-            float downXPosition = WIDTH * 0.5f + difference;
-            float rightXPosition = WIDTH * 0.65f + difference;
-
-            float upYPosition = HEIGHT * 0.7f;
-            float leftYPosition = HEIGHT * 0.75f;
-            float downYPosition = HEIGHT * 0.8f;
-            float rightYPosition = HEIGHT * 0.75f;
-
-            if (Main.isInMultiGame) {
-                gc.fillText("Not Moving", 50, 50);
-                // Joueur 2
-                difference = WIDTH * 0.25f;
-
-                upXPosition = WIDTH * 0.5f + difference;
-                leftXPosition = WIDTH * 0.36f + difference;
-                downXPosition = WIDTH * 0.5f + difference;
-                rightXPosition = WIDTH * 0.65f + difference;
-
-                gc.fillText("[W]\nHaut", upXPosition, upYPosition);
-                gc.fillText("[A]\nGauche", leftXPosition, leftYPosition);
-                gc.fillText("[S]\nBas", downXPosition, downYPosition);
-                gc.fillText("[D]\nDroite", rightXPosition, rightYPosition);
-
-                // Joueur 1
-                difference = - (WIDTH * 0.25f);
-
-                upXPosition = WIDTH * 0.5f + difference;
-                leftXPosition = WIDTH * 0.36f + difference;
-                downXPosition = WIDTH * 0.5f + difference;
-                rightXPosition = WIDTH * 0.65f + difference;
-            }
-
-            // Joueur 1
-            gc.fillText("[^]\nHaut", upXPosition, upYPosition);
-            gc.fillText("[<]\nGauche", leftXPosition, leftYPosition);
-            gc.fillText("[v]\nBas", downXPosition, downYPosition);
-            gc.fillText("[>]\nDroite", rightXPosition, rightYPosition);
+            paintCommands(gc);
         }
 
         // Affiche un message lorsqu'un serpent est mort
@@ -313,55 +275,53 @@ public class Painter {
     }
 
     /**
-     * Change la couleur de la tête du serpent lorsqu'il est mort
-     *
-     * @param snakeHeadDot Point correspondant à la tête du serpent
-     * @param gc           GraphicsContext
+     * Dessines les commandes du jeu
+     * @param gc GraphicsContext
      */
-    private static void paintDeadSnakeHead(SnakeDot snakeHeadDot, GraphicsContext gc) {
-        SnakeColor deathColor = SnakeColor.RED;
+    private static void paintCommands(GraphicsContext gc) {
+        // Différence d'emplacement sur l'écran
+        float difference = 0;
 
-        if (snakeHeadDot.getColor() == SnakeColor.RED)
-            deathColor = SnakeColor.BLUE;
+        // Coordonnées pour le placement au centre
+        float upXPosition = WIDTH * 0.5f + difference;
+        float leftXPosition = WIDTH * 0.36f + difference;
+        float downXPosition = WIDTH * 0.5f + difference;
+        float rightXPosition = WIDTH * 0.65f + difference;
 
-        gc.drawImage(getImages(snakeHeadDot, deathColor),
-                snakeHeadDot.getX() * TILE_SIZE,
-                snakeHeadDot.getY() * TILE_SIZE,
-                TILE_SIZE, TILE_SIZE);
-    }
+        float upYPosition = HEIGHT * 0.7f;
+        float leftYPosition = HEIGHT * 0.75f;
+        float downYPosition = HEIGHT * 0.8f;
+        float rightYPosition = HEIGHT * 0.75f;
 
-    /**
-     * Récupère les images utilisées pour le jeu
-     *
-     * @param dot       Point dont on veut l'image
-     * @param bodyColor La couleur des parties du serpent
-     * @return L'image correspondante aux paramètres fournis
-     */
-    private static Sprite getImages(Dot dot, SnakeColor bodyColor) {
-        Dot.DotType dotType = dot.getDotType();
-        Direction dotDirection = dot.getDirection();
+        if (Main.isInMultiGame) {
+            gc.fillText("Not Moving", 50, 50);
+            // Joueur 2
+            difference = WIDTH * 0.25f;
 
-        if (dotType == Dot.DotType.FOOD)
-            return new Sprite(PATH_TO_IMAGES + "apple.png");
+            upXPosition = WIDTH * 0.5f + difference;
+            leftXPosition = WIDTH * 0.36f + difference;
+            downXPosition = WIDTH * 0.5f + difference;
+            rightXPosition = WIDTH * 0.65f + difference;
 
-        // Le chemin vers les images du serpent
-        String PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + bodyColor.toString() + "/";
+            gc.fillText("[W]\nHaut", upXPosition, upYPosition);
+            gc.fillText("[A]\nGauche", leftXPosition, leftYPosition);
+            gc.fillText("[S]\nBas", downXPosition, downYPosition);
+            gc.fillText("[D]\nDroite", rightXPosition, rightYPosition);
 
-        switch (dotType) {
-            case HEAD:
-                return new Sprite(PATH_TO_SNAKE_IMAGES + "head_" + dotDirection.toString().toLowerCase() + ".png");
-            case TAIL:
-                return new Sprite(PATH_TO_SNAKE_IMAGES + "tail_" + dotDirection.toString().toLowerCase() + ".png");
-            case BODY:
-            default:
-                String orientation;
-                if (dotDirection == Direction.LEFT || dotDirection == Direction.RIGHT)
-                    orientation = "horizontal";
-                else
-                    orientation = "vertical";
+            // Joueur 1
+            difference = - (WIDTH * 0.25f);
 
-                return new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
+            upXPosition = WIDTH * 0.5f + difference;
+            leftXPosition = WIDTH * 0.36f + difference;
+            downXPosition = WIDTH * 0.5f + difference;
+            rightXPosition = WIDTH * 0.65f + difference;
         }
+
+        // Joueur 1
+        gc.fillText("[^]\nHaut", upXPosition, upYPosition);
+        gc.fillText("[<]\nGauche", leftXPosition, leftYPosition);
+        gc.fillText("[v]\nBas", downXPosition, downYPosition);
+        gc.fillText("[>]\nDroite", rightXPosition, rightYPosition);
     }
 
 }
