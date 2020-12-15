@@ -35,7 +35,7 @@ public class Grid {
         playerOneSnake = new Snake(Snake.SnakeColor.randomColor(), this);
 
         // Place le serpent du joueur 2 sur la grille
-        if (Main.isInMultiGame) {
+        if (Main.isIsInMultiGame()) {
             Snake.SnakeColor colorPlayerTwo = Snake.SnakeColor.randomColor();
             while (colorPlayerTwo.equals(playerOneSnake.snakeColor))
                 colorPlayerTwo = Snake.SnakeColor.randomColor();
@@ -83,7 +83,7 @@ public class Grid {
         Food randomApple;
         do
             randomApple = new Food(random.nextInt(rows), random.nextInt(cols));
-        while (randomApple.getDot().equals(playerOneSnake.getHead()) || (Main.isInMultiGame && randomApple.getDot().equals(playerTwoSnake.getHead())));
+        while (randomApple.getDot().equals(playerOneSnake.getHead()) || (Main.isIsInMultiGame() && randomApple.getDot().equals(playerTwoSnake.getHead())));
 
         return randomApple;
     }
@@ -101,7 +101,7 @@ public class Grid {
         } else
             playerOneSnake.move();
 
-        if (Main.isInMultiGame) {
+        if (Main.isIsInMultiGame()) {
             if (food.getDot().equals(playerTwoSnake.getHead())) {
                 playerTwoSnake.extend();
                 food = setNewFood();

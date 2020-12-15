@@ -145,7 +145,7 @@ public class Painter {
 
         // Choix du message de fin
         String deathText = "Votre score est de " + deadSnake.getScore();
-        if (Main.isInMultiGame)
+        if (Main.isIsInMultiGame())
             deathText = "Le serpent " + deadSnakeColor.getName() + " est mort";
 
         // On dessine le message dans la fenêtre
@@ -228,7 +228,7 @@ public class Painter {
 //        }
 
         // Dessine le serpent du joueur 2
-        if (Main.isInMultiGame) {
+        if (Main.isIsInMultiGame()) {
             // On dessine le deuxième serpent
             playerTwoSnake = grid.getPlayerTwoSnake();
 
@@ -239,14 +239,14 @@ public class Painter {
         }
 
         // Avant que la partie ne commence, on affiche les commandes
-        if (!playerOneSnake.isMoving() && !Main.isInMultiGame || (!playerOneSnake.isMoving() && Main.isInMultiGame && !playerTwoSnake.isMoving()))
+        if (!playerOneSnake.isMoving() && !Main.isIsInMultiGame() || (!playerOneSnake.isMoving() && Main.isIsInMultiGame() && !playerTwoSnake.isMoving()))
             paintCommands(gc);
 
         // Affiche un message lorsqu'un des serpents est mort
         if (playerOneSnake.isDead())
             paintGameOverMenu(gc, playerOneSnake);
 
-        if (Main.isInMultiGame && playerTwoSnake.isDead())
+        if (Main.isIsInMultiGame() && playerTwoSnake.isDead())
             paintGameOverMenu(gc, playerTwoSnake);
 
         // Dessine le score
@@ -300,7 +300,7 @@ public class Painter {
         float downYPosition = HEIGHT * 0.8f;
         float rightYPosition = HEIGHT * 0.75f;
 
-        if (Main.isInMultiGame) {
+        if (Main.isIsInMultiGame()) {
             // Joueur 2
             difference = WIDTH * 0.25f;
 
@@ -329,6 +329,72 @@ public class Painter {
         gc.fillText("[v]\nBas", downXPosition, downYPosition);
         gc.fillText("[>]\nDroite", rightXPosition, rightYPosition);
     }
+
+    /**
+     * Dessine le score
+     * @param gc GraphicsContext
+     */
+    private static void paintScore(GraphicsContext gc) {
+        String playerOneScoreText = "Score : " + playerOneSnake.getScore();
+        if (Main.isIsInMultiGame()) {
+            playerOneScoreText = "Serpent " + playerOneSnake.getSnakeColor().getName() + " : " + playerOneSnake.getScore();
+            paintTopRight("Serpent " + playerTwoSnake.getSnakeColor().getName() + " : " + playerTwoSnake.getScore(), gc);
+        }
+
+        paintTopLeft(playerOneScoreText, gc);
+    }
+
+//    /**
+//     * Change la couleur de la tête du serpent lorsqu'il est mort
+//     *
+//     * @param snakeHeadDot Point correspondant à la tête du serpent
+//     * @param gc           GraphicsContext
+//     */
+//    private static void paintDeadSnakeHead(SnakeDot snakeHeadDot, GraphicsContext gc) {
+//        SnakeColor deathColor = SnakeColor.RED;
+//
+//        if (snakeHeadDot.getColor() == SnakeColor.RED)
+//            deathColor = SnakeColor.BLUE;
+//
+//        gc.drawImage(getImages(snakeHeadDot, deathColor),
+//                snakeHeadDot.getX() * TILE_SIZE,
+//                snakeHeadDot.getY() * TILE_SIZE,
+//                TILE_SIZE, TILE_SIZE);
+//    }
+
+//    /**
+//     * Récupère les images utilisées pour le jeu
+//     *
+//     * @param dot       Point dont on veut l'image
+//     * @param bodyColor La couleur des parties du serpent
+//     * @return L'image correspondante aux paramètres fournis
+//     */
+//    private static Sprite getImages(Dot dot, SnakeColor bodyColor) {
+//        Dot.DotType dotType = dot.getDotType();
+//        Direction dotDirection = dot.getDirection();
+//
+//        if (dotType == Dot.DotType.FOOD)
+//            return new Sprite(PATH_TO_IMAGES + "apple.png");
+//
+//        // Le chemin vers les images du serpent
+//        String PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + bodyColor.toString() + "/";
+//
+//        switch (dotType) {
+//            case HEAD:
+//                return new Sprite(PATH_TO_SNAKE_IMAGES + "head_" + dotDirection.toString().toLowerCase() + ".png");
+//            case TAIL:
+//                return new Sprite(PATH_TO_SNAKE_IMAGES + "tail_" + dotDirection.toString().toLowerCase() + ".png");
+//            case BODY:
+//            default:
+//                String orientation;
+//                if (dotDirection == Direction.LEFT || dotDirection == Direction.RIGHT)
+//                    orientation = "horizontal";
+//                else
+//                    orientation = "vertical";
+//
+//                return new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
+//        }
+//    }
 
     /**
      * Ecrit en haut à gauche de la fenêtre

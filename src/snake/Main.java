@@ -38,7 +38,7 @@ public class Main extends Application {
 
     private boolean isInMenu = true;
     private boolean isInSettingsMenu = false;
-    public static boolean isInMultiGame;
+    private static boolean isInMultiGame;
 
     public static boolean gameHasStarted = false;
 
@@ -259,9 +259,8 @@ public class Main extends Application {
             }
 
         if (keyCode == CLOSE_GAME_KEY)
-            if (isPaused()) {
+            if (isPaused())
                 stageToClose.close();
-            }
     }
 
     /**
@@ -345,5 +344,9 @@ public class Main extends Application {
      */
     public boolean isPaused() {
         return paused;
+    }
+
+    public static boolean isIsInMultiGame() {
+        return isInMultiGame;
     }
 }
