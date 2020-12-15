@@ -133,7 +133,7 @@ public class Main extends Application {
                     break;
                 // Partie multi
                 case RIGHT:
-                        startGame(true);
+                    startGame(true);
                     break;
             }
 
@@ -247,11 +247,19 @@ public class Main extends Application {
                 if (gameHasStarted)
                     paused = !isPaused();
                 break;
+
+            // **************  PROVISOIRE  ************** //
+            // Tue le serpent sur le coup
+            case R:
+                playerOneSnake.canDie = true;
+                playerOneSnake.setAlive(false);
+                break;
         }
 
         if (keyCode == RESTART_KEY)
             if (isPaused())
                 startGame(isInMultiGame);
+
         if (keyCode == CHANGE_GAME_MODE_KEY)
             if (isPaused()) {
                 isInMenu = true;

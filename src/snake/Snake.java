@@ -110,8 +110,6 @@ public class Snake {
         isAlive = true;
         canDie = Settings.WALLS.isActivated();
         this.grid = grid;
-//        xVelocity = 0;
-//        yVelocity = 0;
         stepX = 0;
         stepY = 0;
         this.snakeColor = color;
@@ -146,6 +144,9 @@ public class Snake {
         if (Settings.SNAKE_RAINBOW_SHEDDING.isActivated())
             setRandomColor(snakeColor);
 
+        if (Settings.RANDOM_COLOR_AFTER_FOOD.isActivated())
+            setSnakeColor(snakeColor);
+
         length++;
         canDie = true;
 //        increaseVelocity();
@@ -176,7 +177,7 @@ public class Snake {
         if (canDie)
             isAlive &= !dots.contains(dot);
         head = dot;
-        score = 100 * (this.getDots().size() - INITIAL_SNAKE_LENGTH);
+        score = 100 * (dots.size() - INITIAL_SNAKE_LENGTH);
         dots.add(dot);
     }
 
@@ -238,6 +239,7 @@ public class Snake {
     public void changeDirection(Direction newDirection) {
         if (!Main.gameHasStarted)
             Main.gameHasStarted = true;
+
         setSnakeDirection(newDirection);
         switch (newDirection) {
             case RIGHT:
@@ -316,18 +318,25 @@ public class Snake {
         return new SnakeDot(dotType, x, y, snakeColor, getSnakeSprite(dotType), INITIAL_SNAKE_DIRECTION);
     }
 
-//    /**
-//     * Modifie la couleur du serpent
-//     * @param snakeColor Nouvelle couleur du serpent
-//     */
-//    public void setSnakeColor(SnakeColor snakeColor) {
-//        this.snakeColor = snakeColor;
-//
-//        for (SnakeDot dot:dots) {
-//            dot.setColor(snakeColor);
-//        }
-//    }
+    /**
+     * Modifie la couleur du serpent
+     * @param snakeColor Nouvelle couleur du serpent
+     */
+    public void setSnakeColor(SnakeColor snakeColor) {
+        SnakeColor newColor = SnakeColor.randomColor();
+        while (newColor == snakeColor)
+            newColor = SnakeColor.randomColor();
 
+        this.snakeColor = newColor;
+        for (SnakeDot dot: dots) {
+            dot.setColor(newColor);
+        }
+    }
+
+    /**
+     * Modifie provisoirement la couleur du serpent
+     * @param snakeColor Couleur actuelle
+     */
     private void setRandomColor(SnakeColor snakeColor) {
         SnakeColor newColor = SnakeColor.randomColor();
         while (newColor == snakeColor)
@@ -336,6 +345,11 @@ public class Snake {
         for (SnakeDot dot: dots) {
             dot.setColor(newColor);
         }
+    }
+
+    // **************  PROVISOIRE  ************** //
+    public void setAlive(boolean alive) {
+        isAlive = alive;
     }
 
     // ******************************  GETTER  ****************************** //
