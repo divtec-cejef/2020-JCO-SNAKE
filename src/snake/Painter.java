@@ -53,8 +53,7 @@ public class Painter {
         initGrid(gc);
 
         // Retour au menu
-        gc.setTextAlign(TextAlignment.LEFT);
-        gc.fillText("[" + GO_BACK_KEY.getName() + "] Retour", TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
+        paintTopLeft("[" + GO_BACK_KEY.getName() + "] Retour", gc);
 
         // Affichage des options
         int count = 0;
@@ -67,8 +66,7 @@ public class Painter {
         }
 
         // Sauvegarder les paramètres
-        gc.setTextAlign(TextAlignment.RIGHT);
-        gc.fillText("[" + SAVE_CONFIG_KEY.getName() + "] Sauvegarder et quitter", WIDTH, TILE_SIZE * 1.5f);
+        paintTopRight("[" + SAVE_CONFIG_KEY.getName() + "] Sauvegarder et quitter", gc);
 
         // Modifier un paramètre
         gc.setTextAlign(TextAlignment.CENTER);
@@ -120,8 +118,7 @@ public class Painter {
         initGrid(gc);
 
         // Quitter le jeu
-        gc.setTextAlign(TextAlignment.LEFT);
-        gc.fillText("[" + CLOSE_GAME_KEY.getName() + "] Quitter le jeu", TILE_SIZE * 0.5f, TILE_SIZE * 1.5f);
+        paintTopLeft("[" + CLOSE_GAME_KEY.getName() + "] Quitter le jeu", gc);
         gc.setTextAlign(TextAlignment.CENTER);
 
         // Sélection des modes de jeu
@@ -165,6 +162,8 @@ public class Painter {
      * @param gc GraphicsContext
      */
     public static void paintPause(GraphicsContext gc) {
+        paintBottomLeft("[" + CLOSE_GAME_KEY.getName() + "] Quitter le jeu", gc);
+
         gc.setTextAlign(TextAlignment.CENTER);
         gc.fillText("PAUSE", WIDTH / 2.0f, HEIGHT * 0.5f);
 
@@ -288,13 +287,13 @@ public class Painter {
      */
     private static void paintCommands(GraphicsContext gc) {
         // Différence d'emplacement sur l'écran
-        float difference = 0;
+        float difference;
 
         // Coordonnées pour le placement au centre
-        float upXPosition = WIDTH * 0.5f + difference;
-        float leftXPosition = WIDTH * 0.36f + difference;
-        float downXPosition = WIDTH * 0.5f + difference;
-        float rightXPosition = WIDTH * 0.65f + difference;
+        float upXPosition = WIDTH * 0.5f;
+        float leftXPosition = WIDTH * 0.36f;
+        float downXPosition = WIDTH * 0.5f;
+        float rightXPosition = WIDTH * 0.65f;
 
         float upYPosition = HEIGHT * 0.7f;
         float leftYPosition = HEIGHT * 0.75f;
@@ -331,4 +330,33 @@ public class Painter {
         gc.fillText("[>]\nDroite", rightXPosition, rightYPosition);
     }
 
+    /**
+     * Ecrit en haut à gauche de la fenêtre
+     * @param text Texte à écrire
+     * @param gc GraphicsContext
+     */
+    private static void paintTopLeft(String text, GraphicsContext gc) {
+        gc.setTextAlign(TextAlignment.LEFT);
+        gc.fillText(text, 0, TILE_SIZE * 1.5f);
+    }
+
+    /**
+     * Ecrit en bas à gauche de la fenêtre
+     * @param text Texte à écrire
+     * @param gc GraphicsContext
+     */
+    private static void paintBottomLeft(String text, GraphicsContext gc) {
+        gc.setTextAlign(TextAlignment.LEFT);
+        gc.fillText(text, 0, HEIGHT - TILE_SIZE * 0.5f);
+    }
+
+    /**
+     * Ecrit en haut à droite de la fenêtre
+     * @param text Texte à écrire
+     * @param gc GraphicsContext
+     */
+    private static void paintTopRight(String text, GraphicsContext gc) {
+        gc.setTextAlign(TextAlignment.RIGHT);
+        gc.fillText(text, WIDTH, TILE_SIZE * 1.5f);
+    }
 }
