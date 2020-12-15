@@ -53,9 +53,12 @@ public class SnakeDot extends Dot {
                 break;
             case BODY:
             default:
-                if (previousDot != null && previousDot.getPreviousDirection() != null)
+                if (previousDot != null && previousDot.getPreviousDirection() != null) {
+                    // Emplacement correct de l'angle
+                    Painter.paintDot(HIGHLIGHTED_FALSE_TEXT_COLOR, TILE_SIZE * previousDot.getX(), TILE_SIZE *  previousDot.getY());
+
                     this.setSprite(checkForCorner(PATH_TO_SNAKE_IMAGES, previousDot.getPreviousDirection()));
-                else {
+                } else {
                     String orientation;
                     if (direction == Snake.Direction.LEFT || direction == Snake.Direction.RIGHT) {
                         orientation = "horizontal";

@@ -1,6 +1,7 @@
 package snake;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
@@ -28,12 +29,15 @@ public class Painter {
     // Séparation entre les lignes
     private static final int separation = 35;
 
+    private static GraphicsContext graphicsContext;
+
     /**
      * Initiallise la surface de jeu
      *
      * @param gc GraphicsContext
      */
     private static void initGrid(GraphicsContext gc) {
+        graphicsContext = gc;
         // Dessine le fond du jeu
         gc.setFill(BACKGROUND_COLOR);
         gc.fillRect(0, 0, WIDTH, HEIGHT);
@@ -186,10 +190,11 @@ public class Painter {
         // Dessine le serpent du joueur 1
         playerOneSnake = grid.getPlayerOneSnake();
 
-        // On dessin le premier serpent
+        // On dessine le premier serpent
         for (SnakeDot dot : playerOneSnake.getDots()) {
             paintSnake(dot, playerOnePreviousDot, gc);
             playerOnePreviousDot = dot;
+//            paintDot(HIGHLIGHTED_TEXT_COLOR, TILE_SIZE * playerOnePreviousDot.getX(), TILE_SIZE *  playerOnePreviousDot.getY());
         }
 
 //        int count = 0;
@@ -344,58 +349,6 @@ public class Painter {
         paintTopLeft(playerOneScoreText, gc);
     }
 
-//    /**
-//     * Change la couleur de la tête du serpent lorsqu'il est mort
-//     *
-//     * @param snakeHeadDot Point correspondant à la tête du serpent
-//     * @param gc           GraphicsContext
-//     */
-//    private static void paintDeadSnakeHead(SnakeDot snakeHeadDot, GraphicsContext gc) {
-//        SnakeColor deathColor = SnakeColor.RED;
-//
-//        if (snakeHeadDot.getColor() == SnakeColor.RED)
-//            deathColor = SnakeColor.BLUE;
-//
-//        gc.drawImage(getImages(snakeHeadDot, deathColor),
-//                snakeHeadDot.getX() * TILE_SIZE,
-//                snakeHeadDot.getY() * TILE_SIZE,
-//                TILE_SIZE, TILE_SIZE);
-//    }
-
-//    /**
-//     * Récupère les images utilisées pour le jeu
-//     *
-//     * @param dot       Point dont on veut l'image
-//     * @param bodyColor La couleur des parties du serpent
-//     * @return L'image correspondante aux paramètres fournis
-//     */
-//    private static Sprite getImages(Dot dot, SnakeColor bodyColor) {
-//        Dot.DotType dotType = dot.getDotType();
-//        Direction dotDirection = dot.getDirection();
-//
-//        if (dotType == Dot.DotType.FOOD)
-//            return new Sprite(PATH_TO_IMAGES + "apple.png");
-//
-//        // Le chemin vers les images du serpent
-//        String PATH_TO_SNAKE_IMAGES = PATH_TO_IMAGES + bodyColor.toString() + "/";
-//
-//        switch (dotType) {
-//            case HEAD:
-//                return new Sprite(PATH_TO_SNAKE_IMAGES + "head_" + dotDirection.toString().toLowerCase() + ".png");
-//            case TAIL:
-//                return new Sprite(PATH_TO_SNAKE_IMAGES + "tail_" + dotDirection.toString().toLowerCase() + ".png");
-//            case BODY:
-//            default:
-//                String orientation;
-//                if (dotDirection == Direction.LEFT || dotDirection == Direction.RIGHT)
-//                    orientation = "horizontal";
-//                else
-//                    orientation = "vertical";
-//
-//                return new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
-//        }
-//    }
-
     /**
      * Ecrit en haut à gauche de la fenêtre
      * @param text Texte à écrire
@@ -424,5 +377,10 @@ public class Painter {
     private static void paintTopRight(String text, GraphicsContext gc) {
         gc.setTextAlign(TextAlignment.RIGHT);
         gc.fillText(text, WIDTH, TILE_SIZE * 1.5f);
+    }
+
+    public static void paintDot(Color color, int x, int y) {
+        graphicsContext.setFill(color);
+        graphicsContext.fillRect(x, y, TILE_SIZE, TILE_SIZE);
     }
 }
