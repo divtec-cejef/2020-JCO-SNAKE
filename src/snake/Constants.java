@@ -80,7 +80,7 @@ public class Constants {
     public static final Color HIGHLIGHTED_TRUE_TEXT_COLOR = Color.GREEN;
 
 
-    // ******************************  GRILLE  ****************************** //
+    // ******************************  SERPENT  ****************************** //
 
      // Vitesse de base du serpent
     public static final int INITIAL_SNAKE_VELOCITY = 1;
