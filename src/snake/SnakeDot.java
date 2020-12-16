@@ -53,21 +53,23 @@ public class SnakeDot extends Dot {
                 break;
             case BODY:
             default:
+                Sprite bodySprite;
                 if (previousDot != null && previousDot.getPreviousDirection() != null) {
                     // Emplacement correct de l'angle
                     Painter.paintDot(HIGHLIGHTED_FALSE_TEXT_COLOR, TILE_SIZE * previousDot.getX(), TILE_SIZE *  previousDot.getY());
 
-                    this.setSprite(checkForCorner(PATH_TO_SNAKE_IMAGES, previousDot.getPreviousDirection()));
+                    bodySprite = checkForCorner(PATH_TO_SNAKE_IMAGES, previousDot.getPreviousDirection());
                 } else {
                     String orientation;
-                    if (direction == Snake.Direction.LEFT || direction == Snake.Direction.RIGHT) {
+                    if (direction == Snake.Direction.LEFT || direction == Snake.Direction.RIGHT)
                         orientation = "horizontal";
-                    } else {
+                    else
                         orientation = "vertical";
-                    }
 
-                    this.setSprite(new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png"));
+                    bodySprite = new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
                 }
+
+                this.setSprite(bodySprite);
                 break;
         }
     }

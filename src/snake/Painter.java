@@ -192,7 +192,7 @@ public class Painter {
 
         // On dessine le premier serpent
         for (SnakeDot dot : playerOneSnake.getDots()) {
-            paintSnake(dot, playerOnePreviousDot, gc);
+            paintSnake(dot, playerOnePreviousDot);
             playerOnePreviousDot = dot;
 //            paintDot(HIGHLIGHTED_TEXT_COLOR, TILE_SIZE * playerOnePreviousDot.getX(), TILE_SIZE *  playerOnePreviousDot.getY());
         }
@@ -238,7 +238,7 @@ public class Painter {
             playerTwoSnake = grid.getPlayerTwoSnake();
 
             for (SnakeDot dot : playerTwoSnake.getDots()) {
-                paintSnake(dot, playerTwoPreviousDot, gc);
+                paintSnake(dot, playerTwoPreviousDot);
                 playerTwoPreviousDot = dot;
             }
         }
@@ -276,11 +276,10 @@ public class Painter {
      *
      * @param dot           Point où est placé le serpent
      * @param previousDot   Point précédent
-     * @param gc            GraphicsContext
      */
-    private static void paintSnake(SnakeDot dot, SnakeDot previousDot, GraphicsContext gc) {
+    public static void paintSnake(SnakeDot dot, SnakeDot previousDot) {
         dot.setSnakeSprite(previousDot);
-        gc.drawImage(dot.getSprite(),
+        graphicsContext.drawImage(dot.getSprite(),
                 dot.getX() * TILE_SIZE,
                 dot.getY() * TILE_SIZE,
                 TILE_SIZE, TILE_SIZE);
