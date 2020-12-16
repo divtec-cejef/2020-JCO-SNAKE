@@ -194,6 +194,8 @@ public class Painter {
         for (SnakeDot dot : playerOneSnake.getDots()) {
             paintSnake(dot, playerOnePreviousDot);
             playerOnePreviousDot = dot;
+            if (playerOneSnake.getHead().getDirection() != dot.getDirection())
+                paintDot(HIGHLIGHTED_FALSE_TEXT_COLOR, TILE_SIZE * dot.getX(), TILE_SIZE * dot.getY());
 //            paintDot(HIGHLIGHTED_TEXT_COLOR, TILE_SIZE * playerOnePreviousDot.getX(), TILE_SIZE *  playerOnePreviousDot.getY());
         }
 
@@ -279,6 +281,13 @@ public class Painter {
      */
     public static void paintSnake(SnakeDot dot, SnakeDot previousDot) {
         dot.setSnakeSprite(previousDot);
+        graphicsContext.drawImage(dot.getSprite(),
+                dot.getX() * TILE_SIZE,
+                dot.getY() * TILE_SIZE,
+                TILE_SIZE, TILE_SIZE);
+    }
+
+    public static void paintSnake(SnakeDot dot) {
         graphicsContext.drawImage(dot.getSprite(),
                 dot.getX() * TILE_SIZE,
                 dot.getY() * TILE_SIZE,
