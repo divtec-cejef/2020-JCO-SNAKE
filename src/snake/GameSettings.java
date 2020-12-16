@@ -74,7 +74,6 @@ public class GameSettings {
             isActivated = !isActivated;
         }
 
-
         // Liste de tous les paramètres
         private static final List<Settings> SETTINGS_LIST = Collections.unmodifiableList(Arrays.asList(values()));
 
