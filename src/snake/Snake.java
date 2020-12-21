@@ -149,7 +149,6 @@ public class Snake {
 
         length++;
         canDie = true;
-//        increaseVelocity();
         checkAndAdd(dot);
         checkDotList();
     }
@@ -296,11 +295,10 @@ public class Snake {
             case BODY:
             default:
                 String orientation;
-                if (INITIAL_SNAKE_DIRECTION == Snake.Direction.LEFT || INITIAL_SNAKE_DIRECTION == Snake.Direction.RIGHT) {
+                if (INITIAL_SNAKE_DIRECTION == Snake.Direction.LEFT || INITIAL_SNAKE_DIRECTION == Snake.Direction.RIGHT)
                     orientation = "horizontal";
-                } else {
+                else
                     orientation = "vertical";
-                }
 
                 return new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
         }
