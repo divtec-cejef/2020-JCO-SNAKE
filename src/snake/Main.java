@@ -328,6 +328,10 @@ public class Main extends Application {
                 grid.update();
                 Painter.paintGame(grid, context);
 
+                if (isMultiGame)
+                    if (checkCollision(grid.getPlayerOneSnake(), grid.getPlayerTwoSnake()))
+                        stopGame();
+
                 if (grid.getPlayerOneSnake().isDead() || (isMultiGame && grid.getPlayerTwoSnake().isDead()))
                     stopGame();
             } else
@@ -356,5 +360,15 @@ public class Main extends Application {
 
     public static boolean isIsInMultiGame() {
         return isInMultiGame;
+    }
+
+    private boolean checkCollision(Snake playerOneSnake, Snake playerTwoSnake) {
+        for (SnakeDot playerOneDot: playerOneSnake.getDots()) {
+            for (SnakeDot playerTwoDot: playerTwoSnake.getDots()) {
+                if (playerOneDot.getX() == playerTwoDot.getX() && playerOneDot.getY() == playerTwoDot.getY())
+                    return true;
+            }
+        }
+        return false;
     }
 }

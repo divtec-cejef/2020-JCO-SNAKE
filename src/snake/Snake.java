@@ -94,6 +94,9 @@ public class Snake {
     private int stepX;
     private int stepY;
 
+    private int startX;
+    private int startY;
+
     private boolean isAlive;
     public boolean canDie;
 
@@ -102,7 +105,7 @@ public class Snake {
      *
      * @param grid Grille de jeu
      */
-    public Snake(SnakeColor color, Grid grid) {
+    public Snake(SnakeColor color, Grid grid, int x, int y) {
         dots = new LinkedList<>();
         isAlive = true;
         canDie = Settings.WALLS.isActivated();
@@ -110,6 +113,8 @@ public class Snake {
         stepX = 0;
         stepY = 0;
         this.snakeColor = color;
+        startX = x;
+        startY = y;
         createDots();
     }
 
@@ -120,15 +125,15 @@ public class Snake {
         for (int z = 0; z < INITIAL_SNAKE_LENGTH; z++) {
             if (z == 0) {
                 // Crée une tête en premier
-                head = createNewSnakeParts(Dot.DotType.HEAD, grid.getRows() / 2, grid.getCols() / 2);
+                head = createNewSnakeParts(Dot.DotType.HEAD, startX, startY);
                 dots.add(head);
             } else if (z == INITIAL_SNAKE_LENGTH - 1) {
                 // Crée une queue en dernier
-                tail = createNewSnakeParts(Dot.DotType.TAIL, grid.getRows() / 2, grid.getCols() / 2);
+                tail = createNewSnakeParts(Dot.DotType.TAIL, startX, startY);
                 dots.add(tail);
             } else
                 // Crée un corps entre deux
-                dots.add(z, createNewSnakeParts(Dot.DotType.BODY, grid.getRows() / 2, grid.getCols() / 2));
+                dots.add(z, createNewSnakeParts(Dot.DotType.BODY, startX, startY));
         }
     }
 
