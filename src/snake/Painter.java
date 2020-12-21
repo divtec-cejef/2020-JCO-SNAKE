@@ -12,6 +12,7 @@ import static snake.Constants.*;
 // Importation des enums
 import static snake.GameSettings.Settings;
 import static snake.Snake.SnakeColor;
+import static snake.Snake.Direction;
 
 /**
  * Dessine des éléments sur la grille
@@ -194,9 +195,6 @@ public class Painter {
         for (SnakeDot dot : playerOneSnake.getDots()) {
             paintSnake(dot, playerOnePreviousDot);
             playerOnePreviousDot = dot;
-            if (playerOneSnake.getHead().getDirection() != dot.getDirection())
-                paintDot(HIGHLIGHTED_FALSE_TEXT_COLOR, TILE_SIZE * dot.getX(), TILE_SIZE * dot.getY());
-//            paintDot(HIGHLIGHTED_TEXT_COLOR, TILE_SIZE * playerOnePreviousDot.getX(), TILE_SIZE *  playerOnePreviousDot.getY());
         }
 
 //        int count = 0;
@@ -229,7 +227,7 @@ public class Painter {
 //            }
 //            count++;
 //
-//            paintSnake(dot, playerOnePreviousDot, gc);
+//            paintSnake(dot);
 //            if (dot.getDotType() == Dot.DotType.HEAD)
 //                playerOnePreviousDot = dot;
 //        }

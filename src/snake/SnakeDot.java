@@ -54,9 +54,6 @@ public class SnakeDot extends Dot {
             case BODY:
             default:
                 Sprite bodySprite;
-                    // Emplacement correct de l'angle
-//                    Painter.paintDot(HIGHLIGHTED_FALSE_TEXT_COLOR, TILE_SIZE * this.getX(), TILE_SIZE * this.getY());
-
                 if (previousDot != null && previousDot.getPreviousDirection() != null) {
                     bodySprite = checkForCorner(PATH_TO_SNAKE_IMAGES, previousDot.getPreviousDirection());
                 } else {
