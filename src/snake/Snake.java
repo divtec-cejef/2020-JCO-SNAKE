@@ -89,9 +89,6 @@ public class Snake {
     private int score;
 
     // Vitesse du serpent
-//    public int velocity = INITIAL_SNAKE_VELOCITY;
-//    private int xVelocity;
-//    private int yVelocity;
     private int speed;
 
     private int stepX;
@@ -143,9 +140,6 @@ public class Snake {
     private void growTo(SnakeDot dot) {
         if (Settings.SNAKE_RAINBOW_SHEDDING.isActivated())
             setRandomColor(snakeColor);
-
-        if (Settings.RANDOM_COLOR_AFTER_FOOD.isActivated())
-            setSnakeColor(snakeColor);
 
         length++;
         canDie = true;
@@ -259,26 +253,6 @@ public class Snake {
                 break;
         }
     }
-//    /**
-//     * Augmente la vitesse du serpent
-//     */
-//    public void increaseVelocity() {
-//        velocity += SNAKE_VELOCITY_INCREASE;
-//
-//        if (xVelocity != 0) {
-//            if (xVelocity < 0)
-//                xVelocity = -velocity;
-//            else
-//                xVelocity = velocity;
-//        }
-//
-//        if (yVelocity != 0) {
-//            if (yVelocity < 0)
-//                yVelocity = -velocity;
-//            else
-//                yVelocity = velocity;
-//        }
-//    }
 
     /**
      * @param bodyType type du point dont on veut le sprite
@@ -314,21 +288,6 @@ public class Snake {
      */
     private SnakeDot createNewSnakeParts(Dot.DotType dotType, int x, int y) {
         return new SnakeDot(dotType, x, y, snakeColor, getSnakeSprite(dotType), INITIAL_SNAKE_DIRECTION);
-    }
-
-    /**
-     * Modifie la couleur du serpent
-     * @param snakeColor Nouvelle couleur du serpent
-     */
-    public void setSnakeColor(SnakeColor snakeColor) {
-        SnakeColor newColor = SnakeColor.randomColor();
-        while (newColor == snakeColor)
-            newColor = SnakeColor.randomColor();
-
-        this.snakeColor = newColor;
-        for (SnakeDot dot: dots) {
-            dot.setColor(newColor);
-        }
     }
 
     /**

@@ -12,7 +12,6 @@ import static snake.Constants.*;
 // Importation des enums
 import static snake.GameSettings.Settings;
 import static snake.Snake.SnakeColor;
-import static snake.Snake.Direction;
 
 /**
  * Dessine des éléments sur la grille
