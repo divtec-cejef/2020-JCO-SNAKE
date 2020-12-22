@@ -32,6 +32,10 @@ public class Painter {
     // Context graphique du canvas de le fenêtre
     private static GraphicsContext graphicsContext;
 
+    /**
+     * Initialise le Painter
+     * @param gc Context graphique du canvas de la fenêtre
+     */
     public static void initPainter(GraphicsContext gc) {
         graphicsContext = gc;
     }
