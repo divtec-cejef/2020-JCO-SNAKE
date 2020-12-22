@@ -27,3 +27,4 @@ oldSrc/
 META-INF/
 .idea/
 settings.config
+*.config
