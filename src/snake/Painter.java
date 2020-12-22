@@ -1,6 +1,8 @@
 package snake;
 
+import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -44,14 +46,28 @@ public class Painter {
      * Initiallise la surface de jeu
      */
     private static void initGrid() {
-        // Dessine le fond du jeu
+        // Supprime ce qui reste à l'écran
         graphicsContext.setFill(BACKGROUND_COLOR);
         graphicsContext.fillRect(0, 0, WIDTH, HEIGHT);
+
+        // Dessine le fond du jeu
+        if (!Settings.WALLS.isActivated())
+            paintBackground(BACKGROUND_WITHOUT_BORDER);
+        else
+            paintBackground(BACKGROUND_WITH_BORDER);
 
         // Prépare le format des textes
         graphicsContext.setFill(TEXT_COLOR);
         graphicsContext.setTextAlign(TextAlignment.CENTER);
         graphicsContext.setFont(Font.font("Consolas", 16));
+    }
+
+    /**
+     * Dessine le fond du jeu
+     * @param backgroundPath Chemin vers le fond du jeu
+     */
+    private static void paintBackground(String backgroundPath) {
+
     }
 
     /**
