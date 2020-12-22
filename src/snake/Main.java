@@ -17,6 +17,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 // Importation des constantes
+import java.io.IOException;
+
 import static snake.Constants.*;
 
 // Importation des enums
@@ -86,7 +88,11 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image(ICON_PATH));
 
         // Récupère les paramètres depuis le fichier "settings.config"
-        settings.getFromFile();
+        try {
+            settings.getFromFile();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
 
         // Affiche la fenêtre
         primaryStage.show();

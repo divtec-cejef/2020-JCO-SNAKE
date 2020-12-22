@@ -11,15 +11,16 @@ public class Constants {
     public static final String GAME_NAME = "SNAKE";
 
     // Vitesse du jeu
-    public static final int FPS = 2;
+    public static final int FPS = 20;
 
     // ******************************  CHEMINS  ****************************** //
 
-    // Chemin vers les fichiers de config
-    public static final String PATH_TO_CONFIG = "./src/config/";
+//    // Chemin vers les fichiers de config
+//    public static final String PATH_TO_CONFIG = "./src/config/";
 
     // Chemin vers les fichiers de config
-    public static final String SETTINGS_PATH = PATH_TO_CONFIG + "settings.config";
+    public static final String SETTINGS_PATH = "settings.config";
+//    public static final String SETTINGS_PATH = PATH_TO_CONFIG + "settings.config";
 
     // Chemin vers les images dans l'arborescence de fichiers
     public static final String PATH_TO_IMAGES = "/images/";

@@ -118,6 +118,7 @@ public class GameSettings {
      */
     public void writeAllInFile() {
         File settingsFile = new File(SETTINGS_PATH);
+
         try {
             settingsFile.createNewFile();
         } catch (IOException exception){
@@ -151,39 +152,46 @@ public class GameSettings {
     /**
      * Récupère les valeurs du fichier et le inscrits dans la liste de paramètres du jeu
      */
-    public void getFromFile() {
-        try {
-            List<String> settingsList = readFromFile();
+    public void getFromFile() throws IOException {
+        File settingsFile = new File(SETTINGS_PATH);
+        if (settingsFile.exists()) {
+            try {
+                List<String> settingsList = readFromFile();
 
-            int settingsIndex = 0;
-            for (String setting: settingsList) {
-                // On découpe la ligne au niveau du "="
-                String[] segments = setting.split("=");
+                int settingsIndex = 0;
+                for (String setting : settingsList) {
+                    // On découpe la ligne au niveau du "="
+                    String[] segments = setting.split("=");
 
-                // On récupère le nom de l'option
-                String optionName = segments[0];
+                    // On récupère le nom de l'option
+                    String optionName = segments[0];
 
-                // On converti l'option en type option
-                Settings settingsName = null;
-                try {
-                    settingsName = Settings.valueOf(optionName);
-                } catch (Exception ignored) {}
+                    // On converti l'option en type option
+                    Settings settingsName = null;
+                    try {
+                        settingsName = Settings.valueOf(optionName);
+                    } catch (Exception ignored) {
+                    }
 
-                if (settingsName != null) {
-                    // On récupère la valeur de l'option
-                    String optionValue = segments[segments.length - 1];
+                    if (settingsName != null) {
+                        // On récupère la valeur de l'option
+                        String optionValue = segments[segments.length - 1];
 
-                    // On converti la valeur en booléen
-                    boolean settingsValue = Boolean.parseBoolean(optionValue);
+                        // On converti la valeur en booléen
+                        boolean settingsValue = Boolean.parseBoolean(optionValue);
 
-                    // On modifie l'option dans le jeu
-                    if (settingsIndex < Settings.getSettingsCount())
-                        Settings.getFromSettingsList(Settings.SETTINGS_LIST.indexOf(settingsName)).setActivated(settingsValue);
+                        // On modifie l'option dans le jeu
+                        if (settingsIndex < Settings.getSettingsCount())
+                            Settings.getFromSettingsList(Settings.SETTINGS_LIST.indexOf(settingsName)).setActivated(settingsValue);
+                    }
+                    settingsIndex++;
                 }
-                settingsIndex++;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } else {
+            settingsFile.createNewFile();
+            getFromFile();
         }
     }
 }
