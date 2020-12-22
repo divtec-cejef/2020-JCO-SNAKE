@@ -381,3 +381,4 @@ public class Painter {
         graphicsContext.fillRect(x, y, TILE_SIZE, TILE_SIZE);
     }
 }
+
