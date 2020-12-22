@@ -358,17 +358,37 @@ public class Main extends Application {
         return paused;
     }
 
+    /**
+     * @return le type de partie
+     */
     public static boolean isIsInMultiGame() {
         return isInMultiGame;
     }
 
-    private boolean checkCollision(Snake playerOneSnake, Snake playerTwoSnake) {
-        for (SnakeDot playerOneDot: playerOneSnake.getDots()) {
-            for (SnakeDot playerTwoDot: playerTwoSnake.getDots()) {
+    /**
+     * Vérifie si il y a une collision entre les serpents
+     * @param playerOneSnake Premier serpent
+     * @param playerTwoSnake Deuxième serpent
+     * @return si une collision est arrivée
+     */
+    private boolean checkForCollision(Snake playerOneSnake, Snake playerTwoSnake) {
+        for (SnakeDot playerOneDot: playerOneSnake.getDots())
+            for (SnakeDot playerTwoDot: playerTwoSnake.getDots())
                 if (playerOneDot.getX() == playerTwoDot.getX() && playerOneDot.getY() == playerTwoDot.getY())
                     return true;
-            }
-        }
         return false;
+    }
+
+    /**
+     * Vérifie quel serpent a touché en premier l'autre
+     * @param playerOneSnake Premier serpent
+     * @param playerTwoSnake Deuxième serpent
+     * @return le serpent qui a touché l'autre
+     */
+    private Snake checkCollision(Snake playerOneSnake, Snake playerTwoSnake) {
+        for (SnakeDot playerTwoDot: playerTwoSnake.getDots())
+            if (playerOneSnake.getHead().getX() == playerTwoDot.getX() && playerOneSnake.getHead().getY() == playerTwoDot.getY())
+                return playerOneSnake;
+        return playerTwoSnake;
     }
 }
