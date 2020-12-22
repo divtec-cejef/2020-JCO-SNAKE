@@ -11,7 +11,7 @@ public class Constants {
     public static final String GAME_NAME = "SNAKE";
 
     // Vitesse du jeu
-    public static final int FPS = 20;
+    public static final int FPS = 2;
 
     // ******************************  CHEMINS  ****************************** //
 
@@ -23,6 +23,10 @@ public class Constants {
 
     // Chemin vers l'icône du jeu
     public static final String ICON_PATH = PATH_TO_IMAGES + "icon.png";
+
+    public static final String BACKGROUND_WITHOUT_BORDER = PATH_TO_IMAGES + "border_background.png";
+
+    public static final String BACKGROUND_WITH_BORDER = PATH_TO_IMAGES + "border_background.png";
 
     // ******************************  COMMANDES  ****************************** //
 
@@ -63,6 +67,9 @@ public class Constants {
     // Couleur de fond de la grille
     public static final Color BACKGROUND_COLOR = new Color(0.1, 0.1, 0.1, 1);
 
+    // Couleur des contours de la fenêtre
+    public static  Color BORDER_COLOR = BACKGROUND_COLOR;
+
     // Couleur des textes
     public static final Color TEXT_COLOR = Color.BEIGE;
 
@@ -79,10 +86,10 @@ public class Constants {
     // ******************************  SERPENT  ****************************** //
 
      // Vitesse de base du serpent
-    public static final int INITIAL_SNAKE_VELOCITY = 1;
+    public static final int INITIAL_SNAKE_SPEED = 1;
 
     // Augmentation de la vitesse du serpent
-    public static final int SNAKE_VELOCITY_INCREASE = 2;
+    public static final int SNAKE_SPEED_INCREASE = 2;
 
     // Longueur du serpent en début de partie
     public static final int INITIAL_SNAKE_LENGTH = 3;
