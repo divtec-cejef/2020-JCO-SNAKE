@@ -29,56 +29,56 @@ public class Painter {
     // Séparation entre les lignes
     private static final int separation = 35;
 
+    // Context graphique du canvas de le fenêtre
     private static GraphicsContext graphicsContext;
+
+    public static void initPainter(GraphicsContext gc) {
+        graphicsContext = gc;
+    }
 
     /**
      * Initiallise la surface de jeu
-     *
-     * @param gc GraphicsContext
      */
-    private static void initGrid(GraphicsContext gc) {
-        graphicsContext = gc;
+    private static void initGrid() {
         // Dessine le fond du jeu
-        gc.setFill(BACKGROUND_COLOR);
-        gc.fillRect(0, 0, WIDTH, HEIGHT);
+        graphicsContext.setFill(BACKGROUND_COLOR);
+        graphicsContext.fillRect(0, 0, WIDTH, HEIGHT);
 
         // Prépare le format des textes
-        gc.setFill(TEXT_COLOR);
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.setFont(Font.font("Consolas", 16));
+        graphicsContext.setFill(TEXT_COLOR);
+        graphicsContext.setTextAlign(TextAlignment.CENTER);
+        graphicsContext.setFont(Font.font("Consolas", 16));
     }
 
     /**
      * Affiche le menu des paramètres
-     *
-     * @param gc GraphicsContext
      */
-    private static void paintConfigMenu(GraphicsContext gc) {
-        initGrid(gc);
+    private static void paintConfigMenu() {
+        initGrid();
 
         // Retour au menu
-        paintTopLeft("[" + GO_BACK_KEY.getName() + "] Retour", gc);
+        paintTopLeft("[" + GO_BACK_KEY.getName() + "] Retour");
 
         // Affichage des options
         int count = 0;
         int yLocation = TILE_SIZE * 11;
         for (Settings setting: Settings.getSettingsList()) {
-            gc.fillText(setting.getSettingName(),TILE_SIZE * 2, yLocation);
-            gc.fillText(Boolean.toString(setting.isActivated()), WIDTH * 0.80f, yLocation);
+            graphicsContext.fillText(setting.getSettingName(),TILE_SIZE * 2, yLocation);
+            graphicsContext.fillText(Boolean.toString(setting.isActivated()), WIDTH * 0.80f, yLocation);
             count++;
             yLocation = TILE_SIZE * 11 + separation * count;
         }
 
         // Sauvegarder les paramètres
-        paintTopRight("[" + SAVE_CONFIG_KEY.getName() + "] Sauvegarder et quitter", gc);
+        paintTopRight("[" + SAVE_CONFIG_KEY.getName() + "] Sauvegarder et quitter");
 
         // Modifier un paramètre
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("[" + TOGGLE_OPTION_KEY.getName() + "] Modifier l'option", WIDTH * 0.5f, HEIGHT - TILE_SIZE);
+        graphicsContext.setTextAlign(TextAlignment.CENTER);
+        graphicsContext.fillText("[" + TOGGLE_OPTION_KEY.getName() + "] Modifier l'option", WIDTH * 0.5f, HEIGHT - TILE_SIZE);
 
         // Titre de la page
-        gc.setFont(Font.font("Consolas", 24));
-        gc.fillText("Config", WIDTH / 2.0f, TILE_SIZE * 6);
+        graphicsContext.setFont(Font.font("Consolas", 24));
+        graphicsContext.fillText("Config", WIDTH / 2.0f, TILE_SIZE * 6);
 
     }
 
@@ -86,65 +86,62 @@ public class Painter {
      * Surligne une option du menu
      *
      * @param selectedOption Option seléctionnée
-     * @param gc             GraphicsContext
      */
-    public static void selectOption(int selectedOption, GraphicsContext gc) {
+    public static void selectOption(int selectedOption) {
         // Dessine le menu
-        paintConfigMenu(gc);
+        paintConfigMenu();
 
         // Option seléctionnée
-        gc.setTextAlign(TextAlignment.LEFT);
+        graphicsContext.setTextAlign(TextAlignment.LEFT);
         Settings option = Settings.getFromSettingsList(selectedOption);
 
         // Emplacement de l'option
         int yLocation = TILE_SIZE * 11 + separation * selectedOption;
 
         // Dessine le nom de l'option
-        gc.setFont(Font.font("Consolas", FontWeight.BOLD, 16));
-        gc.setFill(HIGHLIGHTED_TEXT_COLOR);
-        gc.fillText(option.getSettingName(),TILE_SIZE * 2, yLocation);
+        graphicsContext.setFont(Font.font("Consolas", FontWeight.BOLD, 16));
+        graphicsContext.setFill(HIGHLIGHTED_TEXT_COLOR);
+        graphicsContext.fillText(option.getSettingName(),TILE_SIZE * 2, yLocation);
 
         // Dessine la valeur de l'option
-        gc.setFont(Font.font("Consolas", 16));
+        graphicsContext.setFont(Font.font("Consolas", 16));
         if (Settings.getFromSettingsList(selectedOption).isActivated())
-            gc.setFill(HIGHLIGHTED_TRUE_TEXT_COLOR);  // Couleur si l'option est activée
+            graphicsContext.setFill(HIGHLIGHTED_TRUE_TEXT_COLOR);  // Couleur si l'option est activée
         else
-            gc.setFill(HIGHLIGHTED_FALSE_TEXT_COLOR); // Couleur si l'option est désactivée
-        gc.fillText(Boolean.toString(option.isActivated()), WIDTH * 0.80f, yLocation);
+            graphicsContext.setFill(HIGHLIGHTED_FALSE_TEXT_COLOR); // Couleur si l'option est désactivée
+        graphicsContext.fillText(Boolean.toString(option.isActivated()), WIDTH * 0.80f, yLocation);
     }
 
     /**
      * Affiche le menu de sélection de mode de jeu
-     *
-     * @param gc GraphicsContext
      */
-    public static void paintMenu(GraphicsContext gc) {
-        initGrid(gc);
+    public static void paintMenu() {
+        initGrid();
 
         // Quitter le jeu
-        paintTopLeft("[" + CLOSE_GAME_KEY.getName() + "] Quitter le jeu", gc);
-        gc.setTextAlign(TextAlignment.CENTER);
+        paintTopLeft("[" + CLOSE_GAME_KEY.getName() + "] Quitter le jeu");
+        graphicsContext.setTextAlign(TextAlignment.CENTER);
 
         // Sélection des modes de jeu
-        gc.fillText("[<] Solo", WIDTH * 0.31f, HEIGHT * 0.58f);
+        graphicsContext.fillText("[<] Solo", WIDTH * 0.31f, HEIGHT * 0.58f);
 
-        gc.setTextAlign(TextAlignment.RIGHT);
-        gc.fillText("Multi [>]", WIDTH * 0.76f, HEIGHT * 0.58f);
+        graphicsContext.setTextAlign(TextAlignment.RIGHT);
+        graphicsContext.fillText("Multi [>]", WIDTH * 0.76f, HEIGHT * 0.58f);
 
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("Config\n[" + CONFIG_GAME_KEY.getName() + "]", WIDTH * 0.5f, HEIGHT * 0.75f);
+        graphicsContext.setTextAlign(TextAlignment.CENTER);
+        graphicsContext.fillText("Config\n[" + CONFIG_GAME_KEY.getName() + "]", WIDTH * 0.5f, HEIGHT * 0.75f);
 
         // Titre du jeu
-        gc.setFont(Font.font("Consolas", 24));
-        gc.fillText(GAME_NAME, WIDTH / 2.0f, HEIGHT * 0.4);
+        graphicsContext.setFont(Font.font("Consolas", 24));
+        graphicsContext.fillText(GAME_NAME, WIDTH / 2.0f, HEIGHT * 0.4);
     }
 
     /**
      * Affiche le message de fin de jeu
-     *
-     * @param gc GraphicsContext
      */
-    public static void paintGameOverMenu(GraphicsContext gc, Snake deadSnake) {
+    public static void paintGameOverMenu(Snake deadSnake) {
+        graphicsContext.setTextAlign(TextAlignment.CENTER);
+
         SnakeColor deadSnakeColor = deadSnake.getSnakeColor();
 
         // Choix du message de fin
@@ -153,39 +150,37 @@ public class Painter {
             deathText = "Le serpent " + deadSnakeColor.getName() + " est mort";
 
         // On dessine le message dans la fenêtre
-        gc.fillText(deathText, WIDTH / 2.0f, HEIGHT * 0.42f);
+        graphicsContext.fillText(deathText, WIDTH / 2.0f, HEIGHT * 0.42f);
 
         // On affiche les commandes
-        gc.fillText("Appuyez sur [" + RESTART_KEY.getName() + "] pour recommencer.", WIDTH / 2.0f, HEIGHT * 0.5f);
-        gc.fillText("[" + CHANGE_GAME_MODE_KEY.getName() + "] pour changer de mode de jeu.", WIDTH / 2.0f, HEIGHT * 0.54f);
-        gc.fillText("[" + CLOSE_GAME_KEY.getName() + "] pour quitter.", WIDTH / 2.0f, HEIGHT * 0.58f);
+        graphicsContext.fillText("Appuyez sur [" + RESTART_KEY.getName() + "] pour recommencer.", WIDTH / 2.0f, HEIGHT * 0.5f);
+        graphicsContext.fillText("[" + CHANGE_GAME_MODE_KEY.getName() + "] pour changer de mode de jeu.", WIDTH / 2.0f, HEIGHT * 0.54f);
+        graphicsContext.fillText("[" + CLOSE_GAME_KEY.getName() + "] pour quitter.", WIDTH / 2.0f, HEIGHT * 0.58f);
     }
 
     /**
      * Affiche le message de pause
-     * @param gc GraphicsContext
      */
-    public static void paintPause(GraphicsContext gc) {
-        paintBottomLeft("[" + CLOSE_GAME_KEY.getName() + "] Quitter le jeu", gc);
+    public static void paintPause() {
+        paintBottomLeft("[" + CLOSE_GAME_KEY.getName() + "] Quitter le jeu");
 
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText("PAUSE", WIDTH / 2.0f, HEIGHT * 0.5f);
+        graphicsContext.setTextAlign(TextAlignment.CENTER);
+        graphicsContext.fillText("PAUSE", WIDTH / 2.0f, HEIGHT * 0.5f);
 
-        paintCommands(gc);
+        paintCommands();
     }
 
     /**
      * Dessine sur la grille
      *
      * @param grid grille sur laquelle on veut dessiner
-     * @param gc   GraphicsContext
      */
-    public static void paintGame(Grid grid, GraphicsContext gc) {
+    public static void paintGame(Grid grid) {
         // On enlève tout ce qu'il y avait avant
-        initGrid(gc);
+        initGrid();
 
         // Dessine la nourriture du serpent
-        paintDot(grid.getFood().getDot(), gc);
+        paintDot(grid.getFood().getDot());
 
         // Dessine le serpent du joueur 1
         playerOneSnake = grid.getPlayerOneSnake();
@@ -244,27 +239,25 @@ public class Painter {
 
         // Avant que la partie ne commence, on affiche les commandes
         if (!playerOneSnake.isMoving() && !Main.isIsInMultiGame() || (!playerOneSnake.isMoving() && Main.isIsInMultiGame() && !playerTwoSnake.isMoving()))
-            paintCommands(gc);
+            paintCommands();
 
         // Affiche un message lorsqu'un des serpents est mort
         if (playerOneSnake.isDead())
-            paintGameOverMenu(gc, playerOneSnake);
+            paintGameOverMenu(playerOneSnake);
 
         if (Main.isIsInMultiGame() && playerTwoSnake.isDead())
-            paintGameOverMenu(gc, playerTwoSnake);
+            paintGameOverMenu(playerTwoSnake);
 
         // Dessine le score
-        paintScore(gc);
+        paintScore();
     }
 
     /**
      * Dessine l'image d'un point sur la grille
-     *
      * @param dot Point à dessiner
-     * @param gc  GraphicsContext
      */
-    private static void paintDot(Dot dot, GraphicsContext gc) {
-        gc.drawImage(dot.getSprite(),
+    private static void paintDot(Dot dot) {
+        graphicsContext.drawImage(dot.getSprite(),
                 dot.getX() * TILE_SIZE,
                 dot.getY() * TILE_SIZE,
                 TILE_SIZE, TILE_SIZE);
@@ -293,9 +286,8 @@ public class Painter {
 
     /**
      * Dessines les commandes du jeu
-     * @param gc GraphicsContext
      */
-    private static void paintCommands(GraphicsContext gc) {
+    private static void paintCommands() {
         // Différence d'emplacement sur l'écran
         float difference;
 
@@ -319,10 +311,10 @@ public class Painter {
             downXPosition = WIDTH * 0.5f + difference;
             rightXPosition = WIDTH * 0.65f + difference;
 
-            gc.fillText("[W]\nHaut", upXPosition, upYPosition);
-            gc.fillText("[A]\nGauche", leftXPosition, leftYPosition);
-            gc.fillText("[S]\nBas", downXPosition, downYPosition);
-            gc.fillText("[D]\nDroite", rightXPosition, rightYPosition);
+            graphicsContext.fillText("[W]\nHaut", upXPosition, upYPosition);
+            graphicsContext.fillText("[A]\nGauche", leftXPosition, leftYPosition);
+            graphicsContext.fillText("[S]\nBas", downXPosition, downYPosition);
+            graphicsContext.fillText("[D]\nDroite", rightXPosition, rightYPosition);
 
             // Joueur 1
             difference = - (WIDTH * 0.25f);
@@ -334,54 +326,50 @@ public class Painter {
         }
 
         // Joueur 1
-        gc.fillText("[^]\nHaut", upXPosition, upYPosition);
-        gc.fillText("[<]\nGauche", leftXPosition, leftYPosition);
-        gc.fillText("[v]\nBas", downXPosition, downYPosition);
-        gc.fillText("[>]\nDroite", rightXPosition, rightYPosition);
+        graphicsContext.fillText("[^]\nHaut", upXPosition, upYPosition);
+        graphicsContext.fillText("[<]\nGauche", leftXPosition, leftYPosition);
+        graphicsContext.fillText("[v]\nBas", downXPosition, downYPosition);
+        graphicsContext.fillText("[>]\nDroite", rightXPosition, rightYPosition);
     }
 
     /**
      * Dessine le score
-     * @param gc GraphicsContext
      */
-    private static void paintScore(GraphicsContext gc) {
+    private static void paintScore() {
         String playerOneScoreText = "Score : " + playerOneSnake.getScore();
         if (Main.isIsInMultiGame()) {
             playerOneScoreText = "Serpent " + playerOneSnake.getSnakeColor().getName() + " : " + playerOneSnake.getScore();
-            paintTopRight("Serpent " + playerTwoSnake.getSnakeColor().getName() + " : " + playerTwoSnake.getScore(), gc);
+            paintTopRight("Serpent " + playerTwoSnake.getSnakeColor().getName() + " : " + playerTwoSnake.getScore());
         }
 
-        paintTopLeft(playerOneScoreText, gc);
+        paintTopLeft(playerOneScoreText);
     }
 
     /**
      * Ecrit en haut à gauche de la fenêtre
      * @param text Texte à écrire
-     * @param gc GraphicsContext
      */
-    private static void paintTopLeft(String text, GraphicsContext gc) {
-        gc.setTextAlign(TextAlignment.LEFT);
-        gc.fillText(text, 0, TILE_SIZE * 1.5f);
+    private static void paintTopLeft(String text) {
+        graphicsContext.setTextAlign(TextAlignment.LEFT);
+        graphicsContext.fillText(text, 0, TILE_SIZE * 1.5f);
     }
 
     /**
      * Ecrit en bas à gauche de la fenêtre
      * @param text Texte à écrire
-     * @param gc GraphicsContext
      */
-    private static void paintBottomLeft(String text, GraphicsContext gc) {
-        gc.setTextAlign(TextAlignment.LEFT);
-        gc.fillText(text, 0, HEIGHT - TILE_SIZE * 0.5f);
+    private static void paintBottomLeft(String text) {
+        graphicsContext.setTextAlign(TextAlignment.LEFT);
+        graphicsContext.fillText(text, 0, HEIGHT - TILE_SIZE * 0.5f);
     }
 
     /**
      * Ecrit en haut à droite de la fenêtre
      * @param text Texte à écrire
-     * @param gc GraphicsContext
      */
-    private static void paintTopRight(String text, GraphicsContext gc) {
-        gc.setTextAlign(TextAlignment.RIGHT);
-        gc.fillText(text, WIDTH, TILE_SIZE * 1.5f);
+    private static void paintTopRight(String text) {
+        graphicsContext.setTextAlign(TextAlignment.RIGHT);
+        graphicsContext.fillText(text, WIDTH, TILE_SIZE * 1.5f);
     }
 
     public static void paintDot(Color color, int x, int y) {

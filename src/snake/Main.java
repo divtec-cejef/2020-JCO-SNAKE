@@ -91,8 +91,11 @@ public class Main extends Application {
         // Affiche la fenêtre
         primaryStage.show();
 
+        // Initialise le painter avec le contexte graphique du canvas
+        Painter.initPainter(context);
+
         // Affiche le menu de sélection de mode de jeu
-        Painter.paintMenu(context);
+        Painter.paintMenu();
     }
 
     private void onKeyReleasedListener(KeyEvent event) {
@@ -140,7 +143,7 @@ public class Main extends Application {
             // Paramètres du jeu
             if (keyCode == CONFIG_GAME_KEY) {
                 selectedOption = 0;
-                Painter.selectOption(selectedOption, context);
+                Painter.selectOption(selectedOption);
                 isInSettingsMenu = true;
             }
         }
@@ -192,7 +195,7 @@ public class Main extends Application {
             if (isInSettingsMenu) {
                 isInSettingsMenu = false;
                 selectedOption = 0;
-                Painter.paintMenu(context);
+                Painter.paintMenu();
             }
         }
 
@@ -205,12 +208,12 @@ public class Main extends Application {
             if (isInSettingsMenu) {
                 isInSettingsMenu = false;
                 selectedOption = 0;
-                Painter.paintMenu(context);
+                Painter.paintMenu();
             }
         }
 
         if (isInSettingsMenu)
-            Painter.selectOption(selectedOption, context);
+            Painter.selectOption(selectedOption);
     }
 
     /**
@@ -263,7 +266,7 @@ public class Main extends Application {
         if (keyCode == CHANGE_GAME_MODE_KEY)
             if (isPaused()) {
                 isInMenu = true;
-                Painter.paintMenu(context);
+                Painter.paintMenu();
             }
 
         if (keyCode == CLOSE_GAME_KEY)
@@ -326,17 +329,20 @@ public class Main extends Application {
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if (!isPaused()) {
                 grid.update();
-                Painter.paintGame(grid, context);
-
-                if (isMultiGame)
-                    if (checkCollision(grid.getPlayerOneSnake(), grid.getPlayerTwoSnake()))
-                        stopGame();
+                Painter.paintGame(grid);
 
                 if (grid.getPlayerOneSnake().isDead() || (isMultiGame && grid.getPlayerTwoSnake().isDead()))
                     stopGame();
+
+                if (isMultiGame)
+                    if (checkForCollision(grid.getPlayerOneSnake(), grid.getPlayerTwoSnake())) {
+                        stopGame();
+                        Painter.paintGameOverMenu(checkCollision(grid.getPlayerOneSnake(), grid.getPlayerTwoSnake()));
+                    }
             } else
-                Painter.paintPause(context);
+                Painter.paintPause();
         }));
+
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
