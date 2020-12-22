@@ -89,7 +89,7 @@ public class Snake {
     private int score;
 
     // Vitesse du serpent
-    private int speed;
+    private int speed = INITIAL_SNAKE_SPEED;
 
     private int stepX;
     private int stepY;
@@ -145,6 +145,8 @@ public class Snake {
     private void growTo(SnakeDot dot) {
         if (Settings.SNAKE_RAINBOW_SHEDDING.isActivated())
             setRandomColor(snakeColor);
+
+        increaseSpeed(SNAKE_SPEED_INCREASE);
 
         length++;
         canDie = true;
@@ -281,6 +283,14 @@ public class Snake {
 
                 return new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
         }
+    }
+
+    /**
+     * Augmente la vitesse du serpent
+     * @param speedIncrease Augmentation de la vitesse
+     */
+    public void increaseSpeed(int speedIncrease) {
+        speed += speedIncrease;
     }
 
     /**
