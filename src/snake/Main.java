@@ -340,10 +340,12 @@ public class Main extends Application {
                 if (grid.getPlayerOneSnake().isDead() || (isMultiGame && grid.getPlayerTwoSnake().isDead()))
                     stopGame();
 
+                // Détection de collisions entre les serpents
                 if (isMultiGame)
                     if (checkForCollision(grid.getPlayerOneSnake(), grid.getPlayerTwoSnake())) {
                         stopGame();
                         Painter.paintGameOverMenu(checkCollision(grid.getPlayerOneSnake(), grid.getPlayerTwoSnake()));
+//                        System.out.println(grid.getPlayerOneSnake().getHead().getX() + " " + grid.getPlayerOneSnake().getHead().getY()+ "," + grid.getPlayerTwoSnake().getHead().getX() + " " + grid.getPlayerTwoSnake().getHead().getY());
                     }
             } else
                 Painter.paintPause();
@@ -398,6 +400,8 @@ public class Main extends Application {
      * @return le serpent qui a touché l'autre
      */
     private Snake checkCollision(Snake playerOneSnake, Snake playerTwoSnake) {
+        if (playerOneSnake.getHead().getX() == playerTwoSnake.getHead().getX() && playerOneSnake.getHead().getY() == playerTwoSnake.getHead().getY())
+            return null;
         for (SnakeDot playerTwoDot: playerTwoSnake.getDots())
             if (playerOneSnake.getHead().getX() == playerTwoDot.getX() && playerOneSnake.getHead().getY() == playerTwoDot.getY())
                 return playerOneSnake;

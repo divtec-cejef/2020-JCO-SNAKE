@@ -145,13 +145,15 @@ public class Painter {
      */
     public static void paintGameOverMenu(Snake deadSnake) {
         graphicsContext.setTextAlign(TextAlignment.CENTER);
+        String deathText = "Les deux serpents sont morts";
+        if (deadSnake != null){
+            SnakeColor deadSnakeColor = deadSnake.getSnakeColor();
+            // Choix du message de fin
+            deathText = "Votre score est de " + deadSnake.getScore();
 
-        SnakeColor deadSnakeColor = deadSnake.getSnakeColor();
-
-        // Choix du message de fin
-        String deathText = "Votre score est de " + deadSnake.getScore();
-        if (Main.isIsInMultiGame())
-            deathText = "Le serpent " + deadSnakeColor.getName() + " est mort";
+            if (Main.isIsInMultiGame())
+                deathText = "Le serpent " + deadSnakeColor.getName() + " est mort";
+        }
 
         // On dessine le message dans la fenêtre
         graphicsContext.fillText(deathText, WIDTH / 2.0f, HEIGHT * 0.42f);
