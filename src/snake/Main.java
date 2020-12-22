@@ -12,14 +12,13 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-// Importation des constantes
 import java.io.IOException;
 
+// Importation des constantes
 import static snake.Constants.*;
+
 
 // Importation des enums
 import static snake.Snake.Direction;
@@ -29,9 +28,6 @@ import static snake.GameSettings.Settings;
  * Point d'entrée du jeu
  */
 public class Main extends Application {
-
-    // Couleur des contours de la fenêtre
-    private final Color BORDER_COLOR = BACKGROUND_COLOR;
 
     // Boucle du jeu
     private Timeline timeline;
@@ -337,6 +333,7 @@ public class Main extends Application {
                 grid.update();
                 Painter.paintGame(grid);
 
+                // On arrête le jeu quand un serpent meurt
                 if (grid.getPlayerOneSnake().isDead() || (isMultiGame && grid.getPlayerTwoSnake().isDead()))
                     stopGame();
 
@@ -345,7 +342,6 @@ public class Main extends Application {
                     if (checkForCollision(grid.getPlayerOneSnake(), grid.getPlayerTwoSnake())) {
                         stopGame();
                         Painter.paintGameOverMenu(checkCollision(grid.getPlayerOneSnake(), grid.getPlayerTwoSnake()));
-//                        System.out.println(grid.getPlayerOneSnake().getHead().getX() + " " + grid.getPlayerOneSnake().getHead().getY()+ "," + grid.getPlayerTwoSnake().getHead().getX() + " " + grid.getPlayerTwoSnake().getHead().getY());
                     }
             } else
                 Painter.paintPause();
