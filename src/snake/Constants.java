@@ -24,9 +24,9 @@ public class Constants {
     // Chemin vers l'icône du jeu
     public static final String ICON_PATH = PATH_TO_IMAGES + "icon.png";
 
-    public static final String BACKGROUND_WITHOUT_BORDER = PATH_TO_IMAGES + "border_background.png";
-
-    public static final String BACKGROUND_WITH_BORDER = PATH_TO_IMAGES + "border_background.png";
+//    public static final String BACKGROUND_WITHOUT_BORDER = PATH_TO_IMAGES + "background.png";
+//
+//    public static final String BACKGROUND_WITH_BORDER = PATH_TO_IMAGES + "border_background.png";
 
     // ******************************  COMMANDES  ****************************** //
 
@@ -39,9 +39,10 @@ public class Constants {
     // Touche de changement de mode de jeu
     public static final KeyCode CHANGE_GAME_MODE_KEY = KeyCode.C;
 
-    // Touche de modification des paramètres du jeu
+    // Touche d'accès aux paramètres du jeu
     public static final KeyCode CONFIG_GAME_KEY = KeyCode.C;
 
+    // Touche de sauvegarde des paramètres du jeu
     public static final KeyCode SAVE_CONFIG_KEY = KeyCode.S;
 
     // Touche de sélection d'option
@@ -50,6 +51,7 @@ public class Constants {
     // Touche de séléction de l'option suivante
     public static final KeyCode SELECT_OPTION_KEY = KeyCode.TAB;
 
+    // Touche de retour au menu principal
     public static final KeyCode GO_BACK_KEY = KeyCode.ESCAPE;
 
 
@@ -68,7 +70,7 @@ public class Constants {
     public static final Color BACKGROUND_COLOR = new Color(0.1, 0.1, 0.1, 1);
 
     // Couleur des contours de la fenêtre
-    public static  Color BORDER_COLOR = BACKGROUND_COLOR;
+    public static final Color BORDER_COLOR = BACKGROUND_COLOR;
 
     // Couleur des textes
     public static final Color TEXT_COLOR = Color.BEIGE;

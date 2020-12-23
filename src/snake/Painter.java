@@ -50,11 +50,11 @@ public class Painter {
         graphicsContext.setFill(BACKGROUND_COLOR);
         graphicsContext.fillRect(0, 0, WIDTH, HEIGHT);
 
-        // Dessine le fond du jeu
-        if (!Settings.WALLS.isActivated())
-            paintBackground(BACKGROUND_WITHOUT_BORDER);
-        else
-            paintBackground(BACKGROUND_WITH_BORDER);
+//        // Dessine le fond du jeu
+//        if (!Settings.WALLS.isActivated())
+//            paintBackground(BACKGROUND_WITHOUT_BORDER);
+//        else
+//            paintBackground(BACKGROUND_WITH_BORDER);
 
         // Prépare le format des textes
         graphicsContext.setFill(TEXT_COLOR);
@@ -62,13 +62,13 @@ public class Painter {
         graphicsContext.setFont(Font.font("Consolas", 16));
     }
 
-    /**
-     * Dessine le fond du jeu
-     * @param backgroundPath Chemin vers le fond du jeu
-     */
-    private static void paintBackground(String backgroundPath) {
-
-    }
+//    /**
+//     * Dessine le fond du jeu
+//     * @param backgroundPath Chemin vers le fond du jeu
+//     */
+//    private static void paintBackground(String backgroundPath) {
+//
+//    }
 
     /**
      * Affiche le menu des paramètres
