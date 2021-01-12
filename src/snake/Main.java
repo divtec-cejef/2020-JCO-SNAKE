@@ -19,7 +19,6 @@ import java.io.IOException;
 // Importation des constantes
 import static snake.Constants.*;
 
-
 // Importation des enums
 import static snake.Snake.Direction;
 import static snake.GameSettings.Settings;

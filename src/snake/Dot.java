@@ -1,8 +1,5 @@
 package snake;
 
-// Importation des constantes
-//import static snake.Constants.*;
-
 /**
  * Représente un point
  */
