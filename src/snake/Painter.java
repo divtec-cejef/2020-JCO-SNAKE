@@ -1,9 +1,6 @@
 package snake;
 
-import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
@@ -50,25 +47,11 @@ public class Painter {
         graphicsContext.setFill(BACKGROUND_COLOR);
         graphicsContext.fillRect(0, 0, WIDTH, HEIGHT);
 
-//        // Dessine le fond du jeu
-//        if (!Settings.WALLS.isActivated())
-//            paintBackground(BACKGROUND_WITHOUT_BORDER);
-//        else
-//            paintBackground(BACKGROUND_WITH_BORDER);
-
         // Prépare le format des textes
         graphicsContext.setFill(TEXT_COLOR);
         graphicsContext.setTextAlign(TextAlignment.CENTER);
         graphicsContext.setFont(Font.font("Consolas", 16));
     }
-
-//    /**
-//     * Dessine le fond du jeu
-//     * @param backgroundPath Chemin vers le fond du jeu
-//     */
-//    private static void paintBackground(String backgroundPath) {
-//
-//    }
 
     /**
      * Affiche le menu des paramètres
@@ -299,13 +282,6 @@ public class Painter {
                 TILE_SIZE, TILE_SIZE);
     }
 
-    public static void paintSnake(SnakeDot dot) {
-        graphicsContext.drawImage(dot.getSprite(),
-                dot.getX() * TILE_SIZE,
-                dot.getY() * TILE_SIZE,
-                TILE_SIZE, TILE_SIZE);
-    }
-
     /**
      * Dessines les commandes du jeu
      */
@@ -394,9 +370,5 @@ public class Painter {
         graphicsContext.fillText(text, WIDTH, TILE_SIZE * 1.5f);
     }
 
-    public static void paintDot(Color color, int x, int y) {
-        graphicsContext.setFill(color);
-        graphicsContext.fillRect(x, y, TILE_SIZE, TILE_SIZE);
-    }
 }
 

@@ -83,19 +83,14 @@ public class Snake {
     private final List<SnakeDot> dots;
     // Tête du serpent
     private SnakeDot head;
-    // Queue du serpent
-    private SnakeDot tail;
     // Score du joueur
     private int score;
-
-    // Vitesse du serpent
-    private int speed = INITIAL_SNAKE_SPEED;
 
     private int stepX;
     private int stepY;
 
-    private int startX;
-    private int startY;
+    private final int startX;
+    private final int startY;
 
     private boolean isAlive;
     public boolean canDie;
@@ -129,7 +124,8 @@ public class Snake {
                 dots.add(head);
             } else if (z == INITIAL_SNAKE_LENGTH - 1) {
                 // Crée une queue en dernier
-                tail = createNewSnakeParts(Dot.DotType.TAIL, startX, startY);
+                // Queue du serpent
+                SnakeDot tail = createNewSnakeParts(Dot.DotType.TAIL, startX, startY);
                 dots.add(tail);
             } else
                 // Crée un corps entre deux
@@ -145,8 +141,6 @@ public class Snake {
     private void growTo(SnakeDot dot) {
         if (Settings.SNAKE_RAINBOW_SHEDDING.isActivated())
             setRandomColor(snakeColor);
-
-        increaseSpeed(SNAKE_SPEED_INCREASE);
 
         length++;
         canDie = true;
@@ -283,14 +277,6 @@ public class Snake {
 
                 return new Sprite(PATH_TO_SNAKE_IMAGES + "body_" + orientation + ".png");
         }
-    }
-
-    /**
-     * Augmente la vitesse du serpent
-     * @param speedIncrease Augmentation de la vitesse
-     */
-    public void increaseSpeed(int speedIncrease) {
-        speed += speedIncrease;
     }
 
     /**

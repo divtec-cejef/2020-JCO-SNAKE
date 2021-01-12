@@ -19,9 +19,9 @@ public class Dot {
     }
 
     // Coordonnée X du point
-    private int x;
+    private final int x;
     // Coordonnée Y du point
-    private int y;
+    private final int y;
 
     private Snake.Direction direction;
     private Snake.Direction previousDirection = null;
@@ -121,24 +121,6 @@ public class Dot {
 
 
     // ******************************  SETTER  ****************************** //
-
-    /**
-     * Change la coordonnée x du point
-     *
-     * @param x Nouvelle coordonnée x
-     */
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    /**
-     * Change la coordonnée x du point
-     *
-     * @param y Nouvelle coordonnée y
-     */
-    public void setY(int y) {
-        this.y = y;
-    }
 
     /**
      * Change le type du point

@@ -41,7 +41,6 @@ public class Main extends Application {
     public static boolean gameHasStarted = false;
 
     private Grid grid;
-    private GraphicsContext context;
 
     GameSettings settings;
 
@@ -62,7 +61,7 @@ public class Main extends Application {
         stageToClose = primaryStage;
         StackPane root = new StackPane();
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
-        context = canvas.getGraphicsContext2D();
+        GraphicsContext context = canvas.getGraphicsContext2D();
         settings = new GameSettings();
 
         canvas.setFocusTraversable(true);

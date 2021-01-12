@@ -122,20 +122,6 @@ public class Grid {
     // ******************************  GETTER  ****************************** //
 
     /**
-     * @return Les colonnes de la grille
-     */
-    public int getCols() {
-        return cols;
-    }
-
-    /**
-     * @return Les lignes de la grille
-     */
-    public int getRows() {
-        return rows;
-    }
-
-    /**
      * @return le serpent du joueur 1
      */
     public Snake getPlayerOneSnake() {
