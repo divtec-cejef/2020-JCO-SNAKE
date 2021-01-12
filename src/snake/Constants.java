@@ -25,7 +25,7 @@ public class Constants {
     public static final String ICON_PATH = PATH_TO_IMAGES + "icon.png";
 
 //    public static final String BACKGROUND_WITHOUT_BORDER = PATH_TO_IMAGES + "background.png";
-//
+
 //    public static final String BACKGROUND_WITH_BORDER = PATH_TO_IMAGES + "border_background.png";
 
     // ******************************  COMMANDES  ****************************** //
