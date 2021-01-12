@@ -86,9 +86,11 @@ public class Snake {
     // Score du joueur
     private int score;
 
+    // Déplacement du serpent
     private int stepX;
     private int stepY;
 
+    // Emplacement de départ du serpent
     private final int startX;
     private final int startY;
 
@@ -97,8 +99,10 @@ public class Snake {
 
     /**
      * Construit un nouveau serpent
-     *
+     * @param color Couleur de ce serpent
      * @param grid Grille de jeu
+     * @param x Emplacement du serpent sur l'axe X
+     * @param y Emplacement du serpent sur l'axe Y
      */
     public Snake(SnakeColor color, Grid grid, int x, int y) {
         dots = new LinkedList<>();

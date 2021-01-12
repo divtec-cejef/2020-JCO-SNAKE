@@ -75,6 +75,7 @@ public class SnakeDot extends Dot {
      * Défini l'image utilisé pour l'angle formé par le corps du serpent
      *
      * @param imagesPath Chemin vers les images du corps du serpent
+     * @param previousDirection Direction précédente du point
      * @return L'image correspondant aux paramètres fournis
      */
     public Sprite checkForCorner(String imagesPath, Snake.Direction previousDirection) {
@@ -138,7 +139,6 @@ public class SnakeDot extends Dot {
         return new Sprite(imagesPath + imageName);
     }
 
-
     // ******************************  GETTER  ****************************** //
 
     /**
@@ -147,7 +147,6 @@ public class SnakeDot extends Dot {
     public Snake.SnakeColor getColor() {
         return color;
     }
-
 
     // ******************************  SETTER  ****************************** //
 

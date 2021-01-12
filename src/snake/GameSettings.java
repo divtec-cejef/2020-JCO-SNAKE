@@ -32,6 +32,7 @@ public class GameSettings {
          * Construit un paramètre
          *
          * @param settingName Nom du paramètre
+         * @param isActivated Valeur du paramètre
          */
         Settings(String settingName, boolean isActivated) {
             this.settingName = settingName;
@@ -151,6 +152,7 @@ public class GameSettings {
 
     /**
      * Récupère les valeurs du fichier et le inscrits dans la liste de paramètres du jeu
+     * @throws IOException IOException
      */
     public void getFromFile() throws IOException {
         File settingsFile = new File(SETTINGS_PATH);
