@@ -11,7 +11,7 @@ public class Constants {
     public static final String GAME_NAME = "SNAKE";
 
     // Vitesse du jeu
-    public static final int FPS = 2;
+    public static final int FPS = 8;
 
     // ******************************  CHEMINS  ****************************** //
 
