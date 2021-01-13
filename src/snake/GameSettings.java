@@ -20,7 +20,8 @@ public class GameSettings {
      */
     public enum Settings {
         WALLS("Murs autour du plateau", false),
-        SNAKE_RAINBOW_SHEDDING("Mue colorée", false);
+        SNAKE_RAINBOW_SHEDDING("Mue colorée", false),
+        LEGACY_SNAKE("Serpent pixelisé (solo uniquement)", false);
 
         // Nom en français du paramètre
         private final String settingName;

@@ -186,15 +186,28 @@ public class Painter {
         initGrid();
 
         // Dessine la nourriture du serpent
-        paintDot(grid.getFood().getDot());
+        if (Settings.LEGACY_SNAKE.isActivated() && !Main.isIsInMultiGame()) {
+//            graphicsContext.setFill(Color.WHITE);
+            graphicsContext.fillRect(grid.getFood().getDot().getX() * TILE_SIZE,
+                    grid.getFood().getDot().getY() * TILE_SIZE,
+                    TILE_SIZE, TILE_SIZE);
+        } else
+            paintDot(grid.getFood().getDot());
 
         // Dessine le serpent du joueur 1
         playerOneSnake = grid.getPlayerOneSnake();
 
         // On dessine le premier serpent
         for (SnakeDot dot : playerOneSnake.getDots()) {
-            paintSnake(dot, playerOnePreviousDot);
-            playerOnePreviousDot = dot;
+            if (Settings.LEGACY_SNAKE.isActivated() && !Main.isIsInMultiGame()) {
+//                graphicsContext.setFill(Color.WHITE);
+                graphicsContext.fillRect(dot.getX() * TILE_SIZE,
+                        dot.getY() * TILE_SIZE,
+                        TILE_SIZE, TILE_SIZE);
+            } else {
+                paintSnake(dot, playerOnePreviousDot);
+                playerOnePreviousDot = dot;
+            }
         }
 
         // Dessine le serpent du joueur 2
