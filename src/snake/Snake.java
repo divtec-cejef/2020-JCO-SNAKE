@@ -351,6 +351,4 @@ public class Snake {
     public SnakeColor getSnakeColor() {
         return snakeColor;
     }
-
-
 }
