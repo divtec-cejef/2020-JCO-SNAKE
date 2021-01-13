@@ -95,7 +95,6 @@ public class Snake {
     private final int startY;
 
     private boolean isAlive;
-    public boolean canDie;
 
     /**
      * Construit un nouveau serpent
@@ -107,7 +106,6 @@ public class Snake {
     public Snake(SnakeColor color, Grid grid, int x, int y) {
         dots = new LinkedList<>();
         isAlive = true;
-        canDie = Settings.WALLS.isActivated();
         this.grid = grid;
         stepX = 0;
         stepY = 0;
@@ -147,7 +145,6 @@ public class Snake {
             setRandomColor(snakeColor);
 
         length++;
-        canDie = true;
         checkAndAdd(dot);
         checkDotList();
     }
@@ -172,8 +169,7 @@ public class Snake {
      */
     private void checkAndAdd(SnakeDot dot) {
         dot = grid.wrap(dot);
-        if (canDie)
-            isAlive &= !dots.contains(dot);
+        isAlive &= !dots.contains(dot);
         head = dot;
         score = 100 * (dots.size() - INITIAL_SNAKE_LENGTH);
         dots.add(dot);
@@ -202,7 +198,7 @@ public class Snake {
      * @return {@code true} si le serpent s'est mangé lui-même
      */
     public boolean isDead() {
-        return !isAlive && canDie;
+        return !isAlive;
     }
 
     /**
