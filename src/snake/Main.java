@@ -46,6 +46,8 @@ public class Main extends Application {
     // Option seléctionnée dans le menu de paramètres
     private int selectedOption = 0;
 
+    static boolean isPlayerOneKeyPressed = false;
+    static boolean isPlayerTwoKeyPressed = false;
     boolean isShiftKeyPressed = false;
 
     // Utilisé pour la fermeture de la fenêtre
@@ -225,39 +227,9 @@ public class Main extends Application {
         Snake playerOneSnake = grid.getPlayerOneSnake();
         Direction playerOneSnakeDirection = playerOneSnake.getSnakeDirection();
 
-        switch (keyCode) {
-            case UP:
-                if (!isPaused())
-                    if (playerOneSnakeDirection != Direction.DOWN && playerOneSnakeDirection != Direction.UP)
-                        playerOneSnake.changeDirection(Direction.UP);
-                break;
-            case LEFT:
-                if (!isPaused())
-                    if (playerOneSnakeDirection != Direction.RIGHT && playerOneSnakeDirection != Direction.LEFT)
-                        playerOneSnake.changeDirection(Direction.LEFT);
-                break;
-            case DOWN:
-                if (!isPaused())
-                    if (playerOneSnakeDirection != Direction.UP && playerOneSnakeDirection != Direction.DOWN)
-                        playerOneSnake.changeDirection(Direction.DOWN);
-                break;
-            case RIGHT:
-                if (!isPaused())
-                    if (playerOneSnakeDirection != Direction.LEFT && playerOneSnakeDirection != Direction.RIGHT)
-                        playerOneSnake.changeDirection(Direction.RIGHT);
-                break;
-            case P:
-                if (gameHasStarted)
-                    paused = !isPaused();
-                break;
-
-            // **************  PROVISOIRE  ************** //
-            // Tue le serpent sur le coup
-            case R:
-                playerOneSnake.canDie = true;
-                playerOneSnake.setAlive(false);
-                break;
-        }
+        if (keyCode == KeyCode.P)
+            if (gameHasStarted)
+                paused = !isPaused();
 
         if (keyCode == RESTART_KEY)
             if (isPaused())
@@ -272,6 +244,26 @@ public class Main extends Application {
         if (keyCode == CLOSE_GAME_KEY)
             if (isPaused())
                 stageToClose.close();
+
+        if (isPlayerOneKeyPressed)
+            return;
+
+        if (!isPaused()) {
+            if (keyCode == KeyCode.UP) {
+                if (playerOneSnakeDirection != Direction.DOWN && playerOneSnakeDirection != Direction.UP)
+                    playerOneSnake.changeDirection(Direction.UP);
+            } else if (keyCode == KeyCode.LEFT) {
+                if (playerOneSnakeDirection != Direction.RIGHT && playerOneSnakeDirection != Direction.LEFT)
+                    playerOneSnake.changeDirection(Direction.LEFT);
+            } else if (keyCode == KeyCode.DOWN) {
+                if (playerOneSnakeDirection != Direction.UP && playerOneSnakeDirection != Direction.DOWN)
+                    playerOneSnake.changeDirection(Direction.DOWN);
+            } else if (keyCode == KeyCode.RIGHT) {
+                if (playerOneSnakeDirection != Direction.LEFT && playerOneSnakeDirection != Direction.RIGHT)
+                    playerOneSnake.changeDirection(Direction.RIGHT);
+            }
+        }
+        isPlayerOneKeyPressed = true;
     }
 
     /**
@@ -283,28 +275,25 @@ public class Main extends Application {
         Snake playerTwoSnake = grid.getPlayerTwoSnake();
         Direction playerTwoSnakeDirection = playerTwoSnake.getSnakeDirection();
 
-        switch (keyCode) {
-            case W:
-                if (!isPaused())
-                    if (playerTwoSnakeDirection != Direction.DOWN && playerTwoSnakeDirection != Direction.UP)
-                        playerTwoSnake.changeDirection(Direction.UP);
-                break;
-            case A:
-                if (!isPaused())
-                    if (playerTwoSnakeDirection != Direction.RIGHT && playerTwoSnakeDirection != Direction.LEFT)
-                        playerTwoSnake.changeDirection(Direction.LEFT);
-                break;
-            case S:
-                if (!isPaused())
-                    if (playerTwoSnakeDirection != Direction.UP && playerTwoSnakeDirection != Direction.DOWN)
-                        playerTwoSnake.changeDirection(Direction.DOWN);
-                break;
-            case D:
-                if (!isPaused())
-                    if (playerTwoSnakeDirection != Direction.LEFT && playerTwoSnakeDirection != Direction.RIGHT)
-                        playerTwoSnake.changeDirection(Direction.RIGHT);
-                break;
+        if (isPlayerTwoKeyPressed)
+            return;
+
+        if (!isPaused()) {
+            if (keyCode == KeyCode.W) {
+                if (playerTwoSnakeDirection != Direction.DOWN && playerTwoSnakeDirection != Direction.UP)
+                    playerTwoSnake.changeDirection(Direction.UP);
+            } else if (keyCode == KeyCode.A) {
+                if (playerTwoSnakeDirection != Direction.RIGHT && playerTwoSnakeDirection != Direction.LEFT)
+                    playerTwoSnake.changeDirection(Direction.LEFT);
+            } else if (keyCode == KeyCode.S) {
+                if (playerTwoSnakeDirection != Direction.UP && playerTwoSnakeDirection != Direction.DOWN)
+                    playerTwoSnake.changeDirection(Direction.DOWN);
+            } else if (keyCode == KeyCode.D) {
+                if (playerTwoSnakeDirection != Direction.LEFT && playerTwoSnakeDirection != Direction.RIGHT)
+                    playerTwoSnake.changeDirection(Direction.RIGHT);
+            }
         }
+        isPlayerTwoKeyPressed = true;
     }
 
     /**
@@ -318,7 +307,6 @@ public class Main extends Application {
 
     /**
      * Lance une partie
-     *
      * @param isMultiGame {@code true} Si la partie est en multijoueur
      */
     private void startGame(boolean isMultiGame) {
@@ -400,5 +388,21 @@ public class Main extends Application {
             if (playerOneSnake.getHead().getX() == playerTwoDot.getX() && playerOneSnake.getHead().getY() == playerTwoDot.getY())
                 return playerOneSnake;
         return playerTwoSnake;
+    }
+
+    /**
+     * Modifie la valeur de la variable playerOneKeyPressed
+     * @param playerOneKeyPressed Nouvelle valeur de la variable
+     */
+    public static void setPlayerOneKeyPressed(boolean playerOneKeyPressed) {
+        isPlayerOneKeyPressed = playerOneKeyPressed;
+    }
+
+    /**
+     * Modifie la valeur de la variable playerOneKeyPressed
+     * @param playerTwoKeyPressed Nouvelle valeur de la variable
+     */
+    public static void setPlayerTwoKeyPressed(boolean playerTwoKeyPressed) {
+        isPlayerTwoKeyPressed = playerTwoKeyPressed;
     }
 }

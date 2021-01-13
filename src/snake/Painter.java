@@ -141,6 +141,7 @@ public class Painter {
 
     /**
      * Affiche le message de fin de jeu
+     * @param deadSnake Serpent qui est mort
      */
     public static void paintGameOverMenu(Snake deadSnake) {
         graphicsContext.setTextAlign(TextAlignment.CENTER);
@@ -255,6 +256,10 @@ public class Painter {
 
         // Dessine le score
         paintScore();
+
+        Main.setPlayerOneKeyPressed(false);
+        if (Main.isIsInMultiGame())
+            Main.setPlayerTwoKeyPressed(false);
     }
 
     /**
