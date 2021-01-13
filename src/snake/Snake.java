@@ -31,7 +31,7 @@ public class Snake {
         NONE("NONE");
 
         // Nom en français de la couleur
-        private final String name;
+        private final String displayName;
 
         // Liste de toutes les couleurs
         private static final List<SnakeColor> COLOR_POSSIBILITIES = Collections.unmodifiableList(Arrays.asList(values()));
@@ -41,10 +41,10 @@ public class Snake {
         /**
          * Construit une couleur avec un nom
          *
-         * @param colorName Nom de la couleur
+         * @param displayName Nom de la couleur
          */
-        SnakeColor(String colorName) {
-            name = colorName;
+        SnakeColor(String displayName) {
+            this.displayName = displayName;
         }
 
         /**
@@ -61,8 +61,8 @@ public class Snake {
         /**
          * @return le nom d'une couleur
          */
-        public String getName() {
-            return this.name;
+        public String getDisplayName() {
+            return this.displayName;
         }
     }
 
