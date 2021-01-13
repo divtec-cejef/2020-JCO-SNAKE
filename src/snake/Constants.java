@@ -65,11 +65,11 @@ public class Constants {
     // Couleur de fond de la grille
     public static final Color BACKGROUND_COLOR = new Color(0.1, 0.1, 0.1, 1);
 
-    // Couleur des contours de la fenêtre
-    public static final Color BORDER_COLOR = BACKGROUND_COLOR;
-
     // Couleur des textes
     public static final Color TEXT_COLOR = Color.BEIGE;
+
+    // Couleur des contours de la fenêtre
+    public static final Color BORDER_COLOR = Color.WHITE;
 
     // Couleur des textes faux
     public static final Color HIGHLIGHTED_TEXT_COLOR = Color.AZURE;
