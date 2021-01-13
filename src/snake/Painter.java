@@ -197,41 +197,6 @@ public class Painter {
             playerOnePreviousDot = dot;
         }
 
-//        int count = 0;
-//        for (SnakeDot dot: playerOneSnake.getDots()) {
-//            if (dot.getDotType() == Dot.DotType.TAIL)
-//                count = 0;
-//
-//            if (dot.getDirection() == Direction.LEFT || dot.getDirection() == Direction.RIGHT){
-//                int un = 1;
-//                if (dot.getDirection() == Direction.RIGHT)
-//                    un *= -1;
-//
-//                if (count == 0) {
-//                    playerOneSnake.getDots().get(count).setX(playerOneSnake.getHead().getX() - un);
-//                } else {
-//                    playerOneSnake.getDots().get(count).setX(playerOneSnake.getDots().get(count - 1).getX() - un);
-//                }
-//            }
-//
-//            if (dot.getDirection() == Direction.UP || dot.getDirection() == Direction.DOWN){
-//                int un = 1;
-//                if (dot.getDirection() == Direction.DOWN)
-//                    un *= -1;
-//
-//                if (count == 0) {
-//                    playerOneSnake.getDots().get(count).setY(playerOneSnake.getHead().getY() - un);
-//                } else {
-//                    playerOneSnake.getDots().get(count).setY(playerOneSnake.getDots().get(count - 1).getY() - un);
-//                }
-//            }
-//            count++;
-//
-//            paintSnake(dot);
-//            if (dot.getDotType() == Dot.DotType.HEAD)
-//                playerOnePreviousDot = dot;
-//        }
-
         // Dessine le serpent du joueur 2
         if (Main.isIsInMultiGame()) {
             // On dessine le deuxième serpent
@@ -354,7 +319,7 @@ public class Painter {
      */
     private static void paintTopLeft(String text) {
         graphicsContext.setTextAlign(TextAlignment.LEFT);
-        graphicsContext.fillText(text, 0, TILE_SIZE * 1.5f);
+        graphicsContext.fillText(text, TILE_SIZE, TILE_SIZE * 1.5f);
     }
 
     /**
@@ -363,7 +328,7 @@ public class Painter {
      */
     private static void paintBottomLeft(String text) {
         graphicsContext.setTextAlign(TextAlignment.LEFT);
-        graphicsContext.fillText(text, 0, HEIGHT - TILE_SIZE * 0.5f);
+        graphicsContext.fillText(text, TILE_SIZE, HEIGHT - TILE_SIZE * 0.5f);
     }
 
     /**
@@ -372,7 +337,7 @@ public class Painter {
      */
     private static void paintTopRight(String text) {
         graphicsContext.setTextAlign(TextAlignment.RIGHT);
-        graphicsContext.fillText(text, WIDTH, TILE_SIZE * 1.5f);
+        graphicsContext.fillText(text, WIDTH - TILE_SIZE, TILE_SIZE * 1.5f);
     }
 
 }
