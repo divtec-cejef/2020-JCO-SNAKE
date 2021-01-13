@@ -250,20 +250,27 @@ public class Main extends Application {
 
         if (!isPaused()) {
             if (keyCode == KeyCode.UP) {
-                if (playerOneSnakeDirection != Direction.DOWN && playerOneSnakeDirection != Direction.UP)
+                if (playerOneSnakeDirection != Direction.DOWN && playerOneSnakeDirection != Direction.UP) {
                     playerOneSnake.changeDirection(Direction.UP);
+                    isPlayerOneKeyPressed = true;
+                }
             } else if (keyCode == KeyCode.LEFT) {
-                if (playerOneSnakeDirection != Direction.RIGHT && playerOneSnakeDirection != Direction.LEFT)
+                if (playerOneSnakeDirection != Direction.RIGHT && playerOneSnakeDirection != Direction.LEFT) {
                     playerOneSnake.changeDirection(Direction.LEFT);
+                    isPlayerOneKeyPressed = true;
+                }
             } else if (keyCode == KeyCode.DOWN) {
-                if (playerOneSnakeDirection != Direction.UP && playerOneSnakeDirection != Direction.DOWN)
+                if (playerOneSnakeDirection != Direction.UP && playerOneSnakeDirection != Direction.DOWN) {
                     playerOneSnake.changeDirection(Direction.DOWN);
+                    isPlayerOneKeyPressed = true;
+                }
             } else if (keyCode == KeyCode.RIGHT) {
-                if (playerOneSnakeDirection != Direction.LEFT && playerOneSnakeDirection != Direction.RIGHT)
+                if (playerOneSnakeDirection != Direction.LEFT && playerOneSnakeDirection != Direction.RIGHT) {
                     playerOneSnake.changeDirection(Direction.RIGHT);
+                    isPlayerOneKeyPressed = true;
+                }
             }
         }
-        isPlayerOneKeyPressed = true;
     }
 
     /**
@@ -280,20 +287,27 @@ public class Main extends Application {
 
         if (!isPaused()) {
             if (keyCode == KeyCode.W) {
-                if (playerTwoSnakeDirection != Direction.DOWN && playerTwoSnakeDirection != Direction.UP)
+                if (playerTwoSnakeDirection != Direction.DOWN && playerTwoSnakeDirection != Direction.UP) {
                     playerTwoSnake.changeDirection(Direction.UP);
+                    isPlayerTwoKeyPressed = true;
+                }
             } else if (keyCode == KeyCode.A) {
-                if (playerTwoSnakeDirection != Direction.RIGHT && playerTwoSnakeDirection != Direction.LEFT)
+                if (playerTwoSnakeDirection != Direction.RIGHT && playerTwoSnakeDirection != Direction.LEFT) {
                     playerTwoSnake.changeDirection(Direction.LEFT);
+                    isPlayerTwoKeyPressed = true;
+                }
             } else if (keyCode == KeyCode.S) {
-                if (playerTwoSnakeDirection != Direction.UP && playerTwoSnakeDirection != Direction.DOWN)
+                if (playerTwoSnakeDirection != Direction.UP && playerTwoSnakeDirection != Direction.DOWN) {
                     playerTwoSnake.changeDirection(Direction.DOWN);
+                    isPlayerTwoKeyPressed = true;
+                }
             } else if (keyCode == KeyCode.D) {
-                if (playerTwoSnakeDirection != Direction.LEFT && playerTwoSnakeDirection != Direction.RIGHT)
+                if (playerTwoSnakeDirection != Direction.LEFT && playerTwoSnakeDirection != Direction.RIGHT) {
                     playerTwoSnake.changeDirection(Direction.RIGHT);
+                    isPlayerTwoKeyPressed = true;
+                }
             }
         }
-        isPlayerTwoKeyPressed = true;
     }
 
     /**
