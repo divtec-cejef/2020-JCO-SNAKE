@@ -24,7 +24,7 @@ public class GameSettings {
         LEGACY_SNAKE("Serpent pixelisé (solo uniquement)", false);
 
         // Nom en français du paramètre
-        private final String settingName;
+        private final String displayName;
 
         // Est-ce que l'option est activée
         private boolean isActivated;
@@ -32,19 +32,19 @@ public class GameSettings {
         /**
          * Construit un paramètre
          *
-         * @param settingName Nom du paramètre
+         * @param displayName Nom du paramètre
          * @param isActivated Valeur du paramètre
          */
-        Settings(String settingName, boolean isActivated) {
-            this.settingName = settingName;
+        Settings(String displayName, boolean isActivated) {
+            this.displayName = displayName;
             this.isActivated = isActivated;
         }
 
         /**
          * @return le nom d'un paramètre
          */
-        public String getSettingName() {
-            return this.settingName;
+        public String getDisplayName() {
+            return this.displayName;
         }
 
         /**

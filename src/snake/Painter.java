@@ -66,7 +66,7 @@ public class Painter {
         int count = 0;
         int yLocation = TILE_SIZE * 11;
         for (Settings setting: Settings.getSettingsList()) {
-            graphicsContext.fillText(setting.getSettingName(),TILE_SIZE * 2, yLocation);
+            graphicsContext.fillText(setting.getDisplayName(),TILE_SIZE * 2, yLocation);
             graphicsContext.fillText(Boolean.toString(setting.isActivated()), WIDTH * 0.80f, yLocation);
             count++;
             yLocation = TILE_SIZE * 11 + separation * count;
@@ -104,7 +104,7 @@ public class Painter {
         // Dessine le nom de l'option
         graphicsContext.setFont(Font.font("Consolas", FontWeight.BOLD, 16));
         graphicsContext.setFill(HIGHLIGHTED_TEXT_COLOR);
-        graphicsContext.fillText(option.getSettingName(),TILE_SIZE * 2, yLocation);
+        graphicsContext.fillText(option.getDisplayName(),TILE_SIZE * 2, yLocation);
 
         // Dessine la valeur de l'option
         graphicsContext.setFont(Font.font("Consolas", 16));
@@ -152,7 +152,7 @@ public class Painter {
             deathText = "Votre score est de " + deadSnake.getScore();
 
             if (Main.isIsInMultiGame())
-                deathText = "Le serpent " + deadSnakeColor.getName() + " est mort";
+                deathText = "Le serpent " + deadSnakeColor.getDisplayName() + " est mort";
         }
 
         // On dessine le message dans la fenêtre
@@ -318,8 +318,8 @@ public class Painter {
     private static void paintScore() {
         String playerOneScoreText = "Score : " + playerOneSnake.getScore();
         if (Main.isIsInMultiGame()) {
-            playerOneScoreText = "Serpent " + playerOneSnake.getSnakeColor().getName() + " : " + playerOneSnake.getScore();
-            paintTopRight("Serpent " + playerTwoSnake.getSnakeColor().getName() + " : " + playerTwoSnake.getScore());
+            playerOneScoreText = "Serpent " + playerOneSnake.getSnakeColor().getDisplayName() + " : " + playerOneSnake.getScore();
+            paintTopRight("Serpent " + playerTwoSnake.getSnakeColor().getDisplayName() + " : " + playerTwoSnake.getScore());
         }
 
         paintTopLeft(playerOneScoreText);
