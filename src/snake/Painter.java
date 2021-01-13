@@ -160,7 +160,7 @@ public class Painter {
 
         // On affiche les commandes
         graphicsContext.fillText("Appuyez sur [" + RESTART_KEY.getName() + "] pour recommencer.", WIDTH / 2.0f, HEIGHT * 0.5f);
-        graphicsContext.fillText("[" + CHANGE_GAME_MODE_KEY.getName() + "] pour changer de mode de jeu.", WIDTH / 2.0f, HEIGHT * 0.54f);
+        graphicsContext.fillText("[" + CHANGE_GAME_MODE_KEY.getName() + "] pour revenir au menu.", WIDTH / 2.0f, HEIGHT * 0.54f);
         graphicsContext.fillText("[" + CLOSE_GAME_KEY.getName() + "] pour quitter.", WIDTH / 2.0f, HEIGHT * 0.58f);
     }
 
@@ -200,7 +200,6 @@ public class Painter {
         // On dessine le premier serpent
         for (SnakeDot dot : playerOneSnake.getDots()) {
             if (Settings.LEGACY_SNAKE.isActivated() && !Main.isIsInMultiGame()) {
-//                graphicsContext.setFill(Color.WHITE);
                 graphicsContext.fillRect(dot.getX() * TILE_SIZE,
                         dot.getY() * TILE_SIZE,
                         TILE_SIZE, TILE_SIZE);
