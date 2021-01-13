@@ -309,11 +309,6 @@ public class Snake {
         }
     }
 
-    // **************  PROVISOIRE  ************** //
-    public void setAlive(boolean alive) {
-        isAlive = alive;
-    }
-
     // ******************************  GETTER  ****************************** //
 
     /**
