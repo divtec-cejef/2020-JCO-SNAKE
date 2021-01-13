@@ -112,6 +112,7 @@ public class Snake {
         this.snakeColor = color;
         startX = x;
         startY = y;
+        
         createDots();
     }
 
