@@ -211,6 +211,12 @@ public class Main extends Application {
                 isInSettingsMenu = false;
                 selectedOption = 0;
                 Painter.paintMenu();
+
+                try {
+                    settings.getFromFile();
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
             }
         }
 
