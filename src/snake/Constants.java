@@ -26,6 +26,9 @@ public class Constants {
 
     // ******************************  COMMANDES  ****************************** //
 
+    // Touche de mise en pause du jeu
+    public static final KeyCode PAUSE_KEY = KeyCode.P;
+
     // Touche de fermeture de la fenêtre
     public static final KeyCode CLOSE_GAME_KEY = KeyCode.Q;
 

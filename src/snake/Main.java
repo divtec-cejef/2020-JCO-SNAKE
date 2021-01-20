@@ -30,6 +30,8 @@ public class Main extends Application {
 
     // Boucle du jeu
     private Timeline timeline;
+    // Jeu arrêté
+    private boolean stopped;
     // Jeu sur pause
     private boolean paused;
 
@@ -233,28 +235,29 @@ public class Main extends Application {
         Snake playerOneSnake = grid.getPlayerOneSnake();
         Direction playerOneSnakeDirection = playerOneSnake.getSnakeDirection();
 
-        if (keyCode == KeyCode.P)
-            if (gameHasStarted)
-                paused = !isPaused();
+        if (keyCode == PAUSE_KEY)
+            if (gameHasStarted) {
+                paused = isRunning();
+            }
 
         if (keyCode == RESTART_KEY)
-            if (isPaused())
+            if (isStopped())
                 startGame(isInMultiGame);
 
         if (keyCode == CHANGE_GAME_MODE_KEY)
-            if (isPaused()) {
+            if (isStopped()) {
                 isInMenu = true;
                 Painter.paintMenu();
             }
 
         if (keyCode == CLOSE_GAME_KEY)
-            if (isPaused())
+            if (isStopped() || !isRunning())
                 stageToClose.close();
 
         if (isPlayerOneKeyPressed)
             return;
 
-        if (!isPaused()) {
+        if (!isStopped() && isRunning()) {
             if (keyCode == KeyCode.UP) {
                 if (playerOneSnakeDirection != Direction.DOWN && playerOneSnakeDirection != Direction.UP) {
                     playerOneSnake.changeDirection(Direction.UP);
@@ -291,7 +294,7 @@ public class Main extends Application {
         if (isPlayerTwoKeyPressed)
             return;
 
-        if (!isPaused()) {
+        if (!isStopped() && isRunning()) {
             if (keyCode == KeyCode.W) {
                 if (playerTwoSnakeDirection != Direction.DOWN && playerTwoSnakeDirection != Direction.UP) {
                     playerTwoSnake.changeDirection(Direction.UP);
@@ -322,6 +325,7 @@ public class Main extends Application {
     private void initGame() {
         isInMenu = false;
         grid = new Grid();
+        stopped = false;
         paused = false;
     }
 
@@ -335,7 +339,7 @@ public class Main extends Application {
         initGame();
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            if (!isPaused()) {
+            if (isRunning()) {
                 grid.update();
                 Painter.paintGame(grid);
 
@@ -363,15 +367,23 @@ public class Main extends Application {
      * Stop le jeu
      */
     public void stopGame() {
+        stopped = true;
         paused = true;
         timeline.stop();
     }
 
     /**
+     * @return si le jeu est arrêté
+     */
+    public boolean isStopped() {
+        return stopped;
+    }
+
+    /**
      * @return si le jeu est en pause
      */
-    public boolean isPaused() {
-        return paused;
+    public boolean isRunning() {
+        return !paused;
     }
 
     /**
