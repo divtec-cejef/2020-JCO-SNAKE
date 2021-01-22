@@ -26,7 +26,7 @@ public class Painter {
     private static SnakeDot playerTwoPreviousDot = null;
 
     // Séparation entre les lignes
-    private static final int separation = 35;
+    private static final int SEPARATION = 35;
 
     // Context graphique du canvas de le fenêtre
     private static GraphicsContext graphicsContext;
@@ -69,7 +69,7 @@ public class Painter {
             graphicsContext.fillText(setting.getDisplayName(),TILE_SIZE * 2, yLocation);
             graphicsContext.fillText(Boolean.toString(setting.isActivated()), WIDTH * 0.80f, yLocation);
             count++;
-            yLocation = TILE_SIZE * 11 + separation * count;
+            yLocation = TILE_SIZE * 11 + SEPARATION * count;
         }
 
         // Sauvegarder les paramètres
@@ -99,7 +99,7 @@ public class Painter {
         Settings option = Settings.getFromSettingsList(selectedOption);
 
         // Emplacement de l'option
-        int yLocation = TILE_SIZE * 11 + separation * selectedOption;
+        int yLocation = TILE_SIZE * 11 + SEPARATION * selectedOption;
 
         // Dessine le nom de l'option
         graphicsContext.setFont(Font.font("Consolas", FontWeight.BOLD, 16));
